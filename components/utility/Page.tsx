@@ -54,7 +54,7 @@ function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
         <meta property="og:description" content={desc} />
         <meta
           property="og:image"
-          content="https://umang.dev/static/misc/og.png"
+          content="https://umang.dev/misc/og.png"
         />
 
         <meta property="twitter:card" content="summary_large_image" />
@@ -63,7 +63,7 @@ function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
         <meta property="twitter:description" content={desc} />
         <meta
           property="twitter:image"
-          content="https://umang.dev/static/misc/og.png"
+          content="https://umang.dev/misc/og.png"
         ></meta>
         <script
           async
@@ -75,7 +75,7 @@ function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-KC3CN7V');`,
+})(window,document,'script','dataLayer','GTM-KG4HCXQ');`,
           }}
         ></script>
         <script
@@ -93,7 +93,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </Head>
       <noscript
         dangerouslySetInnerHTML={{
-          __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KC3CN7V"
+          __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KG4HCXQ"
 height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
         }}
       ></noscript>
