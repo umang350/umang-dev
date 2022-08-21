@@ -38,10 +38,10 @@ function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
         />
         <link rel="manifest" href="/favicon/site.webmanifest" />
         
-        <link rel="mask-icon" href="/public/favicon/safari-pinned-tab.svg" color="#5bbad5" />
-        <link rel="shortcut icon" href="/public/favicon/favicon.ico" />
+        <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+        <link rel="shortcut icon" href="/favicon/favicon.ico" />
         <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="msapplication-config" content="/public/favicon/browserconfig.xml" />
+        <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />
 
 
