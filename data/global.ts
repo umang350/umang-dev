@@ -56,19 +56,24 @@ export const footer: Footer = {
           link: "/",
           leavesWebsite: false,
         },
-        // {
-        //   name: "Blog",
-        //   link: "/blog",
-        //   leavesWebsite: false,
-        // },
         {
-          name: "Projects",
-          link: "/projects",
+          name: "About Me",
+          link: "/about",
           leavesWebsite: false,
         },
         {
-          name: "Designs",
-          link: "/designs",
+          name: "Blog",
+          link: "/blog",
+          leavesWebsite: false,
+        },
+        {
+          name: "Creations",
+          link: "/creations",
+          leavesWebsite: false,
+        },
+        {
+          name: "Statistics",
+          link: "/stats",
           leavesWebsite: false,
         },
       ],
@@ -77,21 +82,27 @@ export const footer: Footer = {
       title: "Social",
       links: [
         {
-          name: "GitHub",
-          link: "https://github.com/umang350",
-          icon: "/icons/github-f.svg",
-          leavesWebsite: true,
-        },
-        {
-          name: "LinkedIn",
-          link: "https://www.linkedin.com/in/umang350/",
-          icon: "/icons/linkedin-f.svg",
+          name: "YouTube",
+          link: "https://youtube.com/getsaged",
+          icon: "/icons/youtube.svg",
           leavesWebsite: true,
         },
         {
           name: "Instagram",
           link: "https://instagram.com/thisumang",
           icon: "/icons/instagram.svg",
+          leavesWebsite: true,
+        },
+        {
+          name: "Twitter",
+          link: "https://twitter.com/thisumang",
+          icon: "/icons/twitter.svg",
+          leavesWebsite: true,
+        },
+        {
+          name: "LinkedIn",
+          link: "https://www.linkedin.com/in/umang350/",
+          icon: "/icons/linkedin-f.svg",
           leavesWebsite: true,
         },
         {
@@ -104,8 +115,8 @@ export const footer: Footer = {
     },
   ],
   support: {
-    buymeacoffee: "umang350",
-    paypal: "umang350",
-    message: "I appreciate your support very much! 💙",
+    buymeacoffee: "",
+    paypal: "",
+    message: "I appreciate your support just by reading this! 💙",
   },
 };
