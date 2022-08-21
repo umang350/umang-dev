@@ -11,7 +11,7 @@ function Footer() {
           return (
             <div key={index} className="text-left mb-5 sm:mb-0">
               <h4 className="uppercase text-fun-gray text-sm font-bold">
-                {item.title}
+                <Link href={item.link}>{item.title}</Link>
               </h4>
               <div>
                 {item.links.map((item, index) => {

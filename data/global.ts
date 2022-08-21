@@ -5,6 +5,7 @@ type Route = {
 
 type FooterCol = {
   title: string,
+  link: string,
   links: {
     name: string,
     link: string,
@@ -50,6 +51,7 @@ export const footer: Footer = {
   columns: [
     {
       title: "Pages",
+      link: "",
       links: [
         {
           name: "Home",
@@ -80,6 +82,7 @@ export const footer: Footer = {
     },
     {
       title: "Social",
+      link: "https://link.umang.dev",
       links: [
         {
           name: "YouTube",
