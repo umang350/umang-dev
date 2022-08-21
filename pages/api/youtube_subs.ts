@@ -1,5 +1,4 @@
 import { google } from 'googleapis';
-import "https://apis.google.com/js/api.js";
 
 const youtube = async (_, res) => {
   const auth = new google.auth.GoogleAuth({
