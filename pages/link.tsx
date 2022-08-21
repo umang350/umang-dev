@@ -1,5 +1,6 @@
 import Image from "next/image"
 import LinkerItems from "@/components/linker/LinkerItem"
+import {icons} from "@/data/content/linker"
 
 
 const Linker = () => {
@@ -17,16 +18,14 @@ const Linker = () => {
                 </div>
             </header>
             <LinkerItems />
-            <footer className="text-center w-full max-w-4xl m-auto mt-10 grid grid-cols-3 justify-between items-start" >
-            <a href="https://twitter.com/thisumang/" target="new" title="Twitter"> 
-                <Image className="socialicon hover:w-60" src="/icons/twitter.svg" height="50" width="50" alt=""/>
-            </a> 
-            <a href="mailto:Theumang.yt@gmail.com"target="new" title="Mail"> 
-                <Image className="socialicon" src="/icons/mail-f.svg" height="50" width="50" alt=""/> 
-            </a> 
-            <a href="https://instagram.com/thisumang/" target="new" title="Instagram"> 
-                <Image className="socialicon" src="/icons/instagram.svg" height="50" width="50" alt=""/> 
-            </a>
+            <footer className="text-center w-full max-w-4xl m-auto mt-10 grid grid-cols-3 justify-between items-start fixed bottom-0 pb-5 pt-5"  >
+            {icons.map((item, index) => {
+                return (
+                    <a className="hover:h-10" href={item.link} target="new" title="Twitter" key={item.link}> 
+                    <Image className="socialicon" src={item.img} height="50" width="50" alt=""/>
+                    </a> 
+                )
+            })}
             </footer>
         </div>
     )

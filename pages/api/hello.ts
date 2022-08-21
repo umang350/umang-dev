@@ -12,14 +12,14 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   
-  const search = () => {
+  
     ga.event({
       action: "api",
       params : {
         search_term: req
       }
     })
-  }
+  
 
   res.status(200).json({ name: 'John Doe' })
 }

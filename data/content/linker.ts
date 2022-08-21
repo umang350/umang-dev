@@ -1,8 +1,28 @@
 type Route = {
     title: string,
     link: string
-  }
+}
+
+type SocialIcon = {
+    img: string,
+    link: string
+}
   
+export const icons: SocialIcon[] = [
+    {
+        link: "https://twitter.com/thisumang/",
+        img: "/icons/twitter.svg"
+    },
+    {
+        link: "mailto:Theumang.yt@gmail.com",
+        img: "/icons/mail-f.svg"
+    },
+    {
+        link: "https://instagram.com/thisumang/",
+        img: "/icons/instagram.svg"
+    }
+]
+
 export const routes: Route[] = [    
     {
         title: "YouTube Channel | Get Saged",
