@@ -14,7 +14,7 @@ export const icons: SocialIcon[] = [
         img: "/icons/twitter.svg"
     },
     {
-        link: "mailto:Theumang.yt@gmail.com",
+        link: "mailto:contact@umang.dev",
         img: "/icons/mail-f.svg"
     },
     {
