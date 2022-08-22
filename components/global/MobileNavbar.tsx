@@ -38,7 +38,7 @@ export default function MobileNavbar() {
       >
         <li className="list-none font-bold text-lg">
           <Link href="/">
-            <h1>umang.dev</h1>
+            <h1>UMANG.dev</h1>
           </Link>
         </li>
         <button
