@@ -16,7 +16,7 @@ export const callAPI = async () => {
 	try {
 		const res = await fetch(url);
 		const data = await res.json();
-		return (await data);
+		return (await data.items[0].statistics);
 	} catch (err) {
 		console.log(err);
 	}
