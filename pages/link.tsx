@@ -6,7 +6,7 @@ import {icons} from "@/data/content/linker"
 const Linker = () => {
     return (
         <div>
-            <Image src="/background-mobile.png" layout="fill" alt="background"></Image>
+            <Image src="/background-mobile.png" layout="fill" alt="background" objectFit="cover"></Image>
             <header>
                 <div
                     className="relative heroElem w-full pt-20 m-auto flex justify-center text-center flex-col items-center z-1">
@@ -18,10 +18,10 @@ const Linker = () => {
                 </div>
             </header>
             <LinkerItems />
-            <footer className="text-center w-full max-w-4xl m-auto mt-10 grid grid-cols-3 justify-between items-start fixed bottom-0 pb-5 pt-5"  >
+            <footer className="text-center w-full m-auto mt-10 grid grid-cols-3 justify-between items-start fixed bottom-0 pb-5 pt-5"  >
             {icons.map((item, index) => {
                 return (
-                    <a className="hover:h-10" href={item.link} target="new" title="Twitter" key={item.link}> 
+                    <a className="hover:h-10" href={item.link} target="new" key={item.link}> 
                     <Image className="socialicon" src={item.img} height="50" width="50" alt=""/>
                     </a> 
                 )

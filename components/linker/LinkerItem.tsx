@@ -21,8 +21,9 @@ export default function LinkerItems() {
                 {routes.map((item, index) => {
                     return (
                         <li
-                            className="m-3 grow"
+                            className="m-3 max-w-sm sm:max-w-none"
                             key={item.title}
+                            style={{width:"530px"}}
                         >
                             <Link href={item.link}>
                                 <button type="button" role="button" onClick={() => analytics(item)} className={styles.button}>
