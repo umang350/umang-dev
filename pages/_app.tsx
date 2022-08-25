@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import "tailwindcss/tailwind.css";
 import { useEffect } from 'react'
+import { ThemeProvider } from 'next-themes';
 
 import * as ga from '../lib/ga'
 import { useRouter } from 'next/router';
@@ -24,7 +25,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router.events])
 
-  return <Component {...pageProps} />
+  return (<>
+  <ThemeProvider attribute="class">
+    <div className='bg-gray-50 dark:bg-black'>
+    <Component {...pageProps} />
+    </div>
+  </ThemeProvider>
+  </>);
 }
 
 export default MyApp

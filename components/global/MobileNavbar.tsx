@@ -33,10 +33,10 @@ export default function MobileNavbar() {
   return (
     <nav>
       <div
-        className={`w-full justify-between flex items-center ${isMenuRendered && 'bg-bg'} p-5`}
+        className={`w-full justify-between flex items-center ${isMenuRendered && 'dark:bg-bg'} p-5`}
         style={{ zIndex: 101 }}
       >
-        <li className="list-none font-bold text-lg">
+        <li className="list-none text-black dark:text-white font-bold text-lg">
           <Link href="/">
             <h1>UMANG.dev</h1>
           </Link>
