@@ -27,7 +27,7 @@ function Navbar({ currentPage }: currentPageObject) {
           </span>
         </Link>
       </li>
-      <ul className="flex items-center space-x-10">
+      <ul className="flex items-center space-x-10 pl-5 pr-5">
         {routes.map((item, index) => {
           return (
             <li

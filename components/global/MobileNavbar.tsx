@@ -46,7 +46,7 @@ export default function MobileNavbar() {
             <h1>UMANG.dev</h1>
           </Link>
         </li>
-        <div className="space-x-4 flex flex-row items-center ml-auto mr-2">
+        {isMenuOpen && <div className="space-x-4 flex flex-row items-center ml-auto mr-3">
           <a
             href="https://instagram.com/thisUmang"
             className="text-base font-normal text-gray-600 dark:text-gray-300"
@@ -124,7 +124,8 @@ export default function MobileNavbar() {
             )}
 
           </button>
-        </div>
+        </div>}
+        
         <button
           className={`${styles.burger} visible md:hidden dark:bg-none`}
           aria-label="Toggle menu"
