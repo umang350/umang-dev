@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-analytics/data": "^3.0.0",
     "axios": "^0.27.2",
     "google-auth-library": "^8.3.0",
     "googleapis": "^107.0.0",
