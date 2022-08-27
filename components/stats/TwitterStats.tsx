@@ -5,7 +5,8 @@ import fetcher from './../../lib/ga/fetcher';
 import MetricCard from './Card';
 
 export type Twitter = {
-    followers: number
+    followers: number,
+    tweets: number
 };
 
 export default function InstagramStats() {
@@ -14,6 +15,7 @@ export default function InstagramStats() {
 
     const likes = 0;
     const followers = new Number(data?.followers);
+    const tweets = new Number(data?.tweets);
     const link = 'https://twitter.com/thisumang';
 
     return (
@@ -27,9 +29,9 @@ export default function InstagramStats() {
                     isCurrency={false}
                 />
                 <MetricCard
-                    header="Twitter Likes"
+                    header="Twitter Tweets"
                     link={link}
-                    metric={likes}
+                    metric={tweets}
                     isCurrency={false}
                 />
             </div>

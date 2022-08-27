@@ -8,7 +8,6 @@ const twitter = async (req, res) => {
   var followerCount = 0;
 
   const response = await client.users.findUserByUsername("thisumang");
-
   let followers = await client.users.usersIdFollowers(response.data.id);
 
   followerCount += followers.meta.result_count;
@@ -20,7 +19,18 @@ const twitter = async (req, res) => {
     followerCount += followers.meta.result_count;
   }
 
-  return res.status(200).json({followers: followerCount});
+  let tweets = await client.tweets.usersIdTweets(response.data.id);
+
+  var tweetCount = tweets.meta.result_count;
+  while(tweets.meta.next_token != undefined){
+    tweets = await client.tweets.usersIdTweets(response.data.id, {
+      "pagination_token": tweets.meta.next_token
+    })
+    tweetCount += tweets.meta.result_count;
+  }
+
+
+  return res.status(200).json({followers: followerCount, tweets: tweetCount});
 };
 
 export default twitter;
