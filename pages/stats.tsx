@@ -3,6 +3,7 @@ import Page from '../components/utility/Page'
 import GitHubCard from '@/components/stats/GithubStats';
 import InstagramStats from '@/components/stats/InstagramStats';
 import TwitterStats from '@/components/stats/TwitterStats';
+import GoogleAnalyticsStats from '@/components/stats/GoogleAnalyticsStats';
 
 const About = ({ytData}) => {
     return (
@@ -13,6 +14,7 @@ const About = ({ytData}) => {
             <GitHubCard />
             <InstagramStats />
             <TwitterStats />
+            <GoogleAnalyticsStats/>
         </Page>
     )
 
