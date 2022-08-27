@@ -10,13 +10,13 @@ function Footer() {
         {footer.columns.map((item, index) => {
           return (
             <div key={index} className="text-left mb-5 sm:mb-0">
-              <h4 className="uppercase text-fun-gray text-sm font-bold">
+              <h4 className="uppercase text-fun-gray text-sm font-bold ">
                 <Link href={item.link}>{item.title}</Link>
               </h4>
               <div>
                 {item.links.map((item, index) => {
                   return (
-                    <div key={index} className="my-4">
+                    <div key={index} className="my-4 dark:text-white text-black">
                       {item.leavesWebsite ? (
                         <a
                           href={item.link}
@@ -25,13 +25,13 @@ function Footer() {
                         >
                           {item.icon && (
                             <span className="pr-2 -mb-1">
-                              <Image src={item.icon} width={20} height={20} alt=""/>
+                                <Image src={item.icon} width={20} height={20} alt=""/>
                             </span>
                           )}
                           {item.name}
                         </a>
                       ) : (
-                        <Link href={item.link}>{item.name}</Link>
+                        <Link className="dark:text-white text-black" href={item.link}>{item.name}</Link>
                       )}
                     </div>
                   );
@@ -57,27 +57,30 @@ function Footer() {
             Made with{" "}
             <div className="space-x-2 inline-flex items-center -mt-1 ml-3">
               <span>
-                <img
+                <Image
                   src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
                   width="26"
-                  title="React"
+                  height="26"
+                  alt="React"
                 />
                 <span className="sr-only">React</span>
               </span>
               <span>
-                <img
+                <Image
                   src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original-wordmark.svg"
                   width="40"
-                  className="invert"
-                  title="NextJS"
+                  height="40"
+                  className="dark:invert"
+                  alt="NextJS"
                 />
                 <span className="sr-only">NextJS</span>
               </span>
               <span>
-                <img
+                <Image
                   src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg"
                   width="26"
-                  title="TailwindCSS"
+                  height="26"
+                  alt="TailwindCSS"
                 />
                 <span className="sr-only">TailwindCSS</span>
               </span>

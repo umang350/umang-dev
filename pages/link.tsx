@@ -1,6 +1,7 @@
 import Image from "next/image"
 import LinkerItems from "@/components/linker/LinkerItem"
 import {icons} from "@/data/content/linker"
+import { LinkedinButton } from "@/components/linker/Linkedin"
 
 
 const Linker = () => {
@@ -15,6 +16,7 @@ const Linker = () => {
                     <h1 className="heroTitle inline-block max-w-2xl lg:max-w-4xl  w-auto relative text-1x0 md:text-2x0 lg:text-3xl tracking-tighter mb-10 font-bold heroShinyBg">
                         Creator. <span className="heroShiny1 text-fun-pink">Developer.</span> Strategy.
                     </h1>
+            <LinkedinButton />
                 </div>
             </header>
             <LinkerItems />

@@ -4,7 +4,7 @@ import React from "react";
 function Hero() {
   return (
     <div
-      className="relative heroElem w-full pt-20 m-auto flex justify-center text-center flex-col items-center z-1">
+      className="relative heroElem w-full pt-20 m-auto flex justify-center text-center flex-col items-center z-1 dark:text-white text-black">
       <p className="text-xl mb-5">Hey, I&apos;m Umang.</p>
       <h1 className="heroTitle inline-block max-w-2xl lg:max-w-4xl  w-auto relative text-5xl md:text-6xl lg:text-7xl tracking-tighter mb-10 font-bold heroShinyBg">
         Developer. <span className="heroShiny1 text-fun-pink">Creator.</span>{" "} <br />
