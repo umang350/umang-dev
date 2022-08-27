@@ -25,11 +25,11 @@ export default function LinkerItems() {
                             key={item.title}
                             style={{width:"530px"}}
                         >
-                            <Link href={item.link}>
+                            <a href={item.link} rel="noopener noreferrer" target="_blank">
                                 <button type="button" role="button" onClick={() => analytics(item)} className={styles.button}>
                                     {item.title}
                                 </button>
-                            </Link>
+                            </a>
                         </li>
                     );
                 })}
