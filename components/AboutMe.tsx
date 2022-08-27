@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Experience } from "./about/Experience";
 
 export const AboutMe = () => {
@@ -23,17 +22,17 @@ export const AboutMe = () => {
               Software Developer🗼 Content Creator 💥 Strategizer 📈
             </a>
           </p>
-          <p className="text-left text-xl text-gray-700 mb-4 mt-4 dark:text-gray-200 text-justify">
+          <div className="text-left text-xl text-gray-700 mb-4 mt-4 dark:text-gray-200 text-justify">
             My passion is to build products of utility for the masses and create a global world filled with correct human intelligence and computational accessibility bringing efficiency and transparency to the ecosystem of technology and life.
             <br />
-            <p className="leading-loose">
+            <p className="leading-loose text-left">
               🚀 Helping Fast Retailing (Uniqlo) change the world through clothes
               <br />
               ⚡Growth hacking a YouTube Channel while creating a personal brand
               <br />
               🔥Helping newbies crack the software developer job code
             </p>
-          </p>
+          </div>
         </div>
       </div>
       <div className="flex flex-wrap">

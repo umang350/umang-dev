@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "google-auth-library": "^8.3.0",
     "googleapis": "^107.0.0",
     "instagram-api.js": "^1.1.0",
+    "instagram-followers": "^1.0.0",
     "needle": "^3.1.0",
     "next": "12.2.5",
     "next-themes": "^0.2.0",
