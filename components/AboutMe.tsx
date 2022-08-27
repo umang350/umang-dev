@@ -18,7 +18,7 @@ export const AboutMe = () => {
             {" "}
             <a
               className="bg-blue-500 rounded-md px-2 py-1 text-white text-left"
-              href=""
+              style={{ display: "table-cell" }}
             >
               Software Developer🗼 Content Creator 💥 Strategizer 📈
             </a>
