@@ -1,6 +1,8 @@
 import YoutubeSubCount from '@/components/stats/YoutubeSubCount'
 import Page from '../components/utility/Page'
 import GitHubCard from '@/components/stats/GithubStats';
+import InstagramStats from '@/components/stats/InstagramStats';
+import TwitterStats from '@/components/stats/TwitterStats';
 
 const About = ({ytData}) => {
     return (
@@ -9,6 +11,8 @@ const About = ({ytData}) => {
         }}>
             <YoutubeSubCount />
             <GitHubCard />
+            <InstagramStats />
+            <TwitterStats />
         </Page>
     )
 
