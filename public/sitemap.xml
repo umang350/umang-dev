@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+          
+                <url>
+                  <loc>http://umang.dev/about</loc>
+                  <lastmod>2022-08-28T03:19:02.320Z</lastmod>
+                  <changefreq>monthly</changefreq>
+                  <priority>1.0</priority>
+                </url>
+              
+                <url>
+                  <loc>http://umang.dev/index</loc>
+                  <lastmod>2022-08-28T03:19:02.320Z</lastmod>
+                  <changefreq>monthly</changefreq>
+                  <priority>1.0</priority>
+                </url>
+              
+                <url>
+                  <loc>http://umang.dev/link</loc>
+                  <lastmod>2022-08-28T03:19:02.320Z</lastmod>
+                  <changefreq>monthly</changefreq>
+                  <priority>1.0</priority>
+                </url>
+              
+                <url>
+                  <loc>http://umang.dev/stats</loc>
+                  <lastmod>2022-08-28T03:19:02.320Z</lastmod>
+                  <changefreq>monthly</changefreq>
+                  <priority>1.0</priority>
+                </url>
+              
+        </urlset>
