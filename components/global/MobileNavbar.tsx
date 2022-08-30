@@ -1,10 +1,11 @@
 import { SVGProps, useEffect, useState } from "react";
 
 import Link from "next/link";
-import { routes } from "../../data/global";
+import { routes, routesJA, Route } from "../../data/global";
 import useDelayedRender from "use-delayed-render";
 import styles from './MobileNavbar.module.css';
 import { useTheme } from "next-themes";
+import { useRouter } from "next/router";
 
 export default function MobileNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +16,19 @@ export default function MobileNavbar() {
       exitDelay: 300,
     }
   );
+  
+  const { locale } = useRouter();
+  var routesData : Route[];
+  var pageLogoText = "";
+
+  if(locale==="ja"){
+    routesData = routesJA
+    pageLogoText = "ウマング.dev"
+  }else{
+    routesData = routes
+    pageLogoText = "UMANG.dev"
+  }
+
 
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -43,7 +57,7 @@ export default function MobileNavbar() {
       >
         <li className="list-none text-black dark:text-white font-bold text-lg">
           <Link href="/">
-            <h1>UMANG.dev</h1>
+            <h1>{pageLogoText}</h1>
           </Link>
         </li>
         {isMenuOpen && <div className="space-x-4 flex flex-row items-center ml-auto mr-3">
@@ -141,7 +155,7 @@ export default function MobileNavbar() {
           className={`${styles.menu} flex flex-col absolute bg-bg
             ${isMenuRendered && styles.menuRendered}`}
         >
-          {routes.map((item, index) => {
+          {routesData.map((item, index) => {
             return (
               <li
                 className="border-b border-gray-900 text-gray-100 text-sm font-semibold"

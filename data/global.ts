@@ -1,6 +1,7 @@
-type Route = {
+export type Route = {
   title: string,
-  path: string
+  path: string,
+  description?: string
 }
 
 type FooterCol = {
@@ -14,12 +15,25 @@ type FooterCol = {
   }[]
 }
 
-type Footer = {
+export type Footer = {
   columns: FooterCol[]
   support: {
-    buymeacoffee: string
-    paypal: string
+    title: string,
     message: string
+  },
+  make: {
+    maker: string,
+    madewith: string,
+    dislaimer: string
+  },
+  language: {
+    title: string,
+    languages: 
+      {
+        name: string,
+        link: string,
+        locale: string
+      }[]
   }
 };
 
@@ -27,10 +41,12 @@ export const routes: Route[] = [
   {
     title: "Home",
     path: "/",
+    description: "UMANG.DEV, one stop to all things Umang Chauhan. Find out insights from the statistics tab or know more about me from the About Me page. Whatever you do stay away from the 404 Page." 
   },
   {
     title: "About Me",
     path: "/about",
+    description: "Find out more about me!"
   },
   {
     title: "Blog",
@@ -43,8 +59,133 @@ export const routes: Route[] = [
   {
     title: "Statistics",
     path: "/stats",
+    description: "Deep dive into statistics"
   },
 ];
+
+export const routesJA: Route[] = [
+  {
+    title: "家",
+    path: "/",
+    description: "UMANG.DEV, one stop to all things Umang Chauhan. Find out insights from the statistics tab or know more about me from the About Me page. Whatever you do stay away from the 404 Page." 
+  },
+  {
+    title: "私について",
+    path: "/about",
+    description: "Find out more about me!"
+  },
+  {
+    title: "ブログ",
+    path: "/blog",
+  },
+  {
+    title: "創作物",
+    path: "/creations",
+  },
+  {
+    title: "統計学",
+    path: "/stats",
+    description: "Deep dive into statistics"
+  },
+];
+
+export const footerJA: Footer = {
+  columns: [
+    {
+      title: "ページ",
+      link: "",
+      links: [
+        {
+          name: "家",
+          link: "/",
+          leavesWebsite: false,
+        },
+        {
+          name: "私について",
+          link: "/about",
+          leavesWebsite: false,
+        },
+        {
+          name: "ブログ",
+          link: "/blog",
+          leavesWebsite: false,
+        },
+        {
+          name: "創作物",
+          link: "/creations",
+          leavesWebsite: false,
+        },
+        {
+          name: "統計学",
+          link: "/stats",
+          leavesWebsite: false,
+        },
+      ],
+    },
+    {
+      title: "SNS",
+      link: "https://link.umang.dev",
+      links: [
+        {
+          name: "ユーチューブ",
+          link: "https://youtube.com/getsaged",
+          icon: "/icons/youtube.svg",
+          leavesWebsite: true,
+        },
+        {
+          name: "インスタグラム",
+          link: "https://instagram.com/thisumang",
+          icon: "/icons/instagram.svg",
+          leavesWebsite: true,
+        },
+        {
+          name: "ツイッター",
+          link: "https://twitter.com/thisumang",
+          icon: "/icons/twitter.svg",
+          leavesWebsite: true,
+        },
+        {
+          name: "リンクトイン",
+          link: "https://www.linkedin.com/in/umang350/",
+          icon: "/icons/linkedin-f.svg",
+          leavesWebsite: true,
+        },
+        {
+          name: "Eメール",
+          link: "mailto:contact@umang.dev",
+          icon: "/icons/mail-f.svg",
+          leavesWebsite: true,
+        },
+      ],
+    },
+  ],
+  support: {
+    title: "私の仕事をサポート",
+    message: "これを読んだだけでも応援よろしくお願いします！💙",
+  },
+  make: {
+    maker: "ウマング・チャウハン",
+    madewith: "で作った",
+    dislaimer: "全著作権所有.",
+  },
+  language: {
+    title: "言語",
+    languages: [
+      {
+        name: "英語 - English",
+        link: "/",
+        locale: "en"
+      },
+      
+      {
+        name: "日本語 - Japanese",
+        link: "/",
+        locale: "ja"
+      }
+    ]
+  }
+};
+
 
 
 export const footer: Footer = {
@@ -118,8 +259,28 @@ export const footer: Footer = {
     },
   ],
   support: {
-    buymeacoffee: "",
-    paypal: "",
+    title: "Support My Work",
     message: "I appreciate your support just by reading this! 💙",
   },
+  make: {
+    maker: "Umang Chauhan",
+    madewith: "Made with",
+    dislaimer: "All rights reserved.",
+  },
+  language: {
+    title: "Langauge",
+    languages: [
+      {
+        name: "English",
+        link: "/",
+        locale: "en"
+      },
+      
+      {
+        name: "日本語",
+        link: "/",
+        locale: "ja"
+      }
+    ]
+  }
 };

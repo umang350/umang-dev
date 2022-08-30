@@ -1,13 +1,25 @@
 import Link from "next/link";
 import React from "react";
-import { footer } from "@/data/global";
+import { footer, footerJA, Footer } from "@/data/global";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 function Footer() {
-  return ( 
+
+  const { locale } = useRouter();
+  var footerData: Footer;
+
+  if (locale === "ja") {
+    footerData = footerJA
+  } else {
+    footerData = footer
+  }
+
+
+  return (
     <footer>
-            <div className="w-full max-w-4xl m-auto grid grid-cols-2 sm:grid-cols-3 justify-between items-start">
-        {footer.columns.map((item, index) => {
+      <div className="w-full max-w-4xl m-auto grid grid-cols-2 sm:grid-cols-3 justify-between items-start">
+        {footerData.columns.map((item, index) => {
           return (
             <div key={index} className="text-left mb-5 sm:mb-0">
               <h4 className="uppercase text-fun-gray text-sm font-bold ">
@@ -25,7 +37,7 @@ function Footer() {
                         >
                           {item.icon && (
                             <span className="pr-2 -mb-1">
-                                <Image src={item.icon} width={20} height={20} alt=""/>
+                              <Image src={item.icon} width={20} height={20} alt="" />
                             </span>
                           )}
                           {item.name}
@@ -42,12 +54,24 @@ function Footer() {
         })}
         <div className="text-center col-span-2 sm:col-auto sm:text-left pt-8 sm:mt-0 sm:pt-0 text-fun-gray border-t border-fun-pink-dark sm:border-0">
           <h4 className="uppercase text-fun-gray text-sm font-bold">
-            Support My Work
+            {footerData.support.title}
           </h4>
           <div className="space-y-2 mt-4 w-full flex items-center sm:items-start flex-col">
             <p className="text-fun-gray text-xs pt-1">
-              {footer.support.message}
+              {footerData.support.message}
             </p>
+          </div>
+          <h4 className="uppercase text-fun-gray text-sm font-bold pt-8">
+            {footerData.language.title}
+          </h4>
+          <div>
+            {footerData.language.languages.map((item, index) => {
+              return (
+                <div key={index} className={`my-4 ${locale === item.locale ? "dark:text-white text-black" : "dark:text-white dark:text-opacity-50 text-opacity-50 text-black"}`}>
+                  <Link locale={item.locale} className="dark:text-white text-black" href={item.link}>{item.name}</Link>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -92,9 +116,9 @@ function Footer() {
               href="mailto:contact@umang.dev"
               className="text-fun-gray-light font-medium"
             >
-              Umang Chauhan
+              {footerData.make.maker}
             </a>
-            . All rights reserved.
+            . {footerData.make.dislaimer}.
           </div>
         </div>
       </div>

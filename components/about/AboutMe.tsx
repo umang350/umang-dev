@@ -1,11 +1,23 @@
-import { Experience } from "./about/Experience";
+import { Experience } from "./Experience";
+import { information, informationJA } from "@/data/content/about"
+import { useRouter } from "next/router";
 
 export const AboutMe = () => {
+
+  const { locale } = useRouter();
+  var informationData;
+
+  if(locale==="ja"){
+    informationData = informationJA
+  }else{
+    informationData = information
+  }
+  
   return (
     <section>
       <div className="max-w-6xl mx-auto h-48">
         <h1 className=" text-5xl md:text-9xl font-bold py-20 text-center md:text-left dark:text-white text-black">
-          About Me.
+        { informationData.title }
         </h1>
       </div>
       <div className="-mt-10">
@@ -19,18 +31,21 @@ export const AboutMe = () => {
               className="bg-blue-500 rounded-md px-2 py-1 text-white text-left"
               style={{ display: "table-cell" }}
             >
-              Software Developer🗼 Content Creator 💥 Strategizer 📈
+              { informationData.subheading }
             </a>
           </p>
           <div className="text-left text-xl text-gray-700 mb-4 mt-4 dark:text-gray-200 text-justify">
-            My passion is to build products of utility for the masses and create a global world filled with correct human intelligence and computational accessibility bringing efficiency and transparency to the ecosystem of technology and life.
+          { informationData.desc }
             <br />
             <p className="leading-loose text-left">
-              🚀 Helping Fast Retailing (Uniqlo) change the world through clothes
-              <br />
-              ⚡Growth hacking a YouTube Channel while creating a personal brand
-              <br />
-              🔥Helping newbies crack the software developer job code
+              {
+                informationData.descPoints.map((item, index) => {
+                  if(index === 0){
+                    return item
+                  }
+                  return (<span key={index}><br/>{item}</span>)
+                })
+              }
             </p>
           </div>
         </div>

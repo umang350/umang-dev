@@ -1,8 +1,9 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { routes } from "../../data/global";
+import { routes, routesJA, Route } from "../../data/global";
 import { useTheme } from 'next-themes';
+import { useRouter } from "next/router";
 
 type currentPageObject = {
   currentPage: string
@@ -12,12 +13,26 @@ function Navbar({ currentPage }: currentPageObject) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  const { locale } = useRouter();
+  var routesData : Route[];
+  var pageLogoText = "";
+
+  if(locale==="ja"){
+    routesData = routesJA
+    pageLogoText = "ウマング.dev"
+  }else{
+    routesData = routes
+    pageLogoText = "UMANG.dev"
+  }
+
+
   return (
     <nav className="flex items-center justify-between">
       <li className="list-none font-bold text-lg cursor-pointer">
         <Link href="/">
           <span className="font-black text-black dark:text-white text-xl flex items-center">
-            {"UMANG.dev".split("").map((letter, index) => {
+            {pageLogoText.split("").map((letter, index) => {
               return (
                 <span key={index} className="hover:text-fun-pink hover:-mt-2 transition-all duration-500 hover:duration-100 click:goodbyeLetterAnim">
                   {letter}
@@ -28,7 +43,7 @@ function Navbar({ currentPage }: currentPageObject) {
         </Link>
       </li>
       <ul className="flex items-center space-x-10 pl-5 pr-5">
-        {routes.map((item, index) => {
+        {routesData.map((item, index) => {
           return (
             <li
               key={index}

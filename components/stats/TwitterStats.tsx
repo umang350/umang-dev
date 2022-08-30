@@ -1,6 +1,5 @@
 import React from 'react';
 import useSWR from 'swr';
-
 import fetcher from './../../lib/ga/fetcher';
 import MetricCard from './Card';
 
@@ -12,10 +11,8 @@ export type Twitter = {
 export default function InstagramStats() {
 
     const { data } = useSWR<Twitter>('/api/twitter_stats', fetcher);
-
-    const likes = 0;
-    const followers = new Number(data?.followers);
-    const tweets = new Number(data?.tweets);
+    const followers = new Number(data?.followers) || 271;
+    const tweets = new Number(data?.tweets) || 400;
     const link = 'https://twitter.com/thisumang';
 
     return (
@@ -25,13 +22,13 @@ export default function InstagramStats() {
                 <MetricCard
                     header="Twitter Followers"
                     link={link}
-                    metric={followers}
+                    metric={followers ?? 271}
                     isCurrency={false}
                 />
                 <MetricCard
                     header="Twitter Tweets"
                     link={link}
-                    metric={tweets}
+                    metric={tweets ?? 400}
                     isCurrency={false}
                 />
             </div>

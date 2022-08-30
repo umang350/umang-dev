@@ -1,42 +1,46 @@
+import { experience, experienceJA } from "@/data/content/about";
+import { useRouter } from "next/router";
+
 export const Experience = () => {
+
+    const { locale } = useRouter();
+    var experienceData;
+
+    if(locale==="ja"){
+        experienceData = experienceJA
+    }else{
+        experienceData = experience
+    }
+
     return (
         <>
-            <ExperienceCard
-                key="2"
-                title="Working"
-                desc="Software Developer - IT Planning"
-                year="2020-Now"
-                company="Fast Retailing (UNIQLO)"
-                companyLink="https://www.fastretailing.com/eng/"
-            />
-            <div className="divider-container flex flex-col items-center -mt-2">
-                <div className="w-4 h-4 bg-green-500 rounded-full relative z-10">
-                    <div className="w-4 h-4 bg-green-500 rounded-full relative z-10 animate-ping"></div>
-                </div>
-                <div className="w-1 h-24 bg-gray-200 dark:bg-gray-500 rounded-full -mt-2"></div>
-            </div>
-            <ExperienceCard
-                key="1"
-                title="Internship"
-                desc="Global Internship Program – Technology Intern"
-                year="2019"
-                company="Tata Communications Ltd."
-                companyLink="https://tatacommunications.com"
-            />
-            <div className="divider-container flex flex-col items-center -mt-2">
-                <div className="w-4 h-4 bg-green-500 rounded-full relative z-10">
-                    <div className="w-4 h-4 bg-green-500 rounded-full relative z-10 animate-ping"></div>
-                </div>
-                <div className="w-1 h-24 bg-gray-200 dark:bg-gray-500 rounded-full -mt-2"></div>
-            </div>
-            <ExperienceCard
-                key="0"
-                title="University"
-                desc="Bachelor of Technology (CS &amp; Math)"
-                year="2016-20"
-                company="Delhi Technological University (formerly D.C.E.)"
-                companyLink="https://dtu.ac.in"
-            />
+            {
+                experienceData.map((item, index) => {
+                    if (index === 0) {
+                        return (<ExperienceCard
+                            key={item.key}
+                            title={item.title}
+                            desc={item.desc}
+                            year={item.year}
+                            company={item.company}
+                            companyLink={item.companyLink}
+                        />)
+                    }
+                    return (<><div className="divider-container flex flex-col items-center -mt-2">
+                        <div className="w-4 h-4 bg-green-500 rounded-full relative z-10">
+                            <div className="w-4 h-4 bg-green-500 rounded-full relative z-10 animate-ping"></div>
+                        </div>
+                        <div className="w-1 h-24 bg-gray-200 dark:bg-gray-500 rounded-full -mt-2"></div>
+                    </div><ExperienceCard
+                            key={item.key}
+                            title={item.title}
+                            desc={item.desc}
+                            year={item.year}
+                            company={item.company}
+                            companyLink={item.companyLink}
+                        /></>)
+                })
+            }
         </>
     )
 }

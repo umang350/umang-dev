@@ -1,10 +1,13 @@
 
-import { AboutMe } from '@/components/AboutMe'
+import { AboutMe } from '@/components/about/AboutMe'
 import Page from '@/components/utility/Page'
+import {routes} from "@/data/global"
+
+const PageName = "About Me";
 const About = () => {
     return (
-        <Page currentPage="About Me" meta={{
-            desc: 'Find out more about me'
+        <Page currentPage={PageName} meta={{
+            desc: routes.find(i=> i.title===PageName).description
         }}>
             <AboutMe />
         </Page>

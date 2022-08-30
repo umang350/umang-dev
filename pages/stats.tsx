@@ -4,11 +4,14 @@ import GitHubCard from '@/components/stats/GithubStats';
 import InstagramStats from '@/components/stats/InstagramStats';
 import TwitterStats from '@/components/stats/TwitterStats';
 import GoogleAnalyticsStats from '@/components/stats/GoogleAnalyticsStats';
+import {routes} from "@/data/global"
+
+const PageName = "Statistics";
 
 const About = ({ytData}) => {
     return (
-        <Page currentPage="Statistics" meta={{
-            desc: 'Deep dive into statistics'
+        <Page currentPage={PageName} meta={{
+            desc: routes.find(i=> i.title===PageName).description
         }}>
             <YoutubeSubCount />
             <GitHubCard />
