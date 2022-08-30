@@ -69,8 +69,8 @@ function Footer() {
               return (
                 <div key={index} className={`my-4 ${locale === item.locale ? "dark:text-white text-black" : "dark:text-white dark:text-opacity-50 text-opacity-50 text-black"}`}>
                   <Link key={locale}
-                    href={item.locale+pathname}
-                    locale={locale} className="dark:text-white text-black" >{item.name}</Link>
+                    href={item.locale === "en" ? item.link+pathname : item.link+item.locale+pathname}
+                    locale={false} className="dark:text-white text-black" >{item.name}</Link>
                 </div>
               );
             })}
