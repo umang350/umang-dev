@@ -7,20 +7,20 @@ export const AboutMe = () => {
   const { locale } = useRouter();
   var informationData;
 
-  if(locale==="ja"){
+  if (locale === "ja") {
     informationData = informationJA
-  }else{
+  } else {
     informationData = information
   }
-  
+
   return (
     <section>
       <div className="max-w-6xl mx-auto h-48">
-        <h1 className=" text-5xl md:text-9xl font-bold py-20 text-center md:text-left dark:text-white text-black">
-        { informationData.title }
+        <h1 className=" text-5xl md:text-9xl font-bold pt-7 md:py-20 text-center md:text-left dark:text-white text-black">
+          {informationData.title}
         </h1>
       </div>
-      <div className="-mt-10">
+      <div className="md:-mt-10 -mt-36">
         <div className="text-container max-w-6xl mx-auto pt-20 text-left">
           <p
             className="leading-loose text-2xl md:text-4xl font-semibold  text-left"
@@ -31,19 +31,19 @@ export const AboutMe = () => {
               className="bg-blue-500 rounded-md px-2 py-1 text-white text-left"
               style={{ display: "table-cell" }}
             >
-              { informationData.subheading }
+              {informationData.subheading}
             </a>
           </p>
           <div className="text-left text-xl text-gray-700 mb-4 mt-4 dark:text-gray-200 text-justify">
-          { informationData.desc }
+            {informationData.desc}
             <br />
             <p className="leading-loose text-left">
               {
                 informationData.descPoints.map((item, index) => {
-                  if(index === 0){
+                  if (index === 0) {
                     return item
                   }
-                  return (<span key={index}><br/>{item}</span>)
+                  return (<span key={index}><br />{item}</span>)
                 })
               }
             </p>

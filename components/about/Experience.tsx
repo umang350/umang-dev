@@ -6,9 +6,9 @@ export const Experience = () => {
     const { locale } = useRouter();
     var experienceData;
 
-    if(locale==="ja"){
+    if (locale === "ja") {
         experienceData = experienceJA
-    }else{
+    } else {
         experienceData = experience
     }
 
@@ -16,29 +16,24 @@ export const Experience = () => {
         <>
             {
                 experienceData.map((item, index) => {
-                    if (index === 0) {
-                        return (<ExperienceCard
-                            key={item.key}
-                            title={item.title}
-                            desc={item.desc}
-                            year={item.year}
-                            company={item.company}
-                            companyLink={item.companyLink}
-                        />)
-                    }
-                    return (<><div className="divider-container flex flex-col items-center -mt-2">
-                        <div className="w-4 h-4 bg-green-500 rounded-full relative z-10">
-                            <div className="w-4 h-4 bg-green-500 rounded-full relative z-10 animate-ping"></div>
-                        </div>
-                        <div className="w-1 h-24 bg-gray-200 dark:bg-gray-500 rounded-full -mt-2"></div>
-                    </div><ExperienceCard
-                            key={item.key}
-                            title={item.title}
-                            desc={item.desc}
-                            year={item.year}
-                            company={item.company}
-                            companyLink={item.companyLink}
-                        /></>)
+                    return (<><ExperienceCard
+                        key={item.key}
+                        title={item.title}
+                        desc={item.desc}
+                        year={item.year}
+                        company={item.company}
+                        companyLink={item.companyLink}
+                    />
+                        {
+                            index != experienceData.length - 1 ?
+                                (<div className="divider-container flex flex-col items-center -mt-2">
+                                    <div className="w-4 h-4 bg-green-500 rounded-full relative z-10">
+                                        <div className="w-4 h-4 bg-green-500 rounded-full relative z-10 animate-ping"></div>
+                                    </div>
+                                    <div className="w-1 h-24 bg-gray-200 dark:bg-gray-500 rounded-full -mt-2"></div>
+                                </div>) : null
+                        }
+                    </>)
                 })
             }
         </>

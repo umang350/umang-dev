@@ -1,17 +1,12 @@
-import Footer from "../global/Footer";
 import Head from "next/head";
-import MobileNavbar from "../global/MobileNavbar";
-import Navbar from "../global/Navbar";
 import React from "react";
 import Script from "next/script";
 
 function LinkPage({ currentPage, meta: { title, desc }, children }: PageProps) {
-  const pageTitle = `${
-    currentPage === "Home"
+  const pageTitle = `${currentPage === "Home"
       ? "Umang Chauhan - Developer, Strategy, Creator."
       : `${currentPage} - UMANG.dev`
-  }`;
-  console.log(currentPage);
+    }`;
   return (
     <div
       className="w-full m-auto flex flex-col items-center justify-center min-h-screen opening-box-animate-paddin text-white overflow-hidden md:overflow-visible"
@@ -38,7 +33,7 @@ function LinkPage({ currentPage, meta: { title, desc }, children }: PageProps) {
           href="/favicon/favicon-16x16.png"
         />
         <link rel="manifest" href="/favicon/site.webmanifest" />
-        
+
         <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
         <meta name="msapplication-TileColor" content="#da532c" />
@@ -70,23 +65,23 @@ function LinkPage({ currentPage, meta: { title, desc }, children }: PageProps) {
           content="https://umang.dev/misc/og.png"
         ></meta>
       </Head>
-        <Script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-        />
-        <Script
+      <Script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+      />
+      <Script
         id="0"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        dangerouslySetInnerHTML={{
+          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-KG4HCXQ');`,
-          }}
-        ></Script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+        }}
+      ></Script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
@@ -94,8 +89,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 page_path: window.location.pathname,
               });
           `,
-          }}
-        />
+        }}
+      />
       <noscript
         dangerouslySetInnerHTML={{
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KG4HCXQ"

@@ -4,20 +4,20 @@ import GitHubCard from '@/components/stats/GithubStats';
 import InstagramStats from '@/components/stats/InstagramStats';
 import TwitterStats from '@/components/stats/TwitterStats';
 import GoogleAnalyticsStats from '@/components/stats/GoogleAnalyticsStats';
-import {routes} from "@/data/global"
+import { routes } from "@/data/global"
 
 const PageName = "Statistics";
 
-const About = ({ytData}) => {
+const About = () => {
     return (
         <Page currentPage={PageName} meta={{
-            desc: routes.find(i=> i.title===PageName).description
+            desc: routes.find(i => i.title === PageName).description
         }}>
             <YoutubeSubCount />
             <GitHubCard />
             <InstagramStats />
             <TwitterStats />
-            <GoogleAnalyticsStats/>
+            <GoogleAnalyticsStats />
         </Page>
     )
 

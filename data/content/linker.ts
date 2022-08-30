@@ -7,7 +7,7 @@ type SocialIcon = {
     img: string,
     link: string
 }
-  
+
 export const icons: SocialIcon[] = [
     {
         link: "https://twitter.com/thisumang/",
@@ -23,7 +23,7 @@ export const icons: SocialIcon[] = [
     }
 ]
 
-export const routes: Route[] = [    
+export const routes: Route[] = [
     {
         title: "YouTube Channel | Get Saged",
         link: "https://www.youtube.com/channel/UCGuJC8U8zMOpvKdYPsh1M2Q?sub_confirmation=1",

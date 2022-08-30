@@ -28,12 +28,12 @@ export type Footer = {
   },
   language: {
     title: string,
-    languages: 
-      {
-        name: string,
-        link: string,
-        locale: string
-      }[]
+    languages:
+    {
+      name: string,
+      link: string,
+      locale: string
+    }[]
   }
 };
 
@@ -41,7 +41,7 @@ export const routes: Route[] = [
   {
     title: "Home",
     path: "/",
-    description: "UMANG.DEV, one stop to all things Umang Chauhan. Find out insights from the statistics tab or know more about me from the About Me page. Whatever you do stay away from the 404 Page." 
+    description: "UMANG.DEV, one stop to all things Umang Chauhan. Find out insights from the statistics tab or know more about me from the About Me page. Whatever you do stay away from the 404 Page."
   },
   {
     title: "About Me",
@@ -67,7 +67,7 @@ export const routesJA: Route[] = [
   {
     title: "家",
     path: "/",
-    description: "UMANG.DEV, one stop to all things Umang Chauhan. Find out insights from the statistics tab or know more about me from the About Me page. Whatever you do stay away from the 404 Page." 
+    description: "UMANG.DEV, one stop to all things Umang Chauhan. Find out insights from the statistics tab or know more about me from the About Me page. Whatever you do stay away from the 404 Page."
   },
   {
     title: "私について",
@@ -176,7 +176,7 @@ export const footerJA: Footer = {
         link: "/",
         locale: "en"
       },
-      
+
       {
         name: "日本語 - Japanese",
         link: "/",
@@ -275,7 +275,7 @@ export const footer: Footer = {
         link: "/",
         locale: "en"
       },
-      
+
       {
         name: "日本語",
         link: "/",

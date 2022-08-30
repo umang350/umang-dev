@@ -15,7 +15,6 @@ function Footer() {
     footerData = footer
   }
 
-
   return (
     <footer>
       <div className="w-full max-w-4xl m-auto grid grid-cols-2 sm:grid-cols-3 justify-between items-start">
@@ -69,7 +68,7 @@ function Footer() {
               return (
                 <div key={index} className={`my-4 ${locale === item.locale ? "dark:text-white text-black" : "dark:text-white dark:text-opacity-50 text-opacity-50 text-black"}`}>
                   <Link key={locale}
-                    href={item.locale === "en" ? item.link+pathname : item.link+item.locale+pathname}
+                    href={item.locale === "en" ? pathname : item.locale + pathname}
                     locale={false} className="dark:text-white text-black" >{item.name}</Link>
                 </div>
               );

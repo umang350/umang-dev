@@ -11,7 +11,7 @@ function Page404() {
   }, []);
 
   return (
-      <>
+    <>
       {num404 !== "0000" && (
         <div className="min-h-screen w-full flex items-center justify-center flex-col animate-fadeIn">
           <h1 className="text-7xl text-white font-monospace font-bold opacity-100">{`{ error: ${num404} }`}</h1>
@@ -25,7 +25,7 @@ function Page404() {
           </p>
         </div>
       )}
-      </>
+    </>
   );
 }
 

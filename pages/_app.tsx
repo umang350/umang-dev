@@ -26,11 +26,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router.events])
 
   return (<>
-  <ThemeProvider attribute="class">
-    <div className='bg-gray-50 dark:bg-black'>
-    <Component {...pageProps} />
-    </div>
-  </ThemeProvider>
+    <ThemeProvider attribute="class">
+      <div className='bg-gray-50 dark:bg-black'>
+        <Component {...pageProps} />
+      </div>
+    </ThemeProvider>
   </>);
 }
 
