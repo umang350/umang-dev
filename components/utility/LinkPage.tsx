@@ -45,6 +45,9 @@ function LinkPage({ currentPage, meta: { title, desc }, children }: PageProps) {
         <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />
 
+        <link rel="alternate" href="https://umang.dev" hrefLang="x-default" />
+        <link rel="alternate" href="https://umang.dev" hrefLang="en" />
+        <link rel="alternate" href="https://umang.dev/ja" hrefLang="ja" />
 
         <meta name="title" content={pageTitle} />
         <meta name="description" content={desc} />
