@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 function Footer() {
 
-  const { locale } = useRouter();
+  const { locales, locale, pathname, query, asPath } = useRouter();
   var footerData: Footer;
 
   if (locale === "ja") {
@@ -68,7 +68,9 @@ function Footer() {
             {footerData.language.languages.map((item, index) => {
               return (
                 <div key={index} className={`my-4 ${locale === item.locale ? "dark:text-white text-black" : "dark:text-white dark:text-opacity-50 text-opacity-50 text-black"}`}>
-                  <Link locale={item.locale} className="dark:text-white text-black" href={item.link}>{item.name}</Link>
+                  <Link key={locale}
+                    href={item.locale+pathname}
+                    locale={locale} className="dark:text-white text-black" >{item.name}</Link>
                 </div>
               );
             })}
