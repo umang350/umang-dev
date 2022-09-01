@@ -6,14 +6,9 @@ import { useRouter } from "next/router";
 
 function Footer() {
 
-  const { locales, locale, pathname, query, asPath } = useRouter();
-  var footerData: Footer;
+  const { locale, pathname } = useRouter();
 
-  if (locale === "ja") {
-    footerData = footerJA
-  } else {
-    footerData = footer
-  }
+  var footerData: Footer = locale === "ja" ? footerJA : footer;
 
   return (
     <footer>

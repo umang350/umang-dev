@@ -13,7 +13,7 @@ function Navbar({ currentPage }: currentPageObject) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const { locale } = useRouter();
+  const { locale, pathname } = useRouter();
   var routesData: Route[];
   var pageLogoText = "";
 
@@ -46,7 +46,7 @@ function Navbar({ currentPage }: currentPageObject) {
           return (
             <li
               key={index}
-              className={`list-none text-black dark:text-white ${currentPage === item.title
+              className={`list-none text-black dark:text-white ${pathname === item.path
                 ? "opacity-100"
                 : "opacity-40 hover:opacity-100 transition-opacity"
                 }`}
