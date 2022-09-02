@@ -65,7 +65,7 @@ export const routes: Route[] = [
 
 export const routesJA: Route[] = [
   {
-    title: "家",
+    title: "ホーム",
     path: "/",
     description: "UMANG.DEV, one stop to all things Umang Chauhan. Find out insights from the statistics tab or know more about me from the About Me page. Whatever you do stay away from the 404 Page."
   },
@@ -96,7 +96,7 @@ export const footerJA: Footer = {
       link: "",
       links: [
         {
-          name: "家",
+          name: "ホーム",
           link: "/",
           leavesWebsite: false,
         },
