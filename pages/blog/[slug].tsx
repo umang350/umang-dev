@@ -1,19 +1,21 @@
 import BlogLayout from '@/components/blog/BlogLayout';
 import { Post } from '@/data/global';
+import Page404 from 'pages/404';
 
 export default function PostPage({ post }: { post: Post }) {
 
   return (
-    <BlogLayout post={post}>
+    <><Page404/></>
+    // <BlogLayout post={post}>
       
-    </BlogLayout>
+    // </BlogLayout>
   );
 }
 
-export async function getStaticPaths() {
+// export async function getStaticPaths() {
   
-}
+// }
 
-export async function getStaticProps({ params, preview = false }) {
+// export async function getStaticProps({ params, preview = false }) {
 
-}
+// }
