@@ -4,6 +4,18 @@ export type Route = {
   description?: string
 }
 
+export type Post = {
+  _id: string;
+  slug: string;
+  content: any;
+  title: string;
+  date: string;
+  excerpt: string;
+  coverImage: string;
+  readingTime: string;
+};
+
+
 type FooterCol = {
   title: string,
   link: string,
