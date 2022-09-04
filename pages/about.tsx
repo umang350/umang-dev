@@ -1,4 +1,3 @@
-
 import { AboutMe } from '@/components/about/AboutMe'
 import Page from '@/components/utility/Page'
 import { routes } from "@/data/global"

@@ -13,7 +13,7 @@ export const Experience = () => {
             {
                 experienceData.map((item, index) => {
                     return (<><ExperienceCard
-                        key={item.key}
+                        key={index}
                         title={item.title}
                         desc={item.desc}
                         year={item.year}
@@ -22,7 +22,7 @@ export const Experience = () => {
                     />
                         {
                             index != experienceData.length - 1 ?
-                                (<div className="divider-container flex flex-col items-center -mt-2">
+                                (<div key={index + "arrow"} className="divider-container flex flex-col items-center -mt-2">
                                     <div className="w-4 h-4 bg-green-500 rounded-full relative z-10">
                                         <div className="w-4 h-4 bg-green-500 rounded-full relative z-10 animate-ping"></div>
                                     </div>

@@ -1,3 +1,5 @@
+import { GitHubHeaders, GitHubHeadersJA } from '@/data/statsHeaders';
+import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
 import fetcher from './../../lib/ga/fetcher';
@@ -8,7 +10,16 @@ export type GitHub = {
     followers: number
 };
 
+var headers : {
+    stars: string,
+    followers: string
+};
+
 export default function GitHubCard() {
+
+    const {locale} = useRouter();
+
+    headers = locale === 'ja' ? GitHubHeadersJA : GitHubHeaders;
 
     const { data } = useSWR<GitHub>('/api/github_stats', fetcher);
 
@@ -20,16 +31,16 @@ export default function GitHubCard() {
         <div>
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 my-2 w-full">
                 <MetricCard
-                    header="GitHub Stars"
+                    header={headers.stars}
                     link={link}
                     metric={stars}
-                    isCurrency={false}
+                    isText={false}
                 />
                 <MetricCard
-                    header="GitHub Followers"
+                    header={headers.followers}
                     link={link}
                     metric={followers}
-                    isCurrency={false}
+                    isText={false}
                 />
             </div>
         </div>

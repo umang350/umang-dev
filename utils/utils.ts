@@ -9,9 +9,14 @@ export const kebabArray = (arr: any[]) => arr.map((item) => kebabCase(item));
 export const randomNumberText = (finalNum: string, setNumber: (arg0: string) => void) => {
   let count = 0;
   let newNum = "";
+  if(isNaN(Number(finalNum))) {
+    
+    setNumber(finalNum);
+    return;
+  }
   const interval = setInterval(() => {
     count++;
-    for (let i = 0; i < finalNum.length; i++) {
+    for (let i = 0; i < (finalNum ? finalNum?.length : 7); i++) {
       newNum += Math.floor(Math.random() * 10);
     }
     setNumber(newNum);
@@ -19,7 +24,7 @@ export const randomNumberText = (finalNum: string, setNumber: (arg0: string) => 
     if (count === 20) {
       clearInterval(interval);
 
-      setNumber("404");
+      setNumber(finalNum);
     }
   }, 80);
 };

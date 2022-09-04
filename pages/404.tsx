@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { randomNumberText } from "../utils/utils";
 import { useEffect } from "react";
+import Page from "@/components/utility/Page";
 
 function Page404() {
   const [num404, setNum404] = useState("0000");
@@ -11,7 +12,10 @@ function Page404() {
   }, []);
 
   return (
-    <>
+    <Page currentPage={"Page Not 404"} meta={{
+      title: "Page Not 404",
+      desc: "Page Not 404"
+    }}>
       {num404 !== "0000" && (
         <div className="min-h-screen w-full flex items-center justify-center flex-col animate-fadeIn">
           <h1 className="text-7xl text-white font-monospace font-bold opacity-100">{`{ error: ${num404} }`}</h1>
@@ -25,7 +29,7 @@ function Page404() {
           </p>
         </div>
       )}
-    </>
+    </Page>
   );
 }
 

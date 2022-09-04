@@ -1,4 +1,6 @@
+import { useRouter } from 'next/router';
 import useSWR from 'swr';
+import { GoogleHeadersJA, GoogleHeaders } from '@/data/statsHeaders';
 
 import fetcher from './../../lib/ga/fetcher';
 import MetricCard from './Card';
@@ -9,12 +11,19 @@ export type GoogleAnalyticsStats = {
     active28DayUsers: number
 };
 
+var headers : {
+    views: string,
+    users: string
+};
+
 export default function GoogleAnalyticsStats() {
+
+    const { locale } = useRouter();
+    headers = locale === 'ja' ? GoogleHeadersJA : GoogleHeaders;
 
     const { data } = useSWR<GoogleAnalyticsStats>('/api/get_google_insights', fetcher);
 
     const pageViews = new Number(data?.pageViews);
-    const eventCount = new Number(data?.eventCount);
     const active28DayUsers = new Number(data?.active28DayUsers);
     const link = 'https://umang.dev';
 
@@ -22,16 +31,16 @@ export default function GoogleAnalyticsStats() {
         <div>
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 my-2 w-full">
                 <MetricCard
-                    header="Google Analytics Views"
+                    header={headers.views}
                     link={link}
                     metric={pageViews}
-                    isCurrency={false}
+                    isText={false}
                 />
                 <MetricCard
-                    header="Google Analytics Users"
+                    header={headers.users}
                     link={link}
                     metric={active28DayUsers}
-                    isCurrency={false}
+                    isText={false}
                 />
             </div>
         </div>

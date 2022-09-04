@@ -1,4 +1,16 @@
-export default function MetricCard({ header, link, metric, isCurrency }) {
+import { randomNumberText } from "@/utils/utils";
+import { useEffect, useState } from "react";
+
+export default function MetricCard({ header, link, metric, isText }) {
+
+  const [count, setCount] = useState("0");
+
+  const num: string = isText ? metric : metric.toLocaleString();
+
+  useEffect(() => {
+    randomNumberText(num, setCount);
+  }, [num]);
+
   return (
     <div className="metric-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4 max-w-72 w-full">
       <a
@@ -26,8 +38,7 @@ export default function MetricCard({ header, link, metric, isCurrency }) {
         </div>
       </a>
       <p className="mt-2 text-3xl font-bold spacing-sm text-black dark:text-white">
-        {metric > 0 && isCurrency && '$'}
-        {metric > 0 ? metric.toLocaleString() : '-'}
+        {!isText && !Number.isNaN(Number(count)) ? metric > 0 ? Number(count).toLocaleString() : '-' : count}
       </p>
     </div>
   );
