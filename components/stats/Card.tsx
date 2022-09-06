@@ -38,7 +38,7 @@ export default function MetricCard({ header, link, metric, isText }) {
         </div>
       </a>
       <p className="mt-2 text-3xl font-bold spacing-sm text-black dark:text-white">
-        {!isText && !Number.isNaN(Number(count)) ? metric > 0 ? Number(count).toLocaleString() : '-' : count}
+        {!isText && !Number.isNaN(Number(count)) ? metric > 0 || !Number.isNaN(Number(count)) ? Number(count).toLocaleString() : '-' : count}
       </p>
     </div>
   );
