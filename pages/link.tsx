@@ -42,7 +42,7 @@ const Linker = () => {
                     </div>
                 </header>
                 <LinkerItems />
-                <footer className="text-center w-full m-auto mt-10 grid grid-cols-3 justify-between items-start fixed bottom-0 pb-5 pt-5"  >
+                <footer className="text-center w-full m-auto mt-10 grid grid-cols-3 justify-between items-start bottom-0 pb-5 pt-5"  >
                     {icons.map((item, index) => {
                         return (
                             <a onClick={() => { analytics }} className="hover:h-10" href={item.link} target="new" key={item.link}>
