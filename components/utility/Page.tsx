@@ -7,8 +7,8 @@ import Script from "next/script";
 
 function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
   const pageTitle = `${currentPage === "Home"
-      ? "Umang Chauhan - Developer, Strategy, Creator."
-      : `${currentPage} - UMANG.dev`
+    ? "Umang Chauhan - Developer, Strategy, Creator."
+    : `${currentPage} - UMANG.dev`
     }`;
   return (
     <div
@@ -70,11 +70,12 @@ function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
         ></meta>
       </Head>
       <Script
-        async
+        strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
       />
       <Script
-        id="0"
+        id="gtag-base"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -83,24 +84,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-KG4HCXQ');`,
         }}
       ></Script>
-      <script
+      <Script
+        id="gtag-init"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
-                page_path: window.location.pathname,
-              });
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+              page_path: window.location.pathname,
+            });
           `,
         }}
       />
-      <noscript
-        dangerouslySetInnerHTML={{
-          __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KG4HCXQ"
-height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
-        }}
-      ></noscript>
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=GTM-KG4HCXQ`}
+          height="0"
+          width="0"
+          style={{ display: 'none', visibility: 'hidden' }}
+        />
+      </noscript>
 
       <main className="p-5 w-full flex-1 text-center">
         <div className="hidden sm:block z-100">

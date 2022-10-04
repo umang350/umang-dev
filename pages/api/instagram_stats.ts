@@ -8,7 +8,7 @@ const instagram = async (req, res) => {
 
   // console.log(followers);
 
-    return res.status(200).json({followers: "3K+", posts: 138});
+    return res.status(200).json({followers: "3.5K+", posts: 138});
   };
   
   export default instagram;
