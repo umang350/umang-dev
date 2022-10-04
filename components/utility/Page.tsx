@@ -108,10 +108,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </noscript>
 
       <main className="p-5 w-full flex-1 text-center">
-        <div className="hidden sm:block z-100">
+        <div className="hidden sm:block z-50 sticky">
           <Navbar currentPage={currentPage} />
         </div>
-        <div className="-m-5 block sm:hidden z-100">
+        <div className="-m-5 block sm:hidden z-50 sticky">
           <MobileNavbar />
         </div>
         {children}

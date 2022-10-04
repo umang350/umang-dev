@@ -12,7 +12,7 @@ function Footer() {
 
   return (
     <footer>
-      <div className="w-full max-w-4xl m-auto grid grid-cols-2 sm:grid-cols-3 justify-between items-start">
+      <div className="w-full max-w-4xl m-auto grid grid-cols-2 sm:grid-cols-3 justify-between items-start z-50 sticky">
         {footerData.columns.map((item, index) => {
           return (
             <div key={index} className="text-left mb-5 sm:mb-0">
@@ -71,7 +71,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="max-w-4xl w-full m-auto mb-6 mt-8 pt-8 sm:mt-4 sm:pt-4 text-center text-fun-gray border-t border-fun-pink-dark">
+      <div className="max-w-4xl w-full m-auto mb-6 mt-8 pt-8 sm:mt-4 sm:pt-4 text-center text-fun-gray border-t border-fun-pink-dark  z-50 sticky">
         <div className="flex flex-col items-center justify-center ">
           <div className="inline-flex items-center uppercase text-xs font-bold tracking-widest">
             Made with{" "}

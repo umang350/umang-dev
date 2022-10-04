@@ -6,13 +6,14 @@ import Starfield from '@/components/home/Starfield';
 
 const PageName = "Home";
 
-const Home: NextPage = () => {
+const Beta: NextPage = () => {
   return (
     <>
     <Page currentPage={PageName} meta={{ desc: routes.find(i => i.title === PageName).description }}>
+    <Starfield />
       <Hero />
     </Page></>
   )
 }
 
-export default Home
+export default Beta

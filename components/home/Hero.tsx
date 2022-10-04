@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -8,7 +8,7 @@ function Hero() {
 
   return (
     <div
-      className="relative heroElem w-full pt-20 m-auto flex justify-center text-center flex-col items-center z-1 dark:text-white text-black">
+      className="heroElem w-full pt-20 m-auto flex justify-center text-center flex-col items-center z-50 sticky dark:text-white text-black">
       {
         locale === "ja" && (<><p className="text-xl mb-5">こんにちは、<span className="font-bold">ウマング</span> です。</p>
           <h1 className="heroTitle inline-block max-w-2xl lg:max-w-4xl  w-auto relative text-5xl md:text-6xl lg:text-7xl tracking-tighter mb-10 font-bold heroShinyBg">
@@ -24,10 +24,12 @@ function Hero() {
           </h1></>)
       }
 
-      <img
+      <Image
         className="sqD"
         src="/sq.png"
         alt="image"
+        height={914.95}
+        width={1041.2}
       />
     </div>
   );
