@@ -8,6 +8,7 @@ export default function Starfield() {
 
     return (<> <Script
         id="starfiledScript"
+        strategy="afterInteractive"
         onReady={() => {
             const COUNT = 800;
             const SPEED = 0.1;
