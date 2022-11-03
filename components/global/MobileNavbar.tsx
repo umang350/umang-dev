@@ -52,7 +52,7 @@ export default function MobileNavbar() {
   return (
     <nav>
       <div
-        className={`w-full justify-between flex items-center ${isMenuRendered && 'dark:bg-bg'} p-5`}
+        className={`w-full justify-between flex items-center ${isMenuRendered && 'dark:bg-bg z-50 sticky'} p-5`}
         style={{ zIndex: 101 }}
       >
         <li className="list-none text-black dark:text-white font-bold text-lg">
@@ -152,7 +152,7 @@ export default function MobileNavbar() {
       </div>
       {isMenuMounted && (
         <ul
-          className={`${styles.menu} flex flex-col absolute bg-bg
+          className={`${styles.menu} flex flex-col bg-bg sticky z-50
             ${isMenuRendered && styles.menuRendered}`}
         >
           {routesData.map((item, index) => {
