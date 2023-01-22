@@ -12,7 +12,7 @@ export const Experience = () => {
         <>
             {
                 experienceData.map((item, index) => {
-                    return (<><ExperienceCard
+                    return (<div key={index}><ExperienceCard
                         key={index}
                         title={item.title}
                         desc={item.desc}
@@ -29,7 +29,7 @@ export const Experience = () => {
                                     <div className="w-1 h-24 bg-gray-200 dark:bg-gray-500 rounded-full -mt-2"></div>
                                 </div>) : null
                         }
-                    </>)
+                    </div>)
                 })
             }
         </>

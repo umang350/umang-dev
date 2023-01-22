@@ -15,6 +15,21 @@ export type Post = {
   readingTime: string;
 };
 
+export type video = {
+	title: string;
+	description: string;
+	thumbnail: string;
+	videoId: string;
+	publishedAt: string;
+}
+
+export type videoStat = {
+  id: string;
+  viewCount: string;
+  likeCount: string;
+  commentCount: string;
+}
+
 
 type FooterCol = {
   title: string,

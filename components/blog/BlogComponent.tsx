@@ -1,16 +1,31 @@
-import { Post } from "@/data/global";
+import { video } from "@/data/global";
+import fetcher from "@/lib/ga/fetcher";
+import { type } from "os";
 import { Suspense, useEffect, useState } from "react";
-import BlogPost from "./BlogPost";
+import useSWR from "swr";
+import VideoCard from "./VideoDisplay";
 
-const posts: Post[] = []
+type resObject = {
+  videoList: video[];
+  nextPageToken: string;
+  prevPageToken: string;
+}
 
 export const BlogComponent = () => {
+
+    const { data } = useSWR<resObject>('/api/youtube_videos', fetcher);
+    console.log(data)
+    const posts: video[] = data?.videoList;
 
     const [searchValue, setSearchValue] = useState("");
     const [filteredBlogPosts, setFilteredBlogPosts] = useState([])
 
     const updateFilteredList = () => {
-        setFilteredBlogPosts(posts)
+      if(posts && searchValue!==""){
+        setFilteredBlogPosts(posts.filter(item => item.title===searchValue) ?? [])
+      }else {
+        setFilteredBlogPosts(posts ?? [])
+      }
     }
     useEffect(updateFilteredList, [searchValue])
 
@@ -18,7 +33,7 @@ export const BlogComponent = () => {
         <div className="flex flex-col items-start justify-center max-w-2xl mx-auto mb-16 mt-10">
         <p className="mb-4 text-gray-600 dark:text-gray-400">
           {`I'm really not into writing blogs but I talk mostly about software development and tech careers.
-            In total, I've written ${posts.length} articles on my blog. But I have a quite useful youtube channel
+            In total, I've created more than ${posts?.length} videos on my channel. But I have a quite useful youtube channel
             Use the search below to filter by title some of the things i created.`}
         </p>
         <div className="relative w-full mb-4">
@@ -26,7 +41,7 @@ export const BlogComponent = () => {
             aria-label="Search articles"
             type="text"
             onChange={(e) => setSearchValue(e.target.value)}
-            placeholder="Search articles"
+            placeholder="Search videos"
             className="block w-full px-4 py-2 text-gray-900 bg-white border border-gray-200 rounded-md dark:border-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-gray-100"
           />
           <svg
@@ -45,26 +60,9 @@ export const BlogComponent = () => {
           </svg>
         </div>
         {!searchValue && (
-          <>
-            {/* <h3 className="mt-8 mb-4 text-2xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
-              Most Popular
-            </h3>
-            <BlogPost
-              title="Rust Is The Future of JavaScript Infrastructure"
-              excerpt="Why is Rust being used to replace parts of the JavaScript web ecosystem like minification (Terser), transpilation (Babel), formatting (Prettier), bundling (webpack), linting (ESLint), and more?"
-              slug="rust"
-            />
-            <BlogPost
-              title="Everything I Know About Style Guides, Design Systems, and Component Libraries"
-              excerpt="A deep-dive on everything I've learned in the past year building style guides, design systems, component libraries, and their best practices."
-              slug="style-guides-component-libraries-design-systems"
-            />
-            <BlogPost
-              title="Building a Design System Monorepo with Turborepo"
-              excerpt="Manage multiple packages with a shared build, test, and release process using Turborepo, Changesets, Storybook, and more."
-              slug="turborepo-design-system-monorepo"
-            /> */}
-          </>
+          posts && posts.map((post: video) => (
+            <VideoCard key={post.videoId} item={post} />
+          ))
         )}
         <Suspense fallback={null}>
           <h3 className="mt-8 mb-4 text-2xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
@@ -75,13 +73,8 @@ export const BlogComponent = () => {
               No posts found.
             </p>
           )}
-          {filteredBlogPosts.map((post) => (
-            <BlogPost
-              key={post.title}
-              slug={post.slug}
-              title={post.title}
-              excerpt={post.excerpt}
-            />
+          {filteredBlogPosts.map((post: video) => (
+            <VideoCard key={post.videoId} item={post} />
           ))}
         </Suspense>
       </div>

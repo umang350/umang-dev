@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['cdn.jsdelivr.net']
+    domains: ['cdn.jsdelivr.net', 'i.ytimg.com']
   },
   i18n: {
     // The locales you want to support in your app
