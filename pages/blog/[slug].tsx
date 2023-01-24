@@ -1,4 +1,3 @@
-import BlogLayout from '@/components/blog/BlogLayout';
 import { Post } from '@/data/global';
 import Page404 from 'pages/404';
 
