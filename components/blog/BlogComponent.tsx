@@ -27,7 +27,7 @@ export const BlogComponent = () => {
         setFilteredBlogPosts(posts ?? [])
       }
     }
-    useEffect(updateFilteredList, [searchValue])
+    useEffect(updateFilteredList, [posts, searchValue])
 
     return (<div>
         <div className="flex flex-col items-start justify-center max-w-2xl mx-auto mb-16 mt-10">

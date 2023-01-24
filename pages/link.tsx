@@ -32,7 +32,7 @@ const Linker = () => {
                         className="relative heroElem w-full pt-20 m-auto flex justify-center text-center flex-col items-center z-1">
                         <Link href={"/"}>
                             <div>
-                                <Image className="sqD" src="/sq.png" alt="icon" height="140px" width="160px" ></Image>
+                                <Image className="sqD" src="/sq.png" alt="icon" height="140" width="160" ></Image>
                                 <p className="text-xl font-bold heroShinyBg">Umang Chauhan</p>
                                 <h1 className="heroTitle inline-block max-w-2xl lg:max-w-4xl  w-auto relative text-1x0 md:text-2x0 lg:text-3xl tracking-tighter mb-10 font-bold heroShinyBg">
                                     Creator. <span className="heroShiny1 text-fun-pink">Developer.</span> Strategy.
