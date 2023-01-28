@@ -3,17 +3,19 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 const youtube = async (req: NextApiRequest, res: NextApiResponse) => {
 
-  const data = await callAPI(req.query.pageToken as string ?? "");
+	const data = await callAPI(req.query.pageToken as string ?? "");
 
-  return res.status(200).json(data);
+	return res.status(200).json(data);
 };
 
 
 export const callAPI = async (pageToken: string) => {
-  
-  var key = process.env.GOOGLE_API_KEY;
-	
-  var url = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=UUGuJC8U8zMOpvKdYPsh1M2Q&maxResults=50&key=" + key+"&pageToken="+pageToken;
+
+	const key = process.env.GOOGLE_API_KEY;
+
+	const pageTokenValid = pageToken != null && pageToken != "undefined" && pageToken != "null";
+
+	var url = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=UUGuJC8U8zMOpvKdYPsh1M2Q&maxResults=50&key=" + key + (pageTokenValid ? "&pageToken=" + pageToken : "");
 
 	try {
 		const res = await fetch(url);
@@ -32,14 +34,15 @@ const responseCreator = (data) => {
 			description: item.snippet.description,
 			thumbnail: item.snippet.thumbnails.high.url,
 			videoId: item.contentDetails.videoId,
-			publishedAt: item.snippet.publishedAt,
+			publishedAt: item.snippet.publishedAt
 		} as video;
 	})
 
 	let resObject = {
 		videoList: videos,
 		nextPageToken: data.nextPageToken,
-		prevPageToken: data.prevPageToken
+		prevPageToken: data.prevPageToken,
+		total: data.pageInfo.totalResults
 	}
 
 	return resObject;
