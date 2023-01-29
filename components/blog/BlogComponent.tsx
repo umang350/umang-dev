@@ -90,6 +90,9 @@ export const BlogComponent = () => {
             No posts found.
           </p>
         )}
+        <div className="justify-center relative ml-auto mr-auto">
+          {searchValue && !isLoading && data && data.nextPageToken && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-96" onClick={() => setPageToken(data?.nextPageToken ?? "")}>Load More</button>}
+        </div>
 
         <div className="flex flex-row">
           <h3 className="mt-8 mb-4 text-2xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
