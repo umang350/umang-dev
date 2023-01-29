@@ -77,7 +77,7 @@ export const BlogComponent = () => {
           </svg>
         </div>
 
-        <div className="flex flex-row flex-wrap">
+        <div className="flex flex-row flex-wrap w-full">
           {searchValue && (
             !error && filteredBlogPosts && filteredBlogPosts.map((post: video) => (
               <VideoCard key={post?.videoId} item={post} />
@@ -85,7 +85,7 @@ export const BlogComponent = () => {
           )
           }
         </div>
-        {filteredBlogPosts.length === 0 && (
+        {!isLoading && filteredBlogPosts.length === 0 && (
           <p className="mb-4 text-gray-600 dark:text-gray-400">
             No posts found.
           </p>
@@ -96,12 +96,12 @@ export const BlogComponent = () => {
             All Posts
           </h3>
         </div>
-        {(error || !posts || posts.length === 0) && (
+        {!isLoading && (error || !posts || posts.length === 0) && (
           <p className="mb-4 text-gray-600 dark:text-gray-400">
             No posts found.
           </p>
         )}
-        <div className="flex flex-row flex-wrap">
+        <div className="flex flex-row flex-wrap w-full">
           {!error && posts && posts.map((post: video) => (
             <VideoCard key={post?.videoId} item={post} />
           ))}

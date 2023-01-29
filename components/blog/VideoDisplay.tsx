@@ -1,7 +1,7 @@
 import { video } from "@/data/global";
 import Image from "next/image";
 
-export default function VideoCard({item}: {item: video}) {
+export default function VideoCard({ item }: { item: video }) {
 
 
   return (
@@ -10,7 +10,7 @@ export default function VideoCard({item}: {item: video}) {
         aria-label={item.videoId}
         target="_blank"
         rel="noopener noreferrer"
-        href={"https://www.youtube.com/watch?v="+item.videoId}
+        href={"https://www.youtube.com/watch?v=" + item.videoId}
       >
         <div className="flex flex-row items-center text-gray-900 dark:text-gray-100">
           {item.title}
@@ -30,14 +30,38 @@ export default function VideoCard({item}: {item: video}) {
           </svg>
         </div>
       </a>
-      <div className="flex flex-row mt-2 spacing-sm justify-center text-center">
-        <Image src={item.thumbnail} alt={item.title} height="360" width="480" style={{clipPath: "inset(20px 0px 20px 0px)"}}/>
+      <div className="flex flex-row mt-auto spacing-sm justify-center text-center">
+        <Image src={item.thumbnail} alt={item.title} height="360" width="480" style={{ clipPath: "inset(20px 0px 20px 0px)" }} />
       </div>
-      <p className="flex flex-row justify-end ml-auto mt-2 spacing-sm text-black dark:text-white" style={{alignContent: "flex-end"}}>
-        {
-            new Date(item.publishedAt).toLocaleTimeString()+", "+new Date(item.publishedAt).toLocaleDateString()
-        }
+      <p className="flex flex-row justify-end ml-auto spacing-sm text-sm text-black dark:text-white -mt-4" style={{ alignContent: "flex-end" }}>
+        <a href="#" className="transition duration-150 ease-in-out"
+          data-bs-toggle="tooltip" title={
+            new Date(item.publishedAt).toLocaleTimeString() + ", " + new Date(item.publishedAt).toLocaleDateString()
+          }>{
+            timeAgo(item.publishedAt)
+          }</a>
       </p>
     </div>
   );
+}
+
+function timeAgo(input: any) {
+  const date = (input instanceof Date) ? input : new Date(input);
+  const formatter = new Intl.RelativeTimeFormat('en');
+  const ranges = {
+    years: 3600 * 24 * 365,
+    months: 3600 * 24 * 30,
+    weeks: 3600 * 24 * 7,
+    days: 3600 * 24,
+    hours: 3600,
+    minutes: 60,
+    seconds: 1
+  };
+  const secondsElapsed = (date.getTime() - Date.now()) / 1000;
+  for (let key in ranges) {
+    if (ranges[key] < Math.abs(secondsElapsed)) {
+      const delta = secondsElapsed / ranges[key];
+      return formatter.format(Math.round(delta), key);
+    }
+  }
 }
