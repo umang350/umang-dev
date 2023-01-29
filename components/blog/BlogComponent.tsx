@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { video } from "@/data/global";
+import { video, videoStat } from "@/data/global";
 import fetcher from "@/lib/ga/fetcher";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -17,12 +17,19 @@ type resObject = {
   total: string;
 }
 
+type videoStatList = {
+  videoStatList: videoStat[];
+}
+
 export const BlogComponent = () => {
 
   const { locale } = useRouter();
   var informationData = locale === "ja" ? pageInfoJA : pageInfo;
 
   const [pageToken, setPageToken] = useState(null);
+  const [idKeys, setIdKeys] = useState(null);
+
+  const [popularFlag, setPopularFlag] = useState(false);
 
   const [posts, setPosts] = useState<video[]>([]);
 
@@ -30,7 +37,7 @@ export const BlogComponent = () => {
 
   useEffect(() => {
     if (data?.videoList) {
-      setPosts(Array.from(new Set(posts.concat(data?.videoList ?? []))));
+      setPosts(Array.from(new Set(posts.concat(data?.videoList.filter(v => (Number(v.statistics.viewCount) > 0)) ?? []))));
     }
   }, [data?.videoList])
 
@@ -46,6 +53,15 @@ export const BlogComponent = () => {
     }
   }
   useEffect(updateFilteredList, [posts, searchValue])
+
+  const popularChanger = () => {
+    if (popularFlag) {
+      setPosts([...posts.sort((a, b) => (Number(a.statistics.viewCount) > Number(b.statistics.viewCount)) ? -1 : 1)])
+    } else {
+      setPosts([...posts.sort((a, b) => (a.publishedAt > b.publishedAt) ? -1 : 1)])
+    }
+  }
+  useEffect(popularChanger, [popularFlag])
 
   return (<LoadingOverlay
     active={isLoading}
@@ -99,10 +115,13 @@ export const BlogComponent = () => {
           {searchValue && !isLoading && data && data.nextPageToken && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-96 mt-2" onClick={() => setPageToken(data?.nextPageToken ?? "")}>{informationData.loadMoreButton}</button>}
         </div>
 
-        <div className="flex flex-row">
+        <div className="flex flex-row w-full ">
           <h3 className="mt-8 mb-4 text-2xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
             {informationData.allTitle}
           </h3>
+          <button onClick={() => setPopularFlag(!popularFlag)} className={` ${popularFlag ? 'bg-blue-600' : 'bg-white'}  hover:bg-blue-400 text-black font-bold py-2 px-4 rounded w-28 h-10 mt-auto mb-2 ml-auto mr-4`}>
+            Popular
+          </button> 
         </div>
         {!isLoading && (error || !posts || posts.length === 0) && (
           <p className="mb-4 text-gray-600 dark:text-gray-400">

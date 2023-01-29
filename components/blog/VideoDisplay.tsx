@@ -14,6 +14,11 @@ export default function VideoCard({ item }: { item: video }) {
         target="_blank"
         rel="noopener noreferrer"
         href={"https://www.youtube.com/watch?v=" + item.videoId}
+        className="transition duration-150 ease-in-out"
+        data-bs-toggle="tooltip" 
+        title={
+         '🖥️: '+ item.statistics.viewCount + ' 👍: '+ item.statistics.likeCount
+        }
       >
         <div className="flex flex-row items-center text-gray-900 dark:text-gray-100">
           {item.title}
@@ -36,8 +41,9 @@ export default function VideoCard({ item }: { item: video }) {
       <div className="flex flex-row mt-auto spacing-sm justify-center text-center">
         <Image src={item.thumbnail} alt={item.title} height="360" width="480" style={{ clipPath: "inset(20px 0px 20px 0px)" }} />
       </div>
-      <p className="flex flex-row justify-end ml-auto spacing-sm text-sm text-black dark:text-white -mt-4" style={{ alignContent: "flex-end" }}>
-        <a href="#" className="transition duration-150 ease-in-out"
+      <p className="flex flex-row justify-end spacing-sm text-sm text-black dark:text-white -mt-4" style={{ alignContent: "flex-end" }}>
+        <p className="mr-auto">{'🖥️'+ Number(item.statistics.viewCount).toLocaleString() + ' 👍'+ Number(item.statistics.likeCount).toLocaleString() + ' 🕰️'}</p>
+        <a href="#" className="transition duration-150 ease-in-out ml-auto "
           data-bs-toggle="tooltip" title={
             new Date(item.publishedAt).toLocaleTimeString() + ", " + new Date(item.publishedAt).toLocaleDateString()
           }>{

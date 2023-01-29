@@ -24,6 +24,7 @@ export const callAPI = async (id: string) => {
 				id: item.id,
 				viewCount: item.statistics.viewCount,
 				likeCount: item.statistics.likeCount,
+				dislikeCount: item.statistics.dislikeCount,
 				commentCount: item.statistics.commentCount,
 			} as videoStat;
 		}));

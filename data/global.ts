@@ -21,12 +21,13 @@ export type video = {
 	thumbnail: string;
 	videoId: string;
 	publishedAt: string;
+  statistics?: videoStat;
 }
 
 export type videoStat = {
-  id: string;
   viewCount: string;
   likeCount: string;
+  dislikeCount: string;
   commentCount: string;
 }
 

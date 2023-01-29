@@ -17,26 +17,39 @@ export const callAPI = async (pageToken: string) => {
 
 	var url = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=UUGuJC8U8zMOpvKdYPsh1M2Q&maxResults=50&key=" + key + (pageTokenValid ? "&pageToken=" + pageToken : "");
 
+
 	try {
 		const res = await fetch(url);
 		const data = await res.json();
-		return (await responseCreator(data));
+		const idKeys = await data.items.map((item) => item.contentDetails.videoId).join("&id=");
+		var urlStats = "https://youtube.googleapis.com/youtube/v3/videos?part=statistics&id=" + idKeys + "&key=" + key;
+		const resStats = await fetch(urlStats);
+		const dataStats = await resStats.json();
+		return responseCreator(data, dataStats);
 	} catch (err) {
 		console.log(err);
 	}
 };
 
-const responseCreator = (data) => {
+const responseCreator = (data, dataStats) => {
 
 	let videos = data.items.map((item) => {
+		const statItem = dataStats.items.find((stat) => stat.id == item.contentDetails.videoId);
 		return {
 			title: item.snippet.title,
 			description: item.snippet.description,
 			thumbnail: item.snippet.thumbnails.high.url,
 			videoId: item.contentDetails.videoId,
-			publishedAt: item.snippet.publishedAt
+			publishedAt: item.snippet.publishedAt,
+			statistics: {
+				viewCount: statItem.statistics.viewCount,
+				likeCount: statItem.statistics.likeCount,
+				dislikeCount: statItem.statistics.dislikeCount,
+				commentCount: statItem.statistics.commentCount,
+			}
 		} as video;
 	})
+	
 
 	let resObject = {
 		videoList: videos,
