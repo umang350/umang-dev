@@ -27,3 +27,7 @@ a {
     background: black;
   }
 }
+
+._loading_overlay_overlay {
+  position: fixed !important;
+}

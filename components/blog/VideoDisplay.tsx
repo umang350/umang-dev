@@ -5,7 +5,7 @@ export default function VideoCard({item}: {item: video}) {
 
 
   return (
-    <div style={{width: "48%"}} className="flex flex-col m-1 items-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4">
+    <div className="flex flex-col m-1 sm:basis-[48%] md:basis-[24%] items-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4">
       <a
         aria-label={item.videoId}
         target="_blank"
@@ -31,9 +31,9 @@ export default function VideoCard({item}: {item: video}) {
         </div>
       </a>
       <div className="flex flex-row mt-2 spacing-sm justify-center text-center">
-        <Image src={item.thumbnail} alt={item.title} height="360" width="480" style={{clip: "rect(top: 40px,480px,316px,0px"}}/>
+        <Image src={item.thumbnail} alt={item.title} height="360" width="480" style={{clipPath: "inset(20px 0px 20px 0px)"}}/>
       </div>
-      <p className="flex flex-row mt-2 spacing-sm text-black dark:text-white">
+      <p className="flex flex-row justify-end ml-auto mt-2 spacing-sm text-black dark:text-white" style={{alignContent: "flex-end"}}>
         {
             new Date(item.publishedAt).toLocaleTimeString()+", "+new Date(item.publishedAt).toLocaleDateString()
         }
