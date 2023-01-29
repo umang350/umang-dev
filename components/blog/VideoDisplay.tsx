@@ -17,7 +17,7 @@ export default function VideoCard({ item }: { item: video }) {
         className="transition duration-150 ease-in-out"
         data-bs-toggle="tooltip" 
         title={
-         '🖥️: '+ item.statistics.viewCount + ' 👍: '+ item.statistics.likeCount
+          '🖥️'+ Number(item.statistics.viewCount).toLocaleString() + ' 👍'+ Number(item.statistics.likeCount).toLocaleString() + ' 🕰️' + timeAgo(item.publishedAt, locale)
         }
       >
         <div className="flex flex-row items-center text-gray-900 dark:text-gray-100">
