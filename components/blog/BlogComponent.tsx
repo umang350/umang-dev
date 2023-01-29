@@ -24,10 +24,10 @@ type videoStatList = {
 export const BlogComponent = () => {
 
   const { locale } = useRouter();
+
   var informationData = locale === "ja" ? pageInfoJA : pageInfo;
 
   const [pageToken, setPageToken] = useState(null);
-  const [idKeys, setIdKeys] = useState(null);
 
   const [popularFlag, setPopularFlag] = useState(false);
 
@@ -121,11 +121,11 @@ export const BlogComponent = () => {
           </h3>
           <button onClick={() => setPopularFlag(!popularFlag)} className={` ${popularFlag ? 'bg-blue-600' : 'bg-white'}  hover:bg-blue-400 text-black font-bold py-2 px-4 rounded w-28 h-10 mt-auto mb-2 ml-auto mr-4`}>
             Popular
-          </button> 
+          </button>
         </div>
         {!isLoading && (error || !posts || posts.length === 0) && (
           <p className="mb-4 text-gray-600 dark:text-gray-400">
-          {informationData.noDataFound}
+            {informationData.noDataFound}
           </p>
         )}
         <div className="flex flex-row flex-wrap w-full">
