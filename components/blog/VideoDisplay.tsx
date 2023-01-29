@@ -61,7 +61,7 @@ function timeAgo(input: any) {
   for (let key in ranges) {
     if (ranges[key] < Math.abs(secondsElapsed)) {
       const delta = secondsElapsed / ranges[key];
-      return formatter.format(Math.round(delta), key);
+      return formatter.format(Math.round(delta), key! as Intl.RelativeTimeFormatUnit);
     }
   }
 }

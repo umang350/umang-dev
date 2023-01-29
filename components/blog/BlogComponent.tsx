@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { video } from "@/data/global";
 import fetcher from "@/lib/ga/fetcher";
 import { useEffect, useState } from "react";
