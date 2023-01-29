@@ -76,7 +76,7 @@ export const routes: Route[] = [
     description: "Find out more about me!"
   },
   {
-    title: "Blog",
+    title: "Videos",
     path: "/blog",
   },
   {
@@ -102,7 +102,7 @@ export const routesJA: Route[] = [
     description: "Find out more about me!"
   },
   {
-    title: "ブログ",
+    title: "動画",
     path: "/blog",
   },
   {

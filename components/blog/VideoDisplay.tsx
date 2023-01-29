@@ -1,9 +1,12 @@
 import { video } from "@/data/global";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 export default function VideoCard({ item }: { item: video }) {
 
 
+  const { locale } = useRouter();
+  
   return (
     <div className="flex flex-col m-1 sm:basis-[48%] md:basis-[24%] items-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4">
       <a
@@ -38,16 +41,16 @@ export default function VideoCard({ item }: { item: video }) {
           data-bs-toggle="tooltip" title={
             new Date(item.publishedAt).toLocaleTimeString() + ", " + new Date(item.publishedAt).toLocaleDateString()
           }>{
-            timeAgo(item.publishedAt)
+            timeAgo(item.publishedAt, locale)
           }</a>
       </p>
     </div>
   );
 }
 
-function timeAgo(input: any) {
+function timeAgo(input: any, locale: string) {
   const date = (input instanceof Date) ? input : new Date(input);
-  const formatter = new Intl.RelativeTimeFormat('en');
+  const formatter = new Intl.RelativeTimeFormat(locale==="ja" ? 'ja' :'en');
   const ranges = {
     years: 3600 * 24 * 365,
     months: 3600 * 24 * 30,

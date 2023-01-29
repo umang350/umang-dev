@@ -6,6 +6,8 @@ import useSWR from "swr";
 import VideoCard from "./VideoDisplay";
 import LoadingOverlay from 'react-loading-overlay-ts'
 import { PacmanLoader } from "react-spinners";
+import { pageInfo, pageInfoJA } from "@/data/content/videos";
+import { useRouter } from "next/router";
 LoadingOverlay.propTypes = undefined
 
 type resObject = {
@@ -16,6 +18,9 @@ type resObject = {
 }
 
 export const BlogComponent = () => {
+
+  const { locale } = useRouter();
+  var informationData = locale === "ja" ? pageInfoJA : pageInfo;
 
   const [pageToken, setPageToken] = useState(null);
 
@@ -49,16 +54,16 @@ export const BlogComponent = () => {
     <div>
       <div className="flex flex-col items-start justify-center max-w-6xl mx-auto mb-16 mt-10">
         <p className="mb-4 text-gray-600 dark:text-gray-400">
-          {`I'm really not into writing blogs but I talk mostly about software development and tech careers.
-            In total, I've created more than ${data?.total + "+" ?? "infinite"} videos on my channel. But I have a quite useful youtube channel
-            Use the search below to filter by title some of the things i created.`}
+          {
+            informationData.description((data?.total + "+") ?? "infinite")
+          }
         </p>
         <div className="relative w-full mb-4">
           <input
-            aria-label="Search articles"
+            aria-label={informationData.searchPlaceholder}
             type="text"
             onChange={(e) => setSearchValue(e.target.value)}
-            placeholder="Search videos"
+            placeholder={informationData.searchPlaceholder}
             className="block w-full px-4 py-2 text-gray-900 bg-white border border-gray-200 rounded-md dark:border-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-gray-100"
           />
           <svg
@@ -87,21 +92,21 @@ export const BlogComponent = () => {
         </div>
         {!isLoading && filteredBlogPosts.length === 0 && (
           <p className="mb-4 text-gray-600 dark:text-gray-400">
-            No posts found.
+            {informationData.noDataFound}
           </p>
         )}
         <div className="justify-center relative ml-auto mr-auto">
-          {searchValue && !isLoading && data && data.nextPageToken && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-96" onClick={() => setPageToken(data?.nextPageToken ?? "")}>Load More</button>}
+          {searchValue && !isLoading && data && data.nextPageToken && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-96 mt-2" onClick={() => setPageToken(data?.nextPageToken ?? "")}>{informationData.loadMoreButton}</button>}
         </div>
 
         <div className="flex flex-row">
           <h3 className="mt-8 mb-4 text-2xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
-            All Posts
+            {informationData.allTitle}
           </h3>
         </div>
         {!isLoading && (error || !posts || posts.length === 0) && (
           <p className="mb-4 text-gray-600 dark:text-gray-400">
-            No posts found.
+          {informationData.noDataFound}
           </p>
         )}
         <div className="flex flex-row flex-wrap w-full">
@@ -110,7 +115,7 @@ export const BlogComponent = () => {
           ))}
         </div>
         <div className="justify-center relative ml-auto mr-auto">
-          {!isLoading && data && data.nextPageToken && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-96" onClick={() => setPageToken(data?.nextPageToken ?? "")}>Load More</button>}
+          {!isLoading && data && data.nextPageToken && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-96 mt-2" onClick={() => setPageToken(data?.nextPageToken ?? "")}>{informationData.loadMoreButton}</button>}
         </div>
       </div>
     </div></LoadingOverlay>)
