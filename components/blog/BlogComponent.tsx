@@ -4,7 +4,7 @@ import fetcher from "@/lib/ga/fetcher";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import VideoCard from "./VideoDisplay";
-import LoadingOverlay from 'react-loading-overlay'
+import LoadingOverlay from 'react-loading-overlay-ts'
 import { PacmanLoader } from "react-spinners";
 LoadingOverlay.propTypes = undefined
 
@@ -14,7 +14,6 @@ type resObject = {
   prevPageToken: string;
   total: string;
 }
-
 
 export const BlogComponent = () => {
 
