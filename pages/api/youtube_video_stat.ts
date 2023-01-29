@@ -14,7 +14,7 @@ export const callAPI = async (id: string) => {
 	// var id = "Otam61b875Y";
 	var key = process.env.GOOGLE_API_KEY;
 
-	var url1 = "https://youtube.googleapis.com/youtube/v3/videos?part=statistics&id=" + id + "&key=" + key;
+	var url1 = "https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=" + id + "&key=" + key;
 
 	try {
 		const res = await fetch(url1);
@@ -22,11 +22,14 @@ export const callAPI = async (id: string) => {
 		return (await data.items.map((item) => {
 			return {
 				id: item.id,
+				title: item.snippet.title,
+				description: item.snippet.description,
+				thumbnail: item.snippet.thumbnails.high.url,
 				viewCount: item.statistics.viewCount,
 				likeCount: item.statistics.likeCount,
 				dislikeCount: item.statistics.dislikeCount,
 				commentCount: item.statistics.commentCount,
-			} as videoStat;
+			};
 		}));
 	} catch (err) {
 		console.log(err);

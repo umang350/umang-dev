@@ -34,7 +34,7 @@ export const AboutMe = () => {
               {informationData.subheading}
             </a>
           </p>
-          <div className="text-left text-xl text-gray-700 mb-4 mt-4 dark:text-gray-200 text-justify">
+          <div className="text-left text-xl text-gray-700 mb-4 mt-4 dark:text-gray-200">
             {informationData.desc}
             <br />
             <p className="leading-loose text-left">

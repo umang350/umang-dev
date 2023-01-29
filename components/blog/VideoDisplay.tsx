@@ -43,7 +43,7 @@ export default function VideoCard({ item }: { item: video }) {
       </div>
       <p className="flex flex-row justify-end spacing-sm text-sm text-black dark:text-white -mt-4" style={{ alignContent: "flex-end" }}>
         <p className="mr-auto">{'🖥️'+ Number(item.statistics.viewCount).toLocaleString() + ' 👍'+ Number(item.statistics.likeCount).toLocaleString() + ' 🕰️'}</p>
-        <a href="#" className="transition duration-150 ease-in-out ml-auto "
+        <a href={'/yt/'+item.videoId} className="transition duration-150 ease-in-out ml-auto "
           data-bs-toggle="tooltip" title={
             new Date(item.publishedAt).toLocaleTimeString() + ", " + new Date(item.publishedAt).toLocaleDateString()
           }>{

@@ -17,10 +17,6 @@ type resObject = {
   total: string;
 }
 
-type videoStatList = {
-  videoStatList: videoStat[];
-}
-
 export const BlogComponent = () => {
 
   const { locale } = useRouter();
@@ -56,9 +52,9 @@ export const BlogComponent = () => {
 
   const popularChanger = () => {
     if (popularFlag) {
-      setPosts([...posts.sort((a, b) => (Number(a.statistics.viewCount) > Number(b.statistics.viewCount)) ? -1 : 1)])
+      setPosts(Array.from(new Set([...posts.sort((a, b) => (Number(a.statistics.viewCount) > Number(b.statistics.viewCount)) ? -1 : 1)])))
     } else {
-      setPosts([...posts.sort((a, b) => (a.publishedAt > b.publishedAt) ? -1 : 1)])
+      setPosts(Array.from(new Set([...posts.sort((a, b) => (a.publishedAt > b.publishedAt) ? -1 : 1)])))
     }
   }
   useEffect(popularChanger, [popularFlag])
