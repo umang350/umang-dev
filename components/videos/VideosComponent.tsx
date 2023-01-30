@@ -111,14 +111,14 @@ export const VideosComponent = () => {
           {searchValue && !isLoading && data && data.nextPageToken && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-96 mt-2" onClick={() => setPageToken(data?.nextPageToken ?? "")}>{informationData.loadMoreButton}</button>}
         </div>
 
-        <div className="flex flex-row w-full ">
+        <div className="flex flex-row w-full flex-wrap">
           <h3 className="mt-8 mb-4 text-2xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
             {informationData.allTitle}
           </h3>
           <button onClick={() => setPopularFlag(!popularFlag)} className={` ${!popularFlag ? 'bg-blue-600 text-white' : 'bg-white text-black'}  hover:bg-blue-400 font-bold py-2 px-4 rounded w-54 h-10 mt-auto mb-2 ml-auto`}>
             {informationData.recentButton}
           </button>
-          <button onClick={() => setPopularFlag(!popularFlag)} className={` ${popularFlag ? 'bg-blue-600 text-white' : 'bg-white text-black'}  hover:bg-blue-400 font-bold py-2 px-4 rounded w-28 h-10 mt-auto mb-2 ml-1 mr-4`}>
+          <button onClick={() => setPopularFlag(!popularFlag)} className={` ${popularFlag ? 'bg-blue-600 text-white' : 'bg-white text-black'}  hover:bg-blue-400 font-bold py-2 px-4 rounded w-28 h-10 mt-auto mb-2 ml-auto sm:ml-1 sm:mr-4`}>
             {informationData.popularButton}
           </button>
         </div>
