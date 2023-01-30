@@ -6,7 +6,7 @@ export default function VideoCard({ item }: { item: video }) {
 
 
   const { locale } = useRouter();
-  
+
   return (
     <div className="flex flex-col m-1 sm:basis-[48%] md:basis-[24%] items-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4">
       <a
@@ -15,9 +15,9 @@ export default function VideoCard({ item }: { item: video }) {
         rel="noopener noreferrer"
         href={"https://www.youtube.com/watch?v=" + item.videoId}
         className="transition duration-150 ease-in-out"
-        data-bs-toggle="tooltip" 
+        data-bs-toggle="tooltip"
         title={
-          '🖥️'+ Number(item.statistics.viewCount).toLocaleString() + ' 👍'+ Number(item.statistics.likeCount).toLocaleString() + ' 🕰️' + timeAgo(item.publishedAt, locale)
+          '🖥️' + Number(item.statistics.viewCount).toLocaleString() + ' 👍' + Number(item.statistics.likeCount).toLocaleString() + ' 🕰️' + timeAgo(item.publishedAt, locale)
         }
       >
         <div className="flex flex-row items-center text-gray-900 dark:text-gray-100">
@@ -42,8 +42,8 @@ export default function VideoCard({ item }: { item: video }) {
         <Image src={item.thumbnail} alt={item.title} height="360" width="480" style={{ clipPath: "inset(20px 0px 20px 0px)" }} />
       </div>
       <p className="flex flex-row justify-end spacing-sm text-sm text-black dark:text-white -mt-4" style={{ alignContent: "flex-end" }}>
-        <p className="mr-auto">{'🖥️'+ Number(item.statistics.viewCount).toLocaleString() + ' 👍'+ Number(item.statistics.likeCount).toLocaleString() + ' 🕰️'}</p>
-        <a href={'/yt/'+item.videoId} className="transition duration-150 ease-in-out ml-auto "
+        <span className="mr-auto">{'🖥️' + Number(item.statistics.viewCount).toLocaleString() + ' 👍' + Number(item.statistics.likeCount).toLocaleString() + ' 🕰️'}</span>
+        <a href={'/yt/' + item.videoId} className="transition duration-150 ease-in-out ml-auto "
           data-bs-toggle="tooltip" title={
             new Date(item.publishedAt).toLocaleTimeString() + ", " + new Date(item.publishedAt).toLocaleDateString()
           }>{
@@ -56,7 +56,7 @@ export default function VideoCard({ item }: { item: video }) {
 
 function timeAgo(input: any, locale: string) {
   const date = (input instanceof Date) ? input : new Date(input);
-  const formatter = new Intl.RelativeTimeFormat(locale==="ja" ? 'ja' :'en');
+  const formatter = new Intl.RelativeTimeFormat(locale === "ja" ? 'ja' : 'en');
   const ranges = {
     years: 3600 * 24 * 365,
     months: 3600 * 24 * 30,
