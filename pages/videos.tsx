@@ -1,18 +1,18 @@
 
-import { BlogComponent } from '@/components/blog/BlogComponent'
+import { VideosComponent } from '@/components/videos/VideosComponent'
 import Page from '@/components/utility/Page'
 import { routes } from "@/data/global"
 
 const PageName = "Videos";
-const Blog = () => {
+const Videos = () => {
     return (
         <Page currentPage={PageName} meta={{
             desc: routes.find(i => i.title === PageName).description
         }}>
-            <BlogComponent />
+            <VideosComponent />
         </Page>
     )
 
 }
 
-export default Blog
+export default Videos

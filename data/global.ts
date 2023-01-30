@@ -78,7 +78,7 @@ export const routes: Route[] = [
   },
   {
     title: "Videos",
-    path: "/blog",
+    path: "/videos",
   },
   {
     title: "Creations",
@@ -104,7 +104,7 @@ export const routesJA: Route[] = [
   },
   {
     title: "動画",
-    path: "/blog",
+    path: "/videos",
   },
   {
     title: "創作物",
@@ -134,8 +134,8 @@ export const footerJA: Footer = {
           leavesWebsite: false,
         },
         {
-          name: "ブログ",
-          link: "/blog",
+          name: "動画",
+          link: "/videos",
           leavesWebsite: false,
         },
         {
@@ -233,8 +233,8 @@ export const footer: Footer = {
           leavesWebsite: false,
         },
         {
-          name: "Blog",
-          link: "/blog",
+          name: "Videos",
+          link: "/videos",
           leavesWebsite: false,
         },
         {

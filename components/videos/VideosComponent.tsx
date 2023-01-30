@@ -17,7 +17,7 @@ type resObject = {
   total: string;
 }
 
-export const BlogComponent = () => {
+export const VideosComponent = () => {
 
   const { locale } = useRouter();
 
@@ -136,5 +136,5 @@ export const BlogComponent = () => {
     </div></LoadingOverlay>)
 }
 
-export default BlogComponent;
+export default VideosComponent;
 
