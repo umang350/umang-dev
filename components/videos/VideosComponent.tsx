@@ -116,7 +116,7 @@ export const VideosComponent = () => {
             {informationData.allTitle}
           </h3>
           <button onClick={() => setPopularFlag(!popularFlag)} className={` ${popularFlag ? 'bg-blue-600' : 'bg-white'}  hover:bg-blue-400 text-black font-bold py-2 px-4 rounded w-28 h-10 mt-auto mb-2 ml-auto mr-4`}>
-            Popular
+            {informationData.popularButton}
           </button>
         </div>
         {!isLoading && (error || !posts || posts.length === 0) && (
