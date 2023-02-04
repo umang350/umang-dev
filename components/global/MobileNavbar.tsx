@@ -2,7 +2,7 @@ import { SVGProps, useEffect, useState } from "react";
 
 import Link from "next/link";
 import { routes, routesJA, Route } from "../../data/global";
-import useDelayedRender from "use-delayed-render";
+import useDelayedRender from "@/lib/ga/useDelayedRender";
 import styles from './MobileNavbar.module.css';
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
