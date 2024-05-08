@@ -97,9 +97,9 @@ function Footer() {
               </span>
               <span>
                 <Image
-                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg"
-                  width="26"
-                  height="26"
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original-wordmark.svg"
+                  width="60"
+                  height="60"
                   alt="TailwindCSS"
                 />
                 <span className="sr-only">TailwindCSS</span>
@@ -114,7 +114,7 @@ function Footer() {
             >
               {footerData.make.maker}
             </a>
-            . {footerData.make.dislaimer}.
+            . {footerData.make.dislaimer}
           </div>
         </div>
       </div>
