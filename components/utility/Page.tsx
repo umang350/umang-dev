@@ -7,7 +7,7 @@ import Script from "next/script";
 
 function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
   const pageTitle = `${currentPage === "Home"
-    ? "Umang Chauhan - Developer, Strategy, Creator."
+    ? "Umang Chauhan - Products, Strategy, Creator."
     : `${currentPage} - UMANG.dev`
     }`;
   return (
