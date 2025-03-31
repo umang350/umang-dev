@@ -1,6 +1,6 @@
 export const information = {
     title: "About Me.",
-    subheading: "Software Developer🗼 Content Creator 💥 Strategizer 📈",
+    subheading: "Product 📦 Developer🗼 Content Creator 💥 Strategizer 📈",
     desc: "My passion is to build products of utility for the masses and create a global world filled with correct human intelligence and computational accessibility bringing efficiency and transparency to the ecosystem of technology and life.",
     descPoints: [
         "🚀 Helping Fast Retailing (Uniqlo) change the world through clothes",
@@ -38,7 +38,7 @@ export const experience = [
 
 export const informationJA = {
     title: "私について。",
-    subheading: "ソフトウェア開発者🗼 コンテンツ作成者💥 戦略家📈",
+    subheading: "プロダクト📦 開発者🗼 コンテンツ作成者💥 戦略家📈",
     desc: "私の情熱は、大衆のための実用的な製品を作り、正確な人間の知能とコンピューティングのアクセシビリティに満ちたグローバルな世界を作り、テクノロジーとライフスタイルのエコシステムに効率と透明性をもたらすことです。",
     descPoints: [
         "🚀ファーストリテイリング（ユニクロ）が服を通じて世界を変えることに貢献する",
