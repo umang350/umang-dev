@@ -34,7 +34,7 @@ export const routes: Route[] = [
     },
     {
         title: "LinkedIn | Umang Chauhan",
-        link: "https://www.linkedin.com/in/umang350/",
+        link: "https://www.linkedin.com/in/thisumang/",
     },
     {
         title: "Twitter | @thisUmang",

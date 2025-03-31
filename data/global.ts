@@ -174,7 +174,7 @@ export const footerJA: Footer = {
         },
         {
           name: "リンクトイン",
-          link: "https://www.linkedin.com/in/umang350/",
+          link: "https://www.linkedin.com/in/thisumang/",
           icon: "/icons/linkedin-f.svg",
           leavesWebsite: true,
         },
@@ -273,7 +273,7 @@ export const footer: Footer = {
         },
         {
           name: "LinkedIn",
-          link: "https://www.linkedin.com/in/umang350/",
+          link: "https://www.linkedin.com/in/thisumang/",
           icon: "/icons/linkedin-f.svg",
           leavesWebsite: true,
         },
