@@ -28,9 +28,17 @@ export const experience = [
     },
     {
         key: "2",
+        title: "First Job",
+        desc: "SDE, PDM - IT SCM",
+        year: "2020-2024",
+        company: "Fast Retailing (UNIQLO)",
+        companyLink: "https://www.fastretailing.com/eng/"
+    },
+    {
+        key: "3",
         title: "Working",
-        desc: "Software Developer - IT Planning",
-        year: "2020-Now",
+        desc: "PM - New York (USGHQ)",
+        year: "2024-Now",
         company: "Fast Retailing (UNIQLO)",
         companyLink: "https://www.fastretailing.com/eng/"
     }
@@ -66,9 +74,17 @@ export const experienceJA = [
     },
     {
         key: "2",
+        title: "初の仕事",
+        desc: "SDE, PDM - IT SCM",
+        year: "2020-2024",
+        company: "ファーストリテイリング（ユニクロ）",
+        companyLink: "https://www.fastretailing.com/"
+    },
+    {
+        key: "3",
         title: "働く",
-        desc: "ソフトウェア開発者 - IT 計画",
-        year: "2020年～現在",
+        desc: "PM - New York (USGHQ)",
+        year: "2024-現在",
         company: "ファーストリテイリング（ユニクロ）",
         companyLink: "https://www.fastretailing.com/"
     }
