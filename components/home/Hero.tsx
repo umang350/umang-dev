@@ -32,8 +32,8 @@ function Hero() {
       </p>
 
       <div className="mb-10">
-        <Link href="/about" className="px-6 py-3 bg-fun-pink text-white rounded-lg font-semibold hover:opacity-90 transition-opacity">
-          {locale === "ja" ? "もっと知る" : "Learn More"}
+        <Link href="/projects" className="px-6 py-3 bg-fun-pink text-white rounded-lg font-semibold hover:opacity-90 transition-opacity">
+          {locale === "ja" ? "プロジェクトを見る" : "View My Work"}
         </Link>
       </div>
 
