@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -12,17 +13,32 @@ function Hero() {
       {
         locale === "ja" && (<><p className="text-xl mb-5">こんにちは、<span className="font-bold">ウマング</span> です。</p>
           <h1 className="heroTitle inline-block max-w-2xl lg:max-w-4xl  w-auto relative text-5xl md:text-6xl lg:text-7xl tracking-tighter mb-10 font-bold heroShinyBg">
-            プロダクト. <span className="heroShiny1 text-fun-pink">クリエイター.</span>{" "} <br />
-            <span className="heroShiny2 text-fun-pink">ストラテジー.</span> 思想家</h1>
+            プロダクト <span className="heroShiny1 text-fun-pink">マネージャー.</span>{" "} <br />
+            <span className="heroShiny2 text-fun-pink">ストラテジー.</span> ビルダー.</h1>
         </>)
       }
       {
-        locale === "en" && (<><p className="text-xl mb-5">Hey, I&apos;m Umang.</p>
+        locale === "en" && (<><p className="text-xl mb-5">Hey, I&apos;m <span className="font-bold">Umang</span>.</p>
           <h1 className="heroTitle inline-block max-w-2xl lg:max-w-4xl  w-auto relative text-5xl md:text-6xl lg:text-7xl tracking-tighter mb-10 font-bold heroShinyBg">
-            Products. <span className="heroShiny1 text-fun-pink">Creator.</span>{" "} <br />
-            <span className="heroShiny2 text-fun-pink">Strategy.</span> Thinker.
+            Product <span className="heroShiny1 text-fun-pink">Manager.</span>{" "} <br />
+            <span className="heroShiny2 text-fun-pink">Strategy.</span> Builder.
           </h1></>)
       }
+
+      <p className="max-w-xl text-lg text-gray-500 dark:text-gray-400 mb-10 leading-relaxed">
+        {locale === "ja"
+          ? "テクノロジーとリテールの交差点でユーザー中心のプロダクトを構築し、グローバルスケールでインパクトを与えています。"
+          : "Building user-centric products at the intersection of technology and retail, driving impact at global scale."}
+      </p>
+
+      <div className="flex gap-4 mb-10">
+        <Link href="/about" className="px-6 py-3 bg-fun-pink text-white rounded-lg font-semibold hover:opacity-90 transition-opacity">
+          {locale === "ja" ? "私について" : "About Me"}
+        </Link>
+        <Link href="/projects" className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors dark:text-white text-black">
+          {locale === "ja" ? "プロジェクト" : "View Projects"}
+        </Link>
+      </div>
 
       <Image
         className="sqD"

@@ -69,20 +69,17 @@ export const routes: Route[] = [
   {
     title: "Home",
     path: "/",
-    description: "UMANG.DEV, one stop to all things Umang Chauhan. Find out insights from the statistics tab or know more about me from the About Me page. Whatever you do stay away from the 404 Page."
+    description: "Umang Chauhan - Product Manager building user-centric products at the intersection of technology and retail."
   },
   {
     title: "About Me",
     path: "/about",
-    description: "Find out more about me!"
+    description: "Learn about my journey from Software Engineer to Product Manager."
   },
   {
-    title: "Videos",
-    path: "/videos",
-  },
-  {
-    title: "Creations",
-    path: "/creations",
+    title: "Projects",
+    path: "/projects",
+    description: "Product case studies and projects I've led."
   },
   {
     title: "Statistics",
@@ -95,25 +92,22 @@ export const routesJA: Route[] = [
   {
     title: "ホーム",
     path: "/",
-    description: "UMANG.DEV, one stop to all things Umang Chauhan. Find out insights from the statistics tab or know more about me from the About Me page. Whatever you do stay away from the 404 Page."
+    description: "ウマング・チャウハン - テクノロジーとリテールの交差点でユーザー中心のプロダクトを構築するプロダクトマネージャー。"
   },
   {
     title: "私について",
     path: "/about",
-    description: "Find out more about me!"
+    description: "ソフトウェアエンジニアからプロダクトマネージャーへの道のり。"
   },
   {
-    title: "動画",
-    path: "/videos",
-  },
-  {
-    title: "創作物",
-    path: "/creations",
+    title: "プロジェクト",
+    path: "/projects",
+    description: "プロダクトケーススタディとリードしたプロジェクト。"
   },
   {
     title: "統計学",
     path: "/stats",
-    description: "Deep dive into statistics"
+    description: "統計の詳細分析"
   },
 ];
 
@@ -134,13 +128,8 @@ export const footerJA: Footer = {
           leavesWebsite: false,
         },
         {
-          name: "動画",
-          link: "/videos",
-          leavesWebsite: false,
-        },
-        {
-          name: "創作物",
-          link: "/creations",
+          name: "プロジェクト",
+          link: "/projects",
           leavesWebsite: false,
         },
         {
@@ -155,15 +144,9 @@ export const footerJA: Footer = {
       link: "https://link.umang.dev",
       links: [
         {
-          name: "ユーチューブ",
-          link: "https://youtube.com/getsaged",
-          icon: "/icons/youtube.svg",
-          leavesWebsite: true,
-        },
-        {
-          name: "インスタグラム",
-          link: "https://instagram.com/thisumang",
-          icon: "/icons/instagram.svg",
+          name: "リンクトイン",
+          link: "https://www.linkedin.com/in/thisumang/",
+          icon: "/icons/linkedin-f.svg",
           leavesWebsite: true,
         },
         {
@@ -173,9 +156,9 @@ export const footerJA: Footer = {
           leavesWebsite: true,
         },
         {
-          name: "リンクトイン",
-          link: "https://www.linkedin.com/in/thisumang/",
-          icon: "/icons/linkedin-f.svg",
+          name: "インスタグラム",
+          link: "https://instagram.com/thisumang",
+          icon: "/icons/instagram.svg",
           leavesWebsite: true,
         },
         {
@@ -189,7 +172,7 @@ export const footerJA: Footer = {
   ],
   support: {
     title: "私の仕事をサポート",
-    message: "これを読んだだけでも応援よろしくお願いします！💙",
+    message: "これを読んだだけでも応援よろしくお願いします！",
   },
   make: {
     maker: "ウマング・チャウハン",
@@ -233,13 +216,8 @@ export const footer: Footer = {
           leavesWebsite: false,
         },
         {
-          name: "Videos",
-          link: "/videos",
-          leavesWebsite: false,
-        },
-        {
-          name: "Creations",
-          link: "/creations",
+          name: "Projects",
+          link: "/projects",
           leavesWebsite: false,
         },
         {
@@ -254,15 +232,9 @@ export const footer: Footer = {
       link: "https://link.umang.dev",
       links: [
         {
-          name: "YouTube",
-          link: "https://youtube.com/getsaged",
-          icon: "/icons/youtube.svg",
-          leavesWebsite: true,
-        },
-        {
-          name: "Instagram",
-          link: "https://instagram.com/thisumang",
-          icon: "/icons/instagram.svg",
+          name: "LinkedIn",
+          link: "https://www.linkedin.com/in/thisumang/",
+          icon: "/icons/linkedin-f.svg",
           leavesWebsite: true,
         },
         {
@@ -272,9 +244,9 @@ export const footer: Footer = {
           leavesWebsite: true,
         },
         {
-          name: "LinkedIn",
-          link: "https://www.linkedin.com/in/thisumang/",
-          icon: "/icons/linkedin-f.svg",
+          name: "Instagram",
+          link: "https://instagram.com/thisumang",
+          icon: "/icons/instagram.svg",
           leavesWebsite: true,
         },
         {
@@ -287,8 +259,8 @@ export const footer: Footer = {
     },
   ],
   support: {
-    title: "Support My Work",
-    message: "I appreciate your support just by reading this! 💙",
+    title: "Let's Connect",
+    message: "Open to product roles and collaboration opportunities.",
   },
   make: {
     maker: "Umang Chauhan",
@@ -296,7 +268,7 @@ export const footer: Footer = {
     dislaimer: "All rights reserved.",
   },
   language: {
-    title: "Langauge",
+    title: "Language",
     languages: [
       {
         name: "English",

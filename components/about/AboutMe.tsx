@@ -37,16 +37,18 @@ export const AboutMe = () => {
           <div className="text-left text-xl text-gray-700 mb-4 mt-4 dark:text-gray-200">
             {informationData.desc}
             <br />
-            <p className="leading-loose text-left">
+            <ul className="leading-loose text-left mt-4 space-y-2 list-none">
               {
                 informationData.descPoints.map((item, index) => {
-                  if (index === 0) {
-                    return item
-                  }
-                  return (<span key={index}><br />{item}</span>)
+                  return (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="text-fun-pink mt-1">&#9654;</span>
+                      <span>{item}</span>
+                    </li>
+                  )
                 })
               }
-            </p>
+            </ul>
           </div>
         </div>
       </div>
@@ -70,30 +72,41 @@ export const AboutMe = () => {
             </div>
             <div className="mt-8">
               <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
-                Job Opportunities
+                What I Bring
               </h1>
               <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
-                I&apos;m looking for a challenge currently, If you see me as a good fit,
-                reach out for my{" "}
+                I combine a strong engineering background with product intuition
+                to ship impactful products. If you&apos;re looking for a PM who
+                can bridge technical and business stakeholders, let&apos;s{" "}
                 <a
-                  target="__blank"
+                  href="mailto:job@umang.dev"
                   className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
                 >
-                  CV
-                </a>{" "}
-                and I&apos;d love to work with you.
+                  connect
+                </a>
+                .
               </p>
             </div>
             <div className="mt-8">
               <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
-                Skills
+                PM Skills
               </h1>
               <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
-                Development: Spring Boot, React, Node.Js, Angular, Flask, Oracle, Firebase, AWS, CI CD Pipelines
+                Product Strategy &amp; Roadmapping, User Research &amp; Discovery, A/B Testing &amp; Experimentation, Stakeholder Management
                 <br />
-                Languages Syntaxed: Java, JavaScript, SQL, Excel Macro VBA, C++, Python, R, MATLAB, Shell Scripting
+                Agile/Scrum, PRDs &amp; Specs, Data Analytics, Go-to-Market Strategy
                 <br />
-                Add-ons: Video Editing, Graphic Design, Seminar/Public Speaker, Project Management, Game Development
+                Cross-functional Leadership, OKRs &amp; KPIs, Competitive Analysis, Market Sizing
+              </p>
+            </div>
+            <div className="mt-8">
+              <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
+                Technical Skills
+              </h1>
+              <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
+                SQL, Python, JavaScript/React, Spring Boot, AWS, Firebase
+                <br />
+                Data Analysis, CI/CD, API Design, System Architecture
               </p>
             </div>
           </div>

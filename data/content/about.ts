@@ -1,11 +1,11 @@
 export const information = {
     title: "About Me.",
-    subheading: "Product 📦 Developer🗼 Content Creator 💥 Strategizer 📈",
-    desc: "My passion is to build products of utility for the masses and create a global world filled with correct human intelligence and computational accessibility bringing efficiency and transparency to the ecosystem of technology and life.",
+    subheading: "Product Manager | Strategy | Builder",
+    desc: "I'm a Product Manager with a strong engineering foundation, passionate about building user-centric products that drive business impact at scale. Currently leading product initiatives at Fast Retailing (UNIQLO) in New York, where I bridge technology and retail to deliver seamless customer experiences across global markets.",
     descPoints: [
-        "🚀 Helping Fast Retailing (Uniqlo) change the world through clothes",
-        "⚡Growth hacking a YouTube Channel while creating a personal brand",
-        "🔥Helping newbies crack the software developer job code"
+        "Leading product strategy and roadmap for global retail technology at UNIQLO USGHQ",
+        "Transitioned from SDE to PM, combining deep technical expertise with product thinking",
+        "Passionate about data-driven decision making and cross-functional collaboration"
     ]
 }
 
@@ -13,31 +13,31 @@ export const experience = [
     {
         key: "0",
         title: "University",
-        desc: "Bachelor of Technology (CS & Math)",
+        desc: "B.Tech in Computer Science & Mathematics",
         year: "2016-20",
         company: "Delhi Technological University (formerly D.C.E.)",
         companyLink: "https://dtu.ac.in"
     },
     {
         key: "1",
-        title: "Internship",
-        desc: "Global Internship Program – Technology Intern",
+        title: "Tech Intern",
+        desc: "Global Internship Program - Technology",
         year: "2019",
         company: "Tata Communications Ltd.",
         companyLink: "https://tatacommunications.com"
     },
     {
         key: "2",
-        title: "First Job",
-        desc: "SDE, PDM - IT SCM",
-        year: "2020-2024",
+        title: "SDE to PDM",
+        desc: "Software Dev Engineer, then Product Dev Manager - IT SCM",
+        year: "2020-24",
         company: "Fast Retailing (UNIQLO)",
         companyLink: "https://www.fastretailing.com/eng/"
     },
     {
         key: "3",
-        title: "Working",
-        desc: "PM - New York (USGHQ)",
+        title: "Product Manager",
+        desc: "PM - US Global HQ, New York",
         year: "2024-Now",
         company: "Fast Retailing (UNIQLO)",
         companyLink: "https://www.fastretailing.com/eng/"
@@ -46,12 +46,12 @@ export const experience = [
 
 export const informationJA = {
     title: "私について。",
-    subheading: "プロダクト📦 開発者🗼 コンテンツ作成者💥 戦略家📈",
-    desc: "私の情熱は、大衆のための実用的な製品を作り、正確な人間の知能とコンピューティングのアクセシビリティに満ちたグローバルな世界を作り、テクノロジーとライフスタイルのエコシステムに効率と透明性をもたらすことです。",
+    subheading: "プロダクトマネージャー | 戦略 | ビルダー",
+    desc: "エンジニアリングのバックグラウンドを持つプロダクトマネージャーとして、ビジネスインパクトを大規模に推進するユーザー中心のプロダクト構築に情熱を注いでいます。現在、ニューヨークのファーストリテイリング（ユニクロ）でプロダクトイニシアチブをリードし、テクノロジーとリテールを融合させてグローバル市場全体でシームレスな顧客体験を提供しています。",
     descPoints: [
-        "🚀ファーストリテイリング（ユニクロ）が服を通じて世界を変えることに貢献する",
-        "⚡パーソナル ブランドを作成しながら YouTube チャンネルを成長させる",
-        "🔥初心者がソフトウェア開発者のジョブ コードを解読するのを支援する"
+        "ユニクロUSGHQでグローバルリテールテクノロジーのプロダクト戦略とロードマップをリード",
+        "SDEからPMに転身し、深い技術的専門知識とプロダクト思考を融合",
+        "データドリブンな意思決定とクロスファンクショナルなコラボレーションに情熱を注ぐ"
     ]
 }
 
@@ -59,31 +59,31 @@ export const experienceJA = [
     {
         key: "0",
         title: "大学",
-        desc: "技術学士 (CS & 数学)",
+        desc: "コンピュータサイエンス＆数学 工学士",
         year: "2016年-20年",
         company: "デリー工科大学 (旧 DCE)",
         companyLink: "https://dtu.ac.in"
     },
     {
         key: "1",
-        title: "インターンシップ",
-        desc: "グローバルインターンシッププログラム – 技術インターン",
+        title: "テックインターン",
+        desc: "グローバルインターンシッププログラム - テクノロジー",
         year: "2019年",
         company: "タタ・コミュニケーションズ株式会社",
         companyLink: "https://tatacommunications.com"
     },
     {
         key: "2",
-        title: "初の仕事",
-        desc: "SDE, PDM - IT SCM",
-        year: "2020-2024",
+        title: "SDEからPDMへ",
+        desc: "ソフトウェア開発エンジニア、その後プロダクト開発マネージャー - IT SCM",
+        year: "2020-24",
         company: "ファーストリテイリング（ユニクロ）",
         companyLink: "https://www.fastretailing.com/"
     },
     {
         key: "3",
-        title: "働く",
-        desc: "PM - New York (USGHQ)",
+        title: "プロダクトマネージャー",
+        desc: "PM - 米国グローバル本社、ニューヨーク",
         year: "2024-現在",
         company: "ファーストリテイリング（ユニクロ）",
         companyLink: "https://www.fastretailing.com/"
