@@ -31,12 +31,9 @@ function Hero() {
           : "Building user-centric products at the intersection of technology and retail, driving impact at global scale."}
       </p>
 
-      <div className="flex gap-4 mb-10">
+      <div className="mb-10">
         <Link href="/about" className="px-6 py-3 bg-fun-pink text-white rounded-lg font-semibold hover:opacity-90 transition-opacity">
-          {locale === "ja" ? "私について" : "About Me"}
-        </Link>
-        <Link href="/projects" className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors dark:text-white text-black">
-          {locale === "ja" ? "プロジェクト" : "View Projects"}
+          {locale === "ja" ? "もっと知る" : "Learn More"}
         </Link>
       </div>
 

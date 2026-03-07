@@ -38,7 +38,15 @@ export const experience = [
         key: "3",
         title: "Product Manager",
         desc: "PM - US Global HQ, New York",
-        year: "2024-Now",
+        year: "2024-25",
+        company: "Fast Retailing (UNIQLO)",
+        companyLink: "https://www.fastretailing.com/eng/"
+    },
+    {
+        key: "4",
+        title: "Back in Tokyo",
+        desc: "PM - Global HQ, Tokyo",
+        year: "2025-Now",
         company: "Fast Retailing (UNIQLO)",
         companyLink: "https://www.fastretailing.com/eng/"
     }
@@ -84,7 +92,15 @@ export const experienceJA = [
         key: "3",
         title: "プロダクトマネージャー",
         desc: "PM - 米国グローバル本社、ニューヨーク",
-        year: "2024-現在",
+        year: "2024-25",
+        company: "ファーストリテイリング（ユニクロ）",
+        companyLink: "https://www.fastretailing.com/"
+    },
+    {
+        key: "4",
+        title: "東京に戻る",
+        desc: "PM - グローバル本社、東京",
+        year: "2025-現在",
         company: "ファーストリテイリング（ユニクロ）",
         companyLink: "https://www.fastretailing.com/"
     }
