@@ -18,17 +18,17 @@ export const callAPI = async (pageToken: string) => {
 	var url = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=UUGuJC8U8zMOpvKdYPsh1M2Q&maxResults=50&key=" + key + (pageTokenValid ? "&pageToken=" + pageToken : "");
 
 
-	try {
-		const res = await fetch(url);
-		const data = await res.json();
-		const idKeys = await data.items.map((item) => item.contentDetails.videoId).join("&id=");
-		var urlStats = "https://youtube.googleapis.com/youtube/v3/videos?part=statistics&id=" + idKeys + "&key=" + key;
-		const resStats = await fetch(urlStats);
-		const dataStats = await resStats.json();
-		return responseCreator(data, dataStats);
-	} catch (err) {
-		console.log(err);
-	}
+	if (!key) return null;
+
+	const res = await fetch(url);
+	const data = await res.json();
+	if (!data?.items) return null;
+
+	const idKeys = data.items.map((item) => item.contentDetails.videoId).join("&id=");
+	var urlStats = "https://youtube.googleapis.com/youtube/v3/videos?part=statistics&id=" + idKeys + "&key=" + key;
+	const resStats = await fetch(urlStats);
+	const dataStats = await resStats.json();
+	return responseCreator(data, dataStats);
 };
 
 const responseCreator = (data, dataStats) => {
