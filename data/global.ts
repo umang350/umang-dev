@@ -86,6 +86,11 @@ export const routes: Route[] = [
     path: "/stats",
     description: "Deep dive into statistics"
   },
+  {
+    title: "Videos",
+    path: "/videos",
+    description: "YouTube videos and content."
+  },
 ];
 
 export const routesJA: Route[] = [
@@ -108,6 +113,11 @@ export const routesJA: Route[] = [
     title: "統計学",
     path: "/stats",
     description: "統計の詳細分析"
+  },
+  {
+    title: "Videos",
+    path: "/videos",
+    description: "YouTubeの動画とコンテンツ。"
   },
 ];
 
