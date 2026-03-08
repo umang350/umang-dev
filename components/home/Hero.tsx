@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -30,12 +29,6 @@ function Hero() {
           ? "テクノロジーとリテールの交差点でユーザー中心のプロダクトを構築し、グローバルスケールでインパクトを与えています。"
           : "Building user-centric products at the intersection of technology and retail, driving impact at global scale."}
       </p>
-
-      <div className="mb-10">
-        <Link href="/projects" className="px-6 py-3 bg-fun-pink text-white rounded-lg font-semibold hover:opacity-90 transition-opacity">
-          {locale === "ja" ? "プロジェクトを見る" : "View My Work"}
-        </Link>
-      </div>
 
       <Image
         className="sqD"
