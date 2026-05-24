@@ -50,9 +50,8 @@ export const AboutMe = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap">
-        <div className="pt-10 flex-1 max-w-6xl mx-auto gap-y-20 gap-x-20 text-left">
-          <div className="inline-flex flex-col">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10 pt-10">
+        <div className="flex-1 text-left flex flex-col gap-8">
             <div>
               <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
                 Contact
@@ -68,37 +67,48 @@ export const AboutMe = () => {
                 and I&apos;ll get back. I swear.
               </p>
             </div>
-            <div className="mt-8">
+            <div>
               <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
                 Job Opportunities
               </h1>
               <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
-                I&apos;m looking for a challenge currently, If you see me as a good fit,
-                reach out for my{" "}
+                I&apos;m currently a Product Manager at Fast Retailing (Uniqlo) in Tokyo. Always open to
+                interesting conversations — reach out for my{" "}
                 <a
+                  href="mailto:umang350@gmail.com"
                   target="__blank"
                   className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
                 >
                   CV
                 </a>{" "}
-                and I&apos;d love to work with you.
+                and I&apos;d love to connect.
               </p>
             </div>
-            <div className="mt-8">
+            <div>
               <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
                 Skills
               </h1>
-              <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
-                Development: Spring Boot, React, Node.Js, Angular, Flask, Oracle, Firebase, AWS, CI CD Pipelines
-                <br />
-                Languages Syntaxed: Java, JavaScript, SQL, Excel Macro VBA, C++, Python, R, MATLAB, Shell Scripting
-                <br />
-                Add-ons: Video Editing, Graphic Design, Seminar/Public Speaker, Project Management, Game Development
-              </p>
+              <div className="mt-4 flex flex-col gap-4">
+                {[
+                  { label: "Product Management", tags: ["Roadmapping", "PRDs", "Backlog Prioritization", "Metrics/KPIs", "User Research", "Tech Architecture"] },
+                  { label: "Data & Analytics", tags: ["SQL", "Anaplan", "Tableau", "Python", "Excel", "BigQuery", "PowerBI", "Google Analytics"] },
+                  { label: "Platforms", tags: ["JavaScript", "Java", "React", "Git", "Jenkins", "Docker", "AWS", "GCP", "REST APIs", "Microservices"] },
+                ].map(({ label, tags }) => (
+                  <div key={label}>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">{label}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {tags.map(tag => (
+                        <span key={tag} className="px-3 py-1 text-sm rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
         </div>
-        <div className="m-10 p-10 flex-3">
+        <div className="flex-1 pt-6">
           <Experience />
         </div>
       </div>
