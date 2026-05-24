@@ -73,15 +73,16 @@ export const AboutMe = () => {
                 Job Opportunities
               </h1>
               <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
-                I&apos;m looking for a challenge currently, If you see me as a good fit,
-                reach out for my{" "}
+                I&apos;m currently a Product Manager at Fast Retailing (Uniqlo) in Tokyo. Always open to
+                interesting conversations — reach out for my{" "}
                 <a
+                  href="mailto:umang350@gmail.com"
                   target="__blank"
                   className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
                 >
                   CV
                 </a>{" "}
-                and I&apos;d love to work with you.
+                and I&apos;d love to connect.
               </p>
             </div>
             <div className="mt-8">
@@ -89,11 +90,11 @@ export const AboutMe = () => {
                 Skills
               </h1>
               <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
-                Development: Spring Boot, React, Node.Js, Angular, Flask, Oracle, Firebase, AWS, CI CD Pipelines
+                Product Management: Roadmapping | PRDs | Backlog Prioritization | Metrics/KPIs | User Research | Tech Architecture
                 <br />
-                Languages Syntaxed: Java, JavaScript, SQL, Excel Macro VBA, C++, Python, R, MATLAB, Shell Scripting
+                Data & Analytics: SQL (Oracle, PostgreSQL) | Anaplan | Tableau | Python | Excel | BigQuery | PowerBI | Google Analytics
                 <br />
-                Add-ons: Video Editing, Graphic Design, Seminar/Public Speaker, Project Management, Game Development
+                Platforms: JavaScript | Java | React | Git | Jenkins | Docker | AWS | GCP | REST APIs | Microservices
               </p>
             </div>
           </div>
