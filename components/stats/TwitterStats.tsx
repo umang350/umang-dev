@@ -16,7 +16,7 @@ var headers : {
 };
 
 export default function InstagramStats() {
-    
+
     const {locale} = useRouter();
 
     headers = locale === 'ja' ? TwitterHeadersJA : TwitterHeaders;
@@ -28,7 +28,8 @@ export default function InstagramStats() {
 
     return (
         <div>
-            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 my-2 w-full">
+            <p className="text-[11px] font-bold text-dash-muted uppercase tracking-widest mb-3">Twitter</p>
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
                 {
                     data && (
                         <><MetricCard
@@ -61,8 +62,6 @@ export default function InstagramStats() {
                             />
                         </>)
                 }
-
-
             </div>
         </div>
     );

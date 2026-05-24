@@ -1,0 +1,30 @@
+---
+title: "Retail Operations Backend Systems"
+role: "Software Development Engineer"
+year: "2020–2022"
+company: "Fast Retailing (UNIQLO)"
+skills: ["Spring Boot", "React", "AWS", "CI/CD", "System Design"]
+summary: "Built the backend infrastructure for UNIQLO's store and warehouse operations — and developed the domain intuition that now drives my product decisions."
+---
+
+## Context
+
+I'm including this as a project not because it's a PM case study — it isn't — but because the engineering work I did here directly shapes how I think as a PM.
+
+When you've written the API that handles inventory sync, you know exactly what questions to ask when a PM comes to you with "can we just add a field to this request?" You know the answer is "it depends" — on consistency guarantees, on downstream consumers, on whether the schema is versioned. That knowledge changes the quality of the product decisions I make today.
+
+## What I Built
+
+Core backend services for store and warehouse operations — the systems that store associates and warehouse teams interact with on every shift:
+
+- **RESTful APIs** handling 10K+ daily transactions across store systems. Designed for reliability over novelty: clear versioning, consistent error codes, documented contracts.
+- **Event-driven architecture** for real-time inventory sync. When stock moves in a warehouse, the store system needs to know. When a store makes a sale, the forecast needs to update. We built this as an async event stream to decouple these systems and handle the reality that some of them go offline.
+- **CI/CD pipeline automation** that cut deployment time and reduced the manual steps that caused human error in production pushes.
+
+## What This Taught Me About Product
+
+**System constraints are product constraints.** Every time a PM asked for a feature that required cross-system consistency in real time, I knew it was a hard conversation. Real-time cross-system consistency is expensive. Eventual consistency is often good enough — but you have to design user experiences that tolerate it. I now design products with that in mind from the start.
+
+**Operations teams are underserved.** The systems I built were for internal users — store associates, warehouse managers, planners. They don't complain loudly. They build workarounds. As an engineer I noticed this; as a PM I now treat ops teams as a primary user segment, not a secondary one.
+
+**Reliability is a feature.** The APIs I built weren't exciting. They didn't have novel algorithms or interesting ML models. They were boring, consistent, and correct. I've brought that philosophy into product: sometimes the most valuable thing you can ship is a feature that just works, every time, without anyone having to think about it.

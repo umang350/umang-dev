@@ -11,64 +11,38 @@ function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
     : `${currentPage} - UMANG.dev`
     }`;
   return (
-    <div
-      className="w-full m-auto flex flex-col items-center justify-center min-h-screen opening-box-animate-paddin text-white overflow-hidden md:overflow-visible"
-      style={{ maxWidth: "1200px" }}
-    >
+    <div className="flex min-h-screen bg-dash-bg text-dash-text">
       <Head>
         <title>{pageTitle}</title>
 
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/favicon/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon/favicon-16x16.png"
-        />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
         <link rel="manifest" href="/favicon/site.webmanifest" />
-
-        <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+        <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#818CF8" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
-        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="msapplication-TileColor" content="#0B0F19" />
         <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#0B0F19" />
 
         <link rel="alternate" href="https://umang.dev" hrefLang="x-default" />
         <link rel="alternate" href="https://umang.dev" hrefLang="en" />
         <link rel="alternate" href="https://umang.dev/ja" hrefLang="ja" />
 
-
         <meta name="title" content={pageTitle} />
         <meta name="description" content={desc} />
-
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://umang.dev/" />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={desc} />
-        <meta
-          property="og:image"
-          content="https://umang.dev/misc/og.png"
-        />
-
+        <meta property="og:image" content="https://umang.dev/misc/og.png" />
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://umang.dev/" />
         <meta property="twitter:title" content={pageTitle} />
         <meta property="twitter:description" content={desc} />
-        <meta
-          property="twitter:image"
-          content="https://umang.dev/misc/og.png"
-        ></meta>
+        <meta property="twitter:image" content="https://umang.dev/misc/og.png" />
       </Head>
+
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
@@ -83,7 +57,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-KG4HCXQ');`,
         }}
-      ></Script>
+      />
       <Script
         id="gtag-init"
         strategy="afterInteractive"
@@ -107,16 +81,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         />
       </noscript>
 
-      <main className="p-5 w-full flex-1 text-center">
-        <div className="hidden sm:block z-50 sticky">
-          <Navbar currentPage={currentPage} />
-        </div>
-        <div className="-m-5 block sm:hidden z-50 sticky">
+      {/* Sidebar — desktop only */}
+      <div className="hidden lg:block">
+        <Navbar currentPage={currentPage} />
+      </div>
+
+      {/* Main content area */}
+      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
+        {/* Mobile header */}
+        <div className="block lg:hidden sticky top-0 z-50">
           <MobileNavbar />
         </div>
-        {children}
-      </main>
-      <Footer />
+
+        <main className="flex-1 w-full max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 py-8">
+          {children}
+        </main>
+
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -29,9 +29,9 @@ function YoutubeSubCount() {
   const viewCount = new Number(data?.viewCount);
 
   return (
-    <div className="mt-10">
-
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 my-2 w-full">
+    <div>
+      <p className="text-[11px] font-bold text-dash-muted uppercase tracking-widest mb-3">YouTube</p>
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
         <MetricCard
           header={headers.subscribers}
           link={routes[0].link}

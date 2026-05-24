@@ -3,27 +3,25 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 export default function VideoCard({ item }: { item: video }) {
-
-
   const { locale } = useRouter();
 
   return (
-    <div className="flex flex-col m-1 sm:basis-[48%] md:basis-[24%] items-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4">
+    <div className="card-base noise flex flex-col m-1 sm:basis-[48%] md:basis-[24%] items-center p-4">
       <a
         aria-label={item.videoId}
         target="_blank"
         rel="noopener noreferrer"
         href={"https://www.youtube.com/watch?v=" + item.videoId}
-        className="transition duration-150 ease-in-out"
+        className="transition-colors hover:text-dash-acc group"
         data-bs-toggle="tooltip"
         title={
           '🖥️' + Number(item.statistics.viewCount).toLocaleString() + ' 👍' + Number(item.statistics.likeCount).toLocaleString() + ' 🕰️' + timeAgo(item.publishedAt, locale)
         }
       >
-        <div className="flex flex-row items-center text-gray-900 dark:text-gray-100">
+        <div className="flex flex-row items-center text-dash-text text-sm font-medium">
           {item.title}
           <svg
-            className="h-4 w-4 ml-1"
+            className="h-3.5 w-3.5 ml-1.5 opacity-50 group-hover:opacity-100 flex-shrink-0"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -38,12 +36,12 @@ export default function VideoCard({ item }: { item: video }) {
           </svg>
         </div>
       </a>
-      <div className="flex flex-row mt-auto spacing-sm justify-center text-center">
-        <Image src={item.thumbnail} alt={item.title} height="360" width="480" style={{ clipPath: "inset(20px 0px 20px 0px)" }} />
+      <div className="flex flex-row mt-auto justify-center text-center">
+        <Image src={item.thumbnail} alt={item.title} height="360" width="480" className="rounded-lg mt-3" style={{ clipPath: "inset(20px 0px 20px 0px)" }} />
       </div>
-      <p className="flex flex-row justify-end spacing-sm text-sm text-black dark:text-white -mt-4" style={{ alignContent: "flex-end" }}>
+      <p className="flex flex-row justify-end text-xs text-dash-muted -mt-4 w-full" style={{ alignContent: "flex-end" }}>
         <span className="mr-auto">{'🖥️' + Number(item.statistics.viewCount).toLocaleString() + ' 👍' + Number(item.statistics.likeCount).toLocaleString() + ' 🕰️'}</span>
-        <a href={'/yt/' + item.videoId} className="transition duration-150 ease-in-out ml-auto "
+        <a href={'/yt/' + item.videoId} className="hover:text-dash-acc transition-colors ml-auto"
           data-bs-toggle="tooltip" title={
             new Date(item.publishedAt).toLocaleTimeString() + ", " + new Date(item.publishedAt).toLocaleDateString()
           }>{

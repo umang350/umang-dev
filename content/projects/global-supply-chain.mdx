@@ -1,0 +1,44 @@
+---
+title: "Global Retail Supply Chain Platform"
+role: "Product Manager"
+year: "2024–Present"
+company: "Fast Retailing (UNIQLO)"
+skills: ["Product Roadmapping", "Stakeholder Management", "Agile/Scrum", "Data Analytics"]
+summary: "Owning the product roadmap for UNIQLO's supply chain systems across US, Europe, and Southeast Asia — translating ops complexity into quarterly release plans that actually ship."
+---
+
+## The Problem
+
+Running supply chain operations across 50+ global stores means data lives in silos — warehouse teams in New Jersey don't see the same picture as logistics in Amsterdam or planners in Tokyo. When fulfillment decisions depend on stale or manually reconciled data, order-to-ship cycles drag, stockouts happen at the wrong time, and regional ops teams are left flying blind.
+
+The ask: build the product layer that connects these systems and gives every region a single operational truth.
+
+## My Role
+
+I own the roadmap for the supply chain platform end-to-end. That means partnering with 3 engineering squads and ops stakeholders across 5 regions — synthesizing warehouse manager feedback, logistics telemetry, and executive strategy into prioritized quarterly release plans.
+
+The hardest part isn't writing specs. It's holding the line on priority when every region has a critical request and engineering capacity is finite.
+
+## Key Decisions
+
+**Inventory allocation engine — build vs. extend**
+
+We had an existing allocation model built for a single-region context. Two options: extend it with regional overrides (faster, cheaper) or build a new rules engine that's region-native from day one (slower, higher upfront cost).
+
+I chose extend-first. The reason: we needed something in production within one quarter to validate the core assumption — that real-time regional data would actually change allocation decisions. It did. We then justified the rules engine investment with data.
+
+**Shipment tracking dashboard — internal tool vs. ops-facing product**
+
+Logistics had a dashboard. It was a Grafana board that ops teams could technically access but never actually used. I ran a discovery sprint: 6 warehouse manager interviews in 2 weeks. The insight was that ops teams didn't want *more* data — they wanted *fewer* decisions. The dashboard we shipped surfaces one number per region: on-track or not, with a drill-down only when something's wrong.
+
+Adoption was immediate. Ops teams stopped checking the Grafana board within a week.
+
+## Impact
+
+- Defined and shipped inventory allocation engine serving 50+ global stores
+- Cut order-to-ship cycle time by partnering with logistics to redesign fulfillment workflows
+- Launched real-time shipment tracking dashboard adopted by regional ops teams within the first week of launch
+
+## What I Learned
+
+Global rollouts fail at handoff — the moment when product is "done" but ops hasn't internalized it. I started embedding an ops partner in every sprint review, not just at launch. It slowed delivery by one sprint and cut re-work by significantly more.

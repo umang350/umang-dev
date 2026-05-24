@@ -1,120 +1,107 @@
 import Link from "next/link";
 import React from "react";
-import { footer, footerJA, Footer } from "@/data/global";
+import { footer, footerJA, Footer as FooterType } from "@/data/global";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
 function Footer() {
-
   const { locale, pathname } = useRouter();
-
-  var footerData: Footer = locale === "ja" ? footerJA : footer;
+  const footerData: FooterType = locale === "ja" ? footerJA : footer;
 
   return (
-    <footer>
-      <div className="w-full max-w-4xl m-auto grid grid-cols-2 sm:grid-cols-3 justify-between items-start z-50 sticky">
-        {footerData.columns.map((item, index) => {
-          return (
-            <div key={index} className="text-left mb-5 sm:mb-0">
-              <h4 className="uppercase text-fun-gray text-sm font-bold ">
-                <Link href={item.link}>{item.title}</Link>
+    <footer className="border-t border-dash-border mt-auto">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 py-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 mb-8">
+          {footerData.columns.map((item, index) => (
+            <div key={index}>
+              <h4 className="text-[11px] uppercase text-dash-muted font-bold tracking-widest mb-4">
+                <Link href={item.link || "#"}>{item.title}</Link>
               </h4>
-              <div>
-                {item.links.map((item, index) => {
-                  return (
-                    <div key={index} className="my-4 dark:text-white text-black">
-                      {item.leavesWebsite ? (
-                        <a
-                          href={item.link}
-                          target="_blank"
-                          className="items-center flex" rel="noreferrer"
-                        >
-                          {item.icon && (
-                            <span className="pr-2 -mb-1">
-                              <Image src={item.icon} width={20} height={20} alt="" />
-                            </span>
-                          )}
-                          {item.name}
-                        </a>
-                      ) : (
-                        <Link className="dark:text-white text-black" href={item.link}>{item.name}</Link>
-                      )}
-                    </div>
-                  );
-                })}
+              <div className="space-y-3">
+                {item.links.map((link, i) => (
+                  <div key={i}>
+                    {link.leavesWebsite ? (
+                      <a
+                        href={link.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 text-sm text-dash-muted hover:text-dash-acc transition-colors"
+                      >
+                        {link.icon && (
+                          <Image src={link.icon} width={14} height={14} alt="" className="opacity-60 invert" />
+                        )}
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link href={link.link} className="text-sm text-dash-muted hover:text-dash-acc transition-colors">
+                        {link.name}
+                      </Link>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
-          );
-        })}
-        <div className="text-center col-span-2 sm:col-auto sm:text-left pt-8 sm:mt-0 sm:pt-0 text-fun-gray border-t border-fun-pink-dark sm:border-0">
-          <h4 className="uppercase text-fun-gray text-sm font-bold">
-            {footerData.support.title}
-          </h4>
-          <div className="space-y-2 mt-4 w-full flex items-center sm:items-start flex-col">
-            <p className="text-fun-gray text-xs pt-1">
+          ))}
+          <div className="col-span-2 sm:col-auto pt-6 sm:pt-0 border-t border-dash-border sm:border-0">
+            <h4 className="text-[11px] uppercase text-dash-muted font-bold tracking-widest mb-4">
+              {footerData.support.title}
+            </h4>
+            <p className="text-xs text-dash-muted leading-relaxed mb-6">
               {footerData.support.message}
             </p>
-          </div>
-          <h4 className="uppercase text-fun-gray text-sm font-bold pt-8">
-            {footerData.language.title}
-          </h4>
-          <div>
-            {footerData.language.languages.map((item, index) => {
-              return (
-                <div key={index} className={`my-4 ${locale === item.locale ? "dark:text-white text-black" : "dark:text-white dark:text-opacity-50 text-opacity-50 text-black"}`}>
-                  <Link key={locale}
-                    href={item.locale === "en" ? pathname : item.locale + pathname}
-                    locale={false} className="dark:text-white text-black" >{item.name}</Link>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-      <div className="max-w-4xl w-full m-auto mb-6 mt-8 pt-8 sm:mt-4 sm:pt-4 text-center text-fun-gray border-t border-fun-pink-dark  z-50 sticky">
-        <div className="flex flex-col items-center justify-center ">
-          <div className="inline-flex items-center uppercase text-xs font-bold tracking-widest">
-            Made with{" "}
-            <div className="space-x-2 inline-flex items-center -mt-1 ml-3">
-              <span>
-                <Image
-                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
-                  width="26"
-                  height="26"
-                  alt="React"
-                />
-                <span className="sr-only">React</span>
-              </span>
-              <span>
-                <Image
-                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original-wordmark.svg"
-                  width="40"
-                  height="40"
-                  className="dark:invert"
-                  alt="NextJS"
-                />
-                <span className="sr-only">NextJS</span>
-              </span>
-              <span>
-                <Image
-                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original-wordmark.svg"
-                  width="60"
-                  height="60"
-                  alt="TailwindCSS"
-                />
-                <span className="sr-only">TailwindCSS</span>
-              </span>
+            <h4 className="text-[11px] uppercase text-dash-muted font-bold tracking-widest mb-3">
+              {footerData.language.title}
+            </h4>
+            <div className="flex gap-3">
+              {footerData.language.languages.map((item, index) => (
+                <Link
+                  key={index}
+                  href={item.locale === "en" ? pathname : item.locale + pathname}
+                  locale={false}
+                  className={`text-sm transition-colors ${
+                    locale === item.locale
+                      ? "text-dash-acc font-semibold"
+                      : "text-dash-muted hover:text-dash-text"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
             </div>
           </div>
-          <div className="mt-2 text-xs ">
+        </div>
+
+        <div className="pt-6 border-t border-dash-border flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="text-xs text-dash-muted">
             Made by{" "}
-            <a
-              href="mailto:contact@umang.dev"
-              className="text-fun-gray-light font-medium"
-            >
+            <a href="mailto:contact@umang.dev" className="text-dash-text font-medium hover:text-dash-acc transition-colors">
               {footerData.make.maker}
             </a>
             . {footerData.make.dislaimer}
+          </div>
+          <div className="flex items-center gap-2 text-[10px] text-dash-muted uppercase tracking-widest font-semibold">
+            Built with
+            <span className="flex items-center gap-1.5 ml-1">
+              <Image
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+                width={16}
+                height={16}
+                alt="React"
+              />
+              <Image
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original-wordmark.svg"
+                width={28}
+                height={28}
+                className="invert"
+                alt="NextJS"
+              />
+              <Image
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original-wordmark.svg"
+                width={40}
+                height={40}
+                alt="TailwindCSS"
+              />
+            </span>
           </div>
         </div>
       </div>

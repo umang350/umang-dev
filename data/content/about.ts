@@ -1,7 +1,7 @@
 export const information = {
     title: "About Me.",
     subheading: "Product Manager | Strategy | Builder",
-    desc: "I'm a Product Manager with a strong engineering foundation, passionate about building user-centric products that drive business impact at scale. Currently leading product initiatives at Fast Retailing (UNIQLO) in New York, where I bridge technology and retail to deliver seamless customer experiences across global markets.",
+    desc: "I'm a Product Manager with a strong engineering foundation, passionate about building user-centric products that drive business impact at scale. Currently leading product initiatives at Fast Retailing (UNIQLO) in Tokyo, where I bridge technology and retail to deliver seamless customer experiences across global markets.",
     descPoints: [
         "Leading product strategy and roadmap for global retail technology at UNIQLO USGHQ",
         "Transitioned from SDE to PM, combining deep technical expertise with product thinking",

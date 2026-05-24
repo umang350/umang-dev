@@ -29,7 +29,8 @@ export default function GoogleAnalyticsStats() {
 
     return (
         <div>
-            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 my-2 w-full">
+            <p className="text-[11px] font-bold text-dash-muted uppercase tracking-widest mb-3">Google Analytics</p>
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
                 <MetricCard
                     header={headers.views}
                     link={link}

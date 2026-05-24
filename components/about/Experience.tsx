@@ -2,51 +2,56 @@ import { experience, experienceJA } from "@/data/content/about";
 import { useRouter } from "next/router";
 
 export const Experience = () => {
+  const { locale } = useRouter();
+  const experienceData = (locale === "ja" ? experienceJA : experience).sort(
+    (item1, item2) => Number(item2.key) - Number(item1.key)
+  );
 
-    const { locale } = useRouter();
-    var experienceData = (locale === "ja" ? experienceJA : experience).sort((item1, item2) => {
-        return (Number(item2.key) - Number(item1.key));
-    });
+  return (
+    <div className="relative pl-5">
+      {/* Timeline line */}
+      <div
+        className="absolute left-1 top-1.5 bottom-1.5 w-px"
+        style={{ background: "linear-gradient(180deg, #818CF8, #262D3D)" }}
+      />
 
-    return (
-        <>
-            {
-                experienceData.map((item, index) => {
-                    return (<div key={index}><ExperienceCard
-                        key={index}
-                        title={item.title}
-                        desc={item.desc}
-                        year={item.year}
-                        company={item.company}
-                        companyLink={item.companyLink}
-                    />
-                        {
-                            index != experienceData.length - 1 ?
-                                (<div key={index + "arrow"} className="divider-container flex flex-col items-center -mt-2">
-                                    <div className="w-4 h-4 bg-green-500 rounded-full relative z-10">
-                                        <div className="w-4 h-4 bg-green-500 rounded-full relative z-10 animate-ping"></div>
-                                    </div>
-                                    <div className="w-1 h-24 bg-gray-200 dark:bg-gray-500 rounded-full -mt-2"></div>
-                                </div>) : null
-                        }
-                    </div>)
-                })
-            }
-        </>
-    )
-}
+      {experienceData.map((item, index) => {
+        const isCurrent = index === 0;
+        return (
+          <div key={item.key} className={`relative ${index < experienceData.length - 1 ? "mb-6" : ""}`}>
+            {/* Dot */}
+            <div
+              className={`absolute -left-[16px] top-1.5 w-[9px] h-[9px] rounded-full border-2 ${
+                isCurrent
+                  ? "bg-dash-acc border-dash-acc shadow-[0_0_10px_rgba(129,140,248,0.5)]"
+                  : "bg-dash-border border-dash-border"
+              }`}
+            />
 
-const ExperienceCard = ({ title, desc, year, company, companyLink }) => {
-    return (
-        <div className="relative experience-card border p-4 rounded-md shadow-xl bg-white dark:bg-gray-800 z-10 mx-4">
-            <h1 className="absolute -top-10 -left-14 md:-left-10 md:-top-10 text-4xl text-gray-400 font-bold dark:text-gray-500">
-                {year}
-            </h1>
-            <h1 className="font-semibold text-xl text-gray-600 dark:text-gray-400">{title}</h1>
-            <a href={companyLink} className="text-gray-500">
-                {company}
+            <div className="flex items-center gap-2.5 mb-1">
+              <span
+                className={`text-[11px] font-bold px-2 py-0.5 rounded font-monospace ${
+                  isCurrent
+                    ? "bg-dash-acc/15 text-dash-acc"
+                    : "bg-dash-muted/10 text-dash-muted"
+                }`}
+              >
+                {item.year}
+              </span>
+              <span className="text-[14px] font-semibold text-dash-text">{item.title}</span>
+            </div>
+            <a
+              href={item.companyLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-dash-muted hover:text-dash-acc transition-colors"
+            >
+              {item.company}
             </a>
-            <p className="text-gray-600 dark:text-gray-400 my-2">{desc}</p>
-        </div>
-    );
+            <p className="text-xs text-dash-muted mt-1 leading-relaxed">{item.desc}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
 };

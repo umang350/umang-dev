@@ -82,9 +82,9 @@ export const routes: Route[] = [
     description: "Product case studies and projects I've led."
   },
   {
-    title: "Statistics",
+    title: "Impact",
     path: "/stats",
-    description: "Deep dive into statistics"
+    description: "PM metrics: site analytics, community, and reach."
   },
   {
     title: "Videos",
@@ -110,9 +110,9 @@ export const routesJA: Route[] = [
     description: "プロダクトケーススタディとリードしたプロジェクト。"
   },
   {
-    title: "統計学",
+    title: "インパクト",
     path: "/stats",
-    description: "統計の詳細分析"
+    description: "PMメトリクス：サイト分析、コミュニティ、リーチ。"
   },
   {
     title: "Videos",
@@ -143,7 +143,7 @@ export const footerJA: Footer = {
           leavesWebsite: false,
         },
         {
-          name: "統計学",
+          name: "インパクト",
           link: "/stats",
           leavesWebsite: false,
         },
@@ -231,7 +231,7 @@ export const footer: Footer = {
           leavesWebsite: false,
         },
         {
-          name: "Statistics",
+          name: "Impact",
           link: "/stats",
           leavesWebsite: false,
         },
