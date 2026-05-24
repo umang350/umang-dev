@@ -50,9 +50,8 @@ export const AboutMe = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap">
-        <div className="pt-10 flex-1 max-w-6xl mx-auto gap-y-20 gap-x-20 text-left">
-          <div className="inline-flex flex-col">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10 pt-10">
+        <div className="flex-1 text-left flex flex-col gap-8">
             <div>
               <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
                 Contact
@@ -68,7 +67,7 @@ export const AboutMe = () => {
                 and I&apos;ll get back. I swear.
               </p>
             </div>
-            <div className="mt-8">
+            <div>
               <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
                 Job Opportunities
               </h1>
@@ -85,7 +84,7 @@ export const AboutMe = () => {
                 and I&apos;d love to connect.
               </p>
             </div>
-            <div className="mt-8">
+            <div>
               <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
                 Skills
               </h1>
@@ -97,9 +96,8 @@ export const AboutMe = () => {
                 Platforms: JavaScript | Java | React | Git | Jenkins | Docker | AWS | GCP | REST APIs | Microservices
               </p>
             </div>
-          </div>
         </div>
-        <div className="m-10 p-10 flex-3">
+        <div className="flex-1 pt-6">
           <Experience />
         </div>
       </div>
