@@ -88,13 +88,24 @@ export const AboutMe = () => {
               <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
                 Skills
               </h1>
-              <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
-                Product Management: Roadmapping | PRDs | Backlog Prioritization | Metrics/KPIs | User Research | Tech Architecture
-                <br />
-                Data & Analytics: SQL (Oracle, PostgreSQL) | Anaplan | Tableau | Python | Excel | BigQuery | PowerBI | Google Analytics
-                <br />
-                Platforms: JavaScript | Java | React | Git | Jenkins | Docker | AWS | GCP | REST APIs | Microservices
-              </p>
+              <div className="mt-4 flex flex-col gap-4">
+                {[
+                  { label: "Product Management", tags: ["Roadmapping", "PRDs", "Backlog Prioritization", "Metrics/KPIs", "User Research", "Tech Architecture"] },
+                  { label: "Data & Analytics", tags: ["SQL", "Anaplan", "Tableau", "Python", "Excel", "BigQuery", "PowerBI", "Google Analytics"] },
+                  { label: "Platforms", tags: ["JavaScript", "Java", "React", "Git", "Jenkins", "Docker", "AWS", "GCP", "REST APIs", "Microservices"] },
+                ].map(({ label, tags }) => (
+                  <div key={label}>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">{label}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {tags.map(tag => (
+                        <span key={tag} className="px-3 py-1 text-sm rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
         </div>
         <div className="flex-1 pt-6">
