@@ -9,6 +9,9 @@ const pageTitle = "Anaplan Toolkit — See how your Anaplan model fits together"
 const pageDesc =
     "A Chrome and Firefox side panel that reports on the structure of the Anaplan model you have open: action IDs, usages, module lineage, page filters, saved views and workspace storage. Read-only, nothing leaves your browser.";
 
+const chromeStoreUrl = "https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj";
+const firefoxStoreUrl = "https://addons.mozilla.org/en-US/firefox/addon/anaplan-toolkit/";
+
 const reportGroups = [
     {
         group: "Summary",
@@ -135,11 +138,11 @@ const AnaplanToolkit = () => {
                                 Search it, export it to CSV, and stop clicking through blueprints.
                             </p>
                             <div className="mt-8 flex flex-wrap items-center gap-3">
-                                <a href="#get" className="rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-700">
-                                    Get Anaplan Toolkit
+                                <a href={chromeStoreUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-700">
+                                    Add to Chrome
                                 </a>
-                                <a href="#reports" className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50">
-                                    See the reports
+                                <a href={firefoxStoreUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                                    Add to Firefox
                                 </a>
                             </div>
                             <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
@@ -313,17 +316,23 @@ const AnaplanToolkit = () => {
                         <Image src="/anaplan/icon.png" alt="" width={64} height={64} className="mx-auto rounded-2xl ring-4 ring-white/20" />
                         <h2 className="mt-6 text-3xl font-bold tracking-tight sm:text-4xl">Get Anaplan Toolkit</h2>
                         <p className="mx-auto mt-4 max-w-xl text-red-50">
-                            Works in Chrome, Edge and other Chromium browsers, and Firefox 140+.
-                            Get in touch for access or with questions and feedback.
+                            Free on the Chrome Web Store (Chrome, Edge and other Chromium browsers)
+                            and Firefox Add-ons (Firefox 140+).
                         </p>
                         <div className="mt-8 flex flex-wrap justify-center gap-3">
-                            <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit" className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-50">
-                                Contact for access
+                            <a href={chromeStoreUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-50">
+                                Add to Chrome
                             </a>
-                            <Link href="/privacy/anaplan-toolkit" className="rounded-lg border border-white/40 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10">
-                                Privacy policy
-                            </Link>
+                            <a href={firefoxStoreUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-50">
+                                Add to Firefox
+                            </a>
                         </div>
+                        <p className="mt-6 text-sm text-red-100">
+                            Questions or feedback?{" "}
+                            <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit" className="font-medium text-white underline underline-offset-2">contact@umang.dev</a>
+                            {" · "}
+                            <Link href="/privacy/anaplan-toolkit" className="font-medium text-white underline underline-offset-2">Privacy policy</Link>
+                        </p>
                     </div>
                 </section>
             </main>
