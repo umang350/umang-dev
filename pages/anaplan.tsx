@@ -7,16 +7,27 @@ import Link from "next/link";
 
 const pageTitle = "Anaplan Toolkit — See how your Anaplan model fits together";
 const pageDesc =
-    "A Chrome and Firefox side panel that reports on the structure of the Anaplan model you have open: action IDs, usages, module lineage, page filters, saved views and workspace storage. Read-only, nothing leaves your browser.";
+    "A Chrome and Firefox side panel that reports on the structure of the Anaplan model you have open: action IDs and process steps, module lineage, page filters, saved views, modules, line items and lists, revision tags, lock status and workspace storage. Read-only, nothing leaves your browser.";
 
 const chromeStoreUrl = "https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj";
 const firefoxStoreUrl = "https://addons.mozilla.org/en-US/firefox/addon/anaplan-toolkit/";
+
+const version = "2.6";
+
+const whatsNew = [
+    { title: "Structure reports", body: "Modules (with time scale and range), Line Items with searchable formulas, and Lists with their properties." },
+    { title: "Process Steps", body: "Each process's actions in order, with a Copy API call button for every process and action." },
+    { title: "Revisions", body: "Every revision tag, who created it and when, and each model it was applied to." },
+    { title: "Lock Monitor", body: "Watches whether the model is available, busy, locked or offline — and says what's running." },
+    { title: "Get all & Download all", body: "Gather every report in one go from the Summary, then save them all as CSVs in a single .zip." },
+    { title: "Sort any column", body: "Click a column header to sort; CSV export follows the order you've sorted." },
+];
 
 const reportGroups = [
     {
         group: "Summary",
         items: [
-            { name: "Model Summary", desc: "Model name, IDs, cell count, size, structure counts, and which reports are already loaded." },
+            { name: "Model Summary", desc: "Model name, IDs, size, structure counts and which reports are loaded. Get all data, or download every report as CSVs in one .zip." },
         ],
     },
     {
@@ -24,6 +35,7 @@ const reportGroups = [
         items: [
             { name: "Actions & File IDs", desc: "Internal IDs for Processes, Imports, Exports and Files — ready to paste into API integrations." },
             { name: "Action Usages", desc: "Where every Action is wired up across Apps, Pages and widgets." },
+            { name: "Process Steps", desc: "The actions each process runs, in order, with each import's source and target — plus a Copy API call button." },
         ],
     },
     {
@@ -42,6 +54,21 @@ const reportGroups = [
         ],
     },
     {
+        group: "Structure",
+        items: [
+            { name: "Modules", desc: "Every module with its dimensions, time scale, time range, line item and saved view counts, and the App pages that use it." },
+            { name: "Line Items", desc: "Every line item with its format, applies-to, time scale and formula. Search matches formulas too." },
+            { name: "Lists & Properties", desc: "Every list with its parent and item count, and every property with its format and formula." },
+        ],
+    },
+    {
+        group: "Revisions & Lock",
+        items: [
+            { name: "Revision Tags", desc: "Who created each revision tag, when and where, and every model it was applied to." },
+            { name: "Lock Monitor", desc: "Checks at an interval you choose whether the model is available, busy, locked or offline, with a timeline of what was running." },
+        ],
+    },
+    {
         group: "Workspace",
         items: [
             { name: "Workspace Models & Storage", desc: "Active, archived and deleted models with sizes, under an in-use vs allowance meter." },
@@ -53,11 +80,11 @@ const reportGroups = [
 const steps = [
     { title: "Open a model", body: "Sign in to Anaplan as usual and open any model. The toolkit uses your existing session — no extra login." },
     { title: "Open the side panel", body: "Click the toolbar icon. A panel opens next to the model, starting on the Model Summary." },
-    { title: "Get the data", body: "Pick a report and hit Get data. Results are cached per model, searchable, and export to CSV in one click." },
+    { title: "Get the data", body: "Pick a report and hit Get data — or Get all data from the Summary. Results are cached per model, searchable, sortable and export to CSV in one click." },
 ];
 
 const privacy = [
-    { title: "Talks only to Anaplan", body: "The only network calls go to the Anaplan tenant you're already signed into. No other server is ever contacted." },
+    { title: "Talks only to Anaplan", body: "Every network call goes to Anaplan, over the session you're already signed into. No other server is ever contacted, and no password or token is ever asked for." },
     { title: "No analytics or telemetry", body: "No tracking, crash reporting or advertising SDKs. Firefox listing declares data collection: none." },
     { title: "Read-only", body: "Every report only reads model metadata. Nothing in your model is created, changed or deleted." },
     { title: "Session-only cache", body: "Results live in browser session storage, keyed per model, and expire after 6 hours or when the browser closes." },
@@ -81,6 +108,50 @@ const Check = () => (
         <path fillRule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" clipRule="evenodd" />
     </svg>
 );
+
+type Store = "chrome" | "firefox";
+
+const stores: Record<Store, { url: string; logo: string; eyebrow: string; name: string; label: string }> = {
+    chrome: {
+        url: chromeStoreUrl,
+        logo: "/anaplan/badges/chrome.svg",
+        eyebrow: "Available in the",
+        name: "Chrome Web Store",
+        label: "Add Anaplan Toolkit to Chrome from the Chrome Web Store",
+    },
+    firefox: {
+        url: firefoxStoreUrl,
+        logo: "/anaplan/badges/firefox.svg",
+        eyebrow: "Get the add-on for",
+        name: "Firefox",
+        label: "Add Anaplan Toolkit to Firefox from Firefox Add-ons",
+    },
+};
+
+// Store badge with the browser's own logo. "dark" sits on light backgrounds,
+// "light" on the red call-to-action panel.
+const StoreButton = ({ store, tone = "dark" }: { store: Store; tone?: "dark" | "light" }) => {
+    const s = stores[store];
+    const toneClass =
+        tone === "dark"
+            ? "bg-gray-900 text-white ring-gray-900 hover:bg-gray-800"
+            : "bg-white text-gray-900 ring-white/40 hover:bg-gray-50";
+    return (
+        <a
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={s.label}
+            className={`group inline-flex h-14 min-w-[13rem] items-center gap-3 rounded-xl px-4 shadow-sm ring-1 transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 ${toneClass}`}
+        >
+            <Image src={s.logo} alt="" width={32} height={32} unoptimized className="h-8 w-8 flex-none" />
+            <span className="flex flex-col text-left leading-tight">
+                <span className={`text-[11px] font-medium ${tone === "dark" ? "text-gray-300" : "text-gray-500"}`}>{s.eyebrow}</span>
+                <span className="text-base font-semibold tracking-tight">{s.name}</span>
+            </span>
+        </a>
+    );
+};
 
 const AnaplanToolkit = () => {
     return (
@@ -127,23 +198,20 @@ const AnaplanToolkit = () => {
                         <div>
                             <span className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-700">
                                 <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
-                                Chrome &amp; Firefox extension · v2.5
+                                Chrome &amp; Firefox extension · v{version}
                             </span>
                             <h1 className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
                                 See how your Anaplan model <span className="text-red-600">fits together.</span>
                             </h1>
                             <p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-600">
-                                A side panel that reports on the structure of the model you have open — action IDs,
-                                where actions and modules are used, page filters, saved views and workspace storage.
-                                Search it, export it to CSV, and stop clicking through blueprints.
+                                A side panel that reports on the structure of the model you have open — action IDs and
+                                process steps, where actions and modules are used, page filters, saved views, line item
+                                formulas, revision tags, lock status and workspace storage. Search it, sort it, export it
+                                to CSV, and stop clicking through blueprints.
                             </p>
                             <div className="mt-8 flex flex-wrap items-center gap-3">
-                                <a href={chromeStoreUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-700">
-                                    Add to Chrome
-                                </a>
-                                <a href={firefoxStoreUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50">
-                                    Add to Firefox
-                                </a>
+                                <StoreButton store="chrome" />
+                                <StoreButton store="firefox" />
                             </div>
                             <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
                                 <li className="flex items-center gap-2"><Check /> Read-only</li>
@@ -169,14 +237,33 @@ const AnaplanToolkit = () => {
                 <section className="border-y border-gray-200 bg-gray-50">
                     <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 text-center sm:px-6 md:grid-cols-4">
                         {[
-                            ["10", "reports + summary"],
-                            ["1 click", "CSV export"],
+                            ["15", "reports + summary"],
+                            ["1 .zip", "every report as CSV"],
                             ["0", "third-party servers"],
                             ["6h", "per-model cache"],
                         ].map(([n, l]) => (
                             <div key={l}>
                                 <div className="text-2xl font-bold tracking-tight sm:text-3xl">{n}</div>
                                 <div className="mt-1 text-sm text-gray-500">{l}</div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* What's new */}
+                <section className="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
+                    <div className="max-w-2xl">
+                        <p className="text-sm font-semibold uppercase tracking-wider text-red-600">New in {version}</p>
+                        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">What&apos;s new</h2>
+                    </div>
+                    <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {whatsNew.map((n) => (
+                            <div key={n.title} className="flex gap-3 rounded-2xl border border-gray-200 bg-white p-5">
+                                <Check />
+                                <div>
+                                    <h3 className="font-semibold">{n.title}</h3>
+                                    <p className="mt-1 text-sm leading-relaxed text-gray-600">{n.body}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -210,7 +297,8 @@ const AnaplanToolkit = () => {
                             <div className="text-xs font-semibold uppercase tracking-wider text-gray-500">In every report</div>
                             <ul className="mt-4 space-y-3 text-sm text-gray-700">
                                 <li className="flex gap-2"><Check /> Fuzzy search across every column</li>
-                                <li className="flex gap-2"><Check /> One-click CSV export</li>
+                                <li className="flex gap-2"><Check /> Sort by any column header</li>
+                                <li className="flex gap-2"><Check /> One-click CSV export, in your sort order</li>
                                 <li className="flex gap-2"><Check /> Cached per model — switch models freely</li>
                                 <li className="flex gap-2"><Check /> Live progress while large models load</li>
                             </ul>
@@ -301,7 +389,8 @@ const AnaplanToolkit = () => {
                         </div>
                         <p className="mt-8 text-sm text-gray-600">
                             Permissions: access to <code className="rounded bg-gray-200/70 px-1.5 py-0.5 text-xs">https://*.anaplan.com/*</code>,
-                            the side panel, and local storage. Read the full{" "}
+                            the side panel, and local storage — plus notifications, only if you turn on the Lock
+                            Monitor&apos;s <em>Notify me</em>. Read the full{" "}
                             <Link href="/privacy/anaplan-toolkit" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">
                                 privacy policy
                             </Link>.
@@ -320,12 +409,8 @@ const AnaplanToolkit = () => {
                             and Firefox Add-ons (Firefox 140+).
                         </p>
                         <div className="mt-8 flex flex-wrap justify-center gap-3">
-                            <a href={chromeStoreUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-50">
-                                Add to Chrome
-                            </a>
-                            <a href={firefoxStoreUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-50">
-                                Add to Firefox
-                            </a>
+                            <StoreButton store="chrome" tone="light" />
+                            <StoreButton store="firefox" tone="light" />
                         </div>
                         <p className="mt-6 text-sm text-red-100">
                             Questions or feedback?{" "}
