@@ -7,20 +7,20 @@ import ToolkitShell from "@/components/anaplan/ToolkitShell";
 
 const pageTitle = "Anaplan Toolkit — See how your Anaplan model fits together";
 const pageDesc =
-    "A Chrome and Firefox side panel that reports on the structure of the Anaplan model you have open: action IDs and process steps, module lineage, page filters, saved views, modules, line items and lists, revision tags, lock status and workspace storage. Read-only, nothing leaves your browser.";
+    "A Chrome and Firefox side panel that reports on the structure of the Anaplan model you have open: action IDs and process steps, module lineage, page filters, the line items on each App page, saved views, modules, line items and lists, revision tags, lock status and workspace storage. Read-only, nothing leaves your browser.";
 
 const chromeStoreUrl = "https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj";
 const firefoxStoreUrl = "https://addons.mozilla.org/en-US/firefox/addon/anaplan-toolkit/";
 
-const version = "2.6";
+const version = "2.7";
 
 const whatsNew = [
-    { title: "Structure reports", body: "Modules (with time scale and range), Line Items with searchable formulas, and Lists with their properties." },
-    { title: "Process Steps", body: "Each process's actions in order, with a Copy API call button for every process and action." },
-    { title: "Revisions", body: "Every revision tag, who created it and when, and each model it was applied to." },
-    { title: "Lock Monitor", body: "Watches whether the model is available, busy, locked or offline — and says what's running." },
+    { title: "Pages › Line Items", body: "Pick App pages and see every line item their widgets show — in rows, columns, page selector, filter, formatting, sort or hidden." },
+    { title: "Hidden on grid", body: "Formatting rules Anaplan keeps on hidden line items are tagged Hidden on grid instead of counted as usage. Data-filtered axes are tagged too." },
+    { title: "Actions, rebuilt", body: "Opens instantly on thousands of actions, searches names and IDs, sorts every column, and copies an ID in one click." },
+    { title: "Fast on large models", body: "Big tables draw 400 rows at a time with Show more, while search, sort and CSV export still cover every row." },
+    { title: "Lock Monitor", body: "Checks every second up to every minute whether the model is available, busy, locked or offline — with reply times and what's running." },
     { title: "Get all & Download all", body: "Gather every report in one go from the Summary, then save them all as CSVs in a single .zip." },
-    { title: "Sort any column", body: "Click a column header to sort; CSV export follows the order you've sorted." },
 ];
 
 const reportGroups = [
@@ -33,7 +33,7 @@ const reportGroups = [
     {
         group: "Actions",
         items: [
-            { name: "Actions & File IDs", desc: "Internal IDs for Processes, Imports, Exports and Files — ready to paste into API integrations." },
+            { name: "Actions & File IDs", desc: "Internal IDs for Processes, Imports, Exports and Files — search by name or ID and copy one with a click." },
             { name: "Action Usages", desc: "Where every Action is wired up across Apps, Pages and widgets." },
             { name: "Process Steps", desc: "The actions each process runs, in order, with each import's source and target — plus a Copy API call button." },
         ],
@@ -42,7 +42,8 @@ const reportGroups = [
         group: "Pages",
         items: [
             { name: "Linked Pages", desc: "Which Apps and Pages consume each module, so you can trace lineage from backend to frontend." },
-            { name: "Filters & Conditional Formatting", desc: "Line Items used as page filters or formatting rules, shown beside their conditions and colours." },
+            { name: "Filters & Conditional Formatting", desc: "Line Items used as page filters or formatting rules, shown beside their conditions and colours — rules on hidden line items are tagged Hidden on grid." },
+            { name: "Line Items on Pages", desc: "Every line item shown on the App pages you pick, and where: rows, columns, page selector, filter, formatting, sort or hidden. By page or by line item." },
         ],
     },
     {
@@ -65,7 +66,7 @@ const reportGroups = [
         group: "Revisions & Lock",
         items: [
             { name: "Revision Tags", desc: "Who created each revision tag, when and where, and every model it was applied to." },
-            { name: "Lock Monitor", desc: "Checks at an interval you choose whether the model is available, busy, locked or offline, with a timeline of what was running." },
+            { name: "Lock Monitor", desc: "Checks at an interval you choose whether the model is available, busy, locked or offline, with a timeline, reply times and every check." },
         ],
     },
     {
@@ -193,13 +194,13 @@ const AnaplanToolkit = () => {
                             <li className="flex items-center gap-2"><Check /> CSV export everywhere</li>
                         </ul>
                     </div>
-                    <div className="relative">
+                    <div className="relative mx-auto w-full max-w-md">
                         <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 shadow-2xl shadow-gray-900/10">
                             <Image
-                                src="/anaplan/summary.png"
-                                alt="Anaplan Toolkit side panel showing the Model Summary: IDs, cell count, size, structure counts and loaded reports"
-                                width={1280}
-                                height={800}
+                                src="/anaplan/summary-panel.png"
+                                alt="Anaplan Toolkit side panel showing the Model Summary: model IDs, cell count, size, structure counts and the reports still to load"
+                                width={1408}
+                                height={1948}
                                 priority
                             />
                         </div>
@@ -211,7 +212,7 @@ const AnaplanToolkit = () => {
             <section className="border-y border-gray-200 bg-gray-50">
                 <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 text-center sm:px-6 md:grid-cols-4">
                     {[
-                        ["15", "reports + summary"],
+                        ["16", "reports + summary"],
                         ["1 .zip", "every report as CSV"],
                         ["0", "third-party servers"],
                         ["6h", "per-model cache"],
@@ -275,7 +276,39 @@ const AnaplanToolkit = () => {
                             <li className="flex gap-2"><Check /> One-click CSV export, in your sort order</li>
                             <li className="flex gap-2"><Check /> Cached per model — switch models freely</li>
                             <li className="flex gap-2"><Check /> Live progress while large models load</li>
+                            <li className="flex gap-2"><Check /> Stays fast on tables with thousands of rows</li>
                         </ul>
+                    </div>
+                </div>
+            </section>
+
+            {/* Lock Monitor spotlight */}
+            <section className="border-t border-gray-200 bg-gray-50 py-20">
+                <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2">
+                    <div>
+                        <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Lock Monitor</p>
+                        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Know when the model is free</h2>
+                        <p className="mt-4 text-gray-600">
+                            Before a big import or a deployment, find out whether anything else is running. The Lock
+                            Monitor asks Anaplan for the model&apos;s status at an interval you choose and records every
+                            answer.
+                        </p>
+                        <ul className="mt-6 space-y-3 text-sm text-gray-700">
+                            <li className="flex gap-2"><Check /> Available, Updating, Busy, Locked or Offline — and what&apos;s running when it&apos;s busy</li>
+                            <li className="flex gap-2"><Check /> Every second up to every minute, for up to 12 hours</li>
+                            <li className="flex gap-2"><Check /> A timeline plus every check with its reply time, exportable to CSV</li>
+                            <li className="flex gap-2"><Check /> Optional notifications when the model has been busy for 30 seconds, and when it&apos;s free again</li>
+                        </ul>
+                    </div>
+                    <div className="mx-auto w-full max-w-md">
+                        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl shadow-gray-900/10">
+                            <Image
+                                src="/anaplan/lock-monitor.png"
+                                alt="Lock Monitor checks: the model available for 100% of 12 checks a second apart, median reply 208 ms, with each check listed"
+                                width={1404}
+                                height={1936}
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
