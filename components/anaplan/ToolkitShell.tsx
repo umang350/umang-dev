@@ -47,6 +47,7 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
                         <Link href={`${base}#reports`} className="hover:text-gray-900">Reports</Link>
                         <Link href={`${base}#how`} className="hover:text-gray-900">How it works</Link>
                         <Link href={`${base}#privacy`} className="hover:text-gray-900">Privacy</Link>
+                        <a href="https://github.com/sponsors/umang350" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">♥ Sponsor</a>
                     </nav>
                     <Link href={`${base}#get`} className="rounded-lg bg-gray-900 px-3.5 py-2 text-sm font-medium text-white hover:bg-gray-700">
                         Get it
@@ -62,6 +63,8 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
                         © 2026 Umang Chauhan · <a href="https://umang.dev" className="hover:text-gray-800">umang.dev</a>
                         {" · "}
                         <Link href="/anaplan/toolkit/privacy" className="hover:text-gray-800">Privacy policy</Link>
+                        {" · "}
+                        <a href="https://github.com/sponsors/umang350" target="_blank" rel="noopener noreferrer" className="hover:text-gray-800">Sponsor</a>
                     </p>
                     <p className="max-w-xl md:text-right">
                         Anaplan Toolkit is an independent tool and is not affiliated with, endorsed by, or sponsored by Anaplan, Inc.

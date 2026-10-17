@@ -57,7 +57,7 @@ const AnaplanToolkitPrivacy = () => {
                 <H2>What the extension does not do</H2>
                 <UL>
                     <li>It does not contact any server other than Anaplan&apos;s own (your Anaplan tenant and, for the Lock Monitor, <Code>api.anaplan.com</Code>).</li>
-                    <li>Every call only reads. It never creates, changes, deletes or runs anything in your model; its &ldquo;Copy API call&rdquo; buttons only copy a request to your clipboard.</li>
+                    <li>Every report only reads. It never creates, changes, deletes or runs anything in your model; its &ldquo;Copy API call&rdquo; buttons only copy a request to your clipboard. The one exception is the Delete Line Items and Delete Modules views, which you start yourself: they check an uploaded CSV against your model, and delete only after you type the number of items to delete. The CSV is not stored.</li>
                     <li>It does not include analytics, telemetry, crash reporting, or advertising SDKs of any kind.</li>
                     <li>It does not sell, rent, or share any data with third parties, because no data ever leaves your browser and the Anaplan servers it already talks to.</li>
                     <li>It does not track your browsing activity outside of Anaplan.</li>
