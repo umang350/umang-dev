@@ -7,20 +7,21 @@ import ToolkitShell from "@/components/anaplan/ToolkitShell";
 
 const pageTitle = "Anaplan Toolkit — See how your Anaplan model fits together";
 const pageDesc =
-    "A Chrome and Firefox side panel that reports on the structure of the Anaplan model you have open: action IDs and process steps, module lineage, page filters, the line items on each App page, saved views, modules, line items and lists, revision tags, lock status and workspace storage. Read-only, nothing leaves your browser.";
+    "A Chrome and Firefox side panel that reports on the structure of the Anaplan model you have open: action IDs and process steps, module lineage, page filters, saved views, modules, line items and lists, revision tags, lock status and workspace storage — plus formula editor shortcuts and bulk clean-up. Reports are read-only; nothing leaves your browser.";
 
 const chromeStoreUrl = "https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj";
 const firefoxStoreUrl = "https://addons.mozilla.org/en-US/firefox/addon/anaplan-toolkit/";
 
-const version = "2.7";
+const version = "2.11";
+const sponsorUrl = "https://github.com/sponsors/umang350";
 
 const whatsNew = [
-    { title: "Pages › Line Items", body: "Pick App pages and see every line item their widgets show — in rows, columns, page selector, filter, formatting, sort or hidden." },
-    { title: "Hidden on grid", body: "Formatting rules Anaplan keeps on hidden line items are tagged Hidden on grid instead of counted as usage. Data-filtered axes are tagged too." },
-    { title: "Actions, rebuilt", body: "Opens instantly on thousands of actions, searches names and IDs, sorts every column, and copies an ID in one click." },
-    { title: "Fast on large models", body: "Big tables draw 400 rows at a time with Show more, while search, sort and CSV export still cover every row." },
-    { title: "Lock Monitor", body: "Checks every second up to every minute whether the model is available, busy, locked or offline — with reply times and what's running." },
-    { title: "Get all & Download all", body: "Gather every report in one go from the Summary, then save them all as CSVs in a single .zip." },
+    { title: "Click through formulas", body: "Cmd/Ctrl+click a module, line item, list or subset in a formula to open it — in Blueprint view, with the row selected. Add Shift for a new tab." },
+    { title: "Hover for the detail", body: "Hover a reference for its format, dimensions, time scale and a readable formula, or a function for its category, description and help link." },
+    { title: "Applies To, clickable", body: "In the Blueprint grid, Cmd/Ctrl+click a list or subset in Applies To to open it, or hover for its parent, item count and the modules that use it." },
+    { title: "Bulk delete, checked first", body: "Delete Line Items and Delete Modules read a CSV, check every row against the live model, and ask you to type the count before anything changes." },
+    { title: "5x faster module deletes", body: "Modules go up to 10 to a request and ones a process uses are skipped. An 11,197-line-item cleanup dropped from 31 minutes to 6. Export a run log." },
+    { title: "Revision Tags & Process Steps", body: "See who tagged each revision and where it was applied, and the ordered actions each process runs — with a Copy API call button." },
 ];
 
 const reportGroups = [
@@ -60,6 +61,7 @@ const reportGroups = [
             { name: "Modules", desc: "Every module with its dimensions, time scale, time range, line item and saved view counts, and the App pages that use it." },
             { name: "Line Items", desc: "Every line item with its format, applies-to, time scale and formula. Search matches formulas too." },
             { name: "Lists & Properties", desc: "Every list with its parent and item count, and every property with its format and formula." },
+            { name: "Delete Line Items & Delete Modules", desc: "Upload a CSV (the Line Items or Modules export works as is), review what Anaplan will accept, then delete in an order that avoids refusals. The only views that change your model." },
         ],
     },
     {
@@ -87,7 +89,7 @@ const steps = [
 const privacy = [
     { title: "Talks only to Anaplan", body: "Every network call goes to Anaplan, over the session you're already signed into. No other server is ever contacted, and no password or token is ever asked for." },
     { title: "No analytics or telemetry", body: "No tracking, crash reporting or advertising SDKs. Firefox listing declares data collection: none." },
-    { title: "Read-only", body: "Every report only reads model metadata. Nothing in your model is created, changed or deleted." },
+    { title: "Reports only read", body: "Every report reads model metadata and changes nothing. Only Delete Line Items and Delete Modules write, and only after you check a CSV and type the number to delete." },
     { title: "Session-only cache", body: "Results live in browser session storage, keyed per model, and expire after 6 hours or when the browser closes." },
 ];
 
@@ -188,8 +190,12 @@ const AnaplanToolkit = () => {
                             <StoreButton store="chrome" />
                             <StoreButton store="firefox" />
                         </div>
+                        <p className="mt-4 text-sm text-gray-500">
+                            Free and built in spare time.{" "}
+                            <a href={sponsorUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">♥ Sponsor on GitHub</a>
+                        </p>
                         <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
-                            <li className="flex items-center gap-2"><Check /> Read-only</li>
+                            <li className="flex items-center gap-2"><Check /> Reports are read-only</li>
                             <li className="flex items-center gap-2"><Check /> No data leaves your browser</li>
                             <li className="flex items-center gap-2"><Check /> CSV export everywhere</li>
                         </ul>
@@ -212,7 +218,7 @@ const AnaplanToolkit = () => {
             <section className="border-y border-gray-200 bg-gray-50">
                 <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 text-center sm:px-6 md:grid-cols-4">
                     {[
-                        ["16", "reports + summary"],
+                        ["19", "reports + summary"],
                         ["1 .zip", "every report as CSV"],
                         ["0", "third-party servers"],
                         ["6h", "per-model cache"],
@@ -278,6 +284,31 @@ const AnaplanToolkit = () => {
                             <li className="flex gap-2"><Check /> Live progress while large models load</li>
                             <li className="flex gap-2"><Check /> Stays fast on tables with thousands of rows</li>
                         </ul>
+                    </div>
+                </div>
+            </section>
+
+            {/* Formula editor spotlight */}
+            <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
+                <div className="rounded-3xl border border-gray-200 bg-gradient-to-br from-white to-red-50/60 p-8 sm:p-12">
+                    <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Formula editor</p>
+                    <h2 className="mt-2 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">Navigate formulas like code</h2>
+                    <p className="mt-4 max-w-2xl text-gray-600">
+                        Work through a dependency chain without hunting through tabs. Everything reads Anaplan&apos;s
+                        in-page model data — no server is contacted and nothing is changed.
+                    </p>
+                    <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        {[
+                            ["Jump to a reference", "Cmd/Ctrl+click opens a module, line item, list or subset; Shift opens a new tab."],
+                            ["Readable hover cards", "Format, applies to, time scale and a formula with THEN/ELSE on their own lines."],
+                            ["Function help", "Hover ITEM(, [LOOKUP: …], IF and more for the category, description and a help link."],
+                            ["Spot slips early", "Markers for unbalanced brackets, unterminated quotes and a Module.'x' that doesn't exist."],
+                        ].map(([t, b]) => (
+                            <div key={t} className="rounded-2xl border border-gray-200 bg-white p-5">
+                                <h3 className="font-semibold">{t}</h3>
+                                <p className="mt-1 text-sm leading-relaxed text-gray-600">{b}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -420,6 +451,10 @@ const AnaplanToolkit = () => {
                         <StoreButton store="firefox" tone="light" />
                     </div>
                     <p className="mt-6 text-sm text-red-100">
+                        Saves you time?{" "}
+                        <a href={sponsorUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-white underline underline-offset-2">♥ Sponsor the project on GitHub</a>
+                    </p>
+                    <p className="mt-2 text-sm text-red-100">
                         Questions or feedback?{" "}
                         <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit" className="font-medium text-white underline underline-offset-2">contact@umang.dev</a>
                         {" · "}
