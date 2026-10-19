@@ -16,10 +16,14 @@ type Props = {
     // On the landing page the nav jumps to sections in place; elsewhere it
     // links back to them on /anaplan.
     onLanding?: boolean;
+    keywords?: string;
+    // Structured data, rendered as application/ld+json.
+    jsonLd?: object[];
+    noindex?: boolean;
     children: React.ReactNode;
 };
 
-const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, children }: Props) => {
+const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, keywords, jsonLd, noindex = false, children }: Props) => {
     const base = onLanding ? "" : "/anaplan";
     return (
         <div className="min-h-screen w-full bg-white text-gray-900 antialiased">
@@ -28,13 +32,25 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
                 <meta name="description" content={desc} />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" type="image/png" href="/anaplan/icon.png" />
+                <link rel="canonical" href={`https://umang.dev${path}`} />
+                {keywords && <meta name="keywords" content={keywords} />}
+                <meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1"} />
+                <meta name="author" content="Umang Chauhan" />
+                <meta property="og:site_name" content="Anaplan Toolkit" />
+                <meta property="og:locale" content="en_US" />
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content={`https://umang.dev${path}`} />
                 <meta property="og:title" content={ogTitle ?? title} />
                 <meta property="og:description" content={desc} />
                 {ogImage && <meta property="og:image" content={ogImage} />}
+                <meta name="twitter:title" content={ogTitle ?? title} />
+                <meta name="twitter:description" content={desc} />
+                {ogImage && <meta name="twitter:image" content={ogImage} />}
                 <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
                 <meta name="theme-color" content="#ffffff" />
+                {jsonLd?.map((d, i) => (
+                    <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }} />
+                ))}
             </Head>
 
             <header className="sticky top-0 z-20 border-b border-gray-200/70 bg-white/80 backdrop-blur">
@@ -46,6 +62,8 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
                     <nav className="hidden items-center gap-7 text-sm text-gray-600 md:flex">
                         <Link href={`${base}#reports`} className="hover:text-gray-900">Reports</Link>
                         <Link href={`${base}#how`} className="hover:text-gray-900">How it works</Link>
+                        <Link href={`${base}#roadmap`} className="hover:text-gray-900">Roadmap</Link>
+                        <Link href={`${base}#faq`} className="hover:text-gray-900">FAQ</Link>
                         <Link href={`${base}#privacy`} className="hover:text-gray-900">Privacy</Link>
                         <a href="https://github.com/sponsors/umang350" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">♥ Sponsor</a>
                     </nav>

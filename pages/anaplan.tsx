@@ -5,9 +5,11 @@ import ToolkitShell from "@/components/anaplan/ToolkitShell";
 // Standalone landing page for the Anaplan Toolkit extension. Deliberately
 // does not use the site's Page/Navbar/Footer so it can stand on its own.
 
-const pageTitle = "Anaplan Toolkit — See how your Anaplan model fits together";
+const pageTitle = "Anaplan Toolkit — Free Anaplan Model Analyzer, Formula Editor Tools & API Helper (Chrome & Firefox)";
 const pageDesc =
-    "A Chrome and Firefox side panel that reports on the structure of the Anaplan model you have open: action IDs and process steps, module lineage, page filters, saved views, modules, line items and lists, revision tags, lock status and workspace storage — plus formula editor shortcuts and bulk clean-up. Reports are read-only; nothing leaves your browser.";
+    "Free Chrome and Firefox extension for Anaplan model builders. Find action, import, export and process IDs for the Anaplan API, trace module lineage, audit line item formulas, bulk delete modules and line items, check Planual rules, monitor model locks and review workspace storage. Reads only your Anaplan session; no data leaves your browser.";
+const pageKeywords =
+    "Anaplan tool, Anaplan Chrome extension, Anaplan Firefox add-on, Anaplan API, Anaplan Integration API action IDs, Anaplan process ID, Anaplan import export ID, Anaplan model documentation, Anaplan model audit, Anaplan formula editor, Anaplan Planual, Anaplan lineage, Anaplan dependency, Anaplan unused line items, Anaplan bulk delete, Anaplan lock monitor, Anaplan model busy, Anaplan workspace storage, Anaplan revision tags, Anaplan model builder tools, Anaplan Blueprint";
 
 const chromeStoreUrl = "https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj";
 const firefoxStoreUrl = "https://addons.mozilla.org/en-US/firefox/addon/anaplan-toolkit/";
@@ -77,6 +79,73 @@ const reportGroups = [
             { name: "Workspace Models & Storage", desc: "Active, archived and deleted models with sizes, under an in-use vs allowance meter." },
             { name: "All Workspaces", desc: "Storage for every workspace you can access, and every active model across them." },
         ],
+    },
+];
+
+// Roadmap lanes follow the status bands of slanaplan's capability matrix
+// (https://slanai.slavi.dev/apis): what the Anaplan JSON-RPC/REST surface can
+// do, versus what the Toolkit already covers. A direction, not a commitment.
+type RoadmapStatus = "shipped" | "building" | "next" | "exploring" | "not";
+
+const roadmapStatus: Record<RoadmapStatus, { label: string; badge: string }> = {
+    shipped: { label: "Shipped", badge: "bg-green-50 text-green-700 ring-green-200" },
+    building: { label: "In progress", badge: "bg-blue-50 text-blue-700 ring-blue-200" },
+    next: { label: "Planned", badge: "bg-amber-50 text-amber-700 ring-amber-200" },
+    exploring: { label: "Exploring", badge: "bg-gray-100 text-gray-700 ring-gray-200" },
+    not: { label: "Not planned", badge: "bg-red-50 text-red-700 ring-red-200" },
+};
+
+const roadmap: { status: RoadmapStatus; title: string; body: string }[] = [
+    { status: "shipped", title: "Read the model's structure", body: "Modules, line items, lists, properties, dimensions, formulas and where each is used — as searchable, exportable reports." },
+    { status: "shipped", title: "Delete structure, safely", body: "Delete Line Items and Delete Modules: checked against the live model first, ordered from the formulas, with a run log." },
+    { status: "shipped", title: "Model status and workspaces", body: "Lock Monitor, workspace storage and model lists — read-only." },
+    { status: "shipped", title: "Revisions and process steps", body: "Revision tags and where they were applied, plus the ordered actions behind every process." },
+    { status: "building", title: "Planual checks in the editor", body: "Rule markers and Blueprint grid badges for per-line-item Planual rules. Being tested against real models." },
+    { status: "next", title: "Bulk create from CSV", body: "The counterpart to bulk delete: upload modules, line items or lists and review them against the model before anything is created." },
+    { status: "next", title: "Bulk edit formulas and formats", body: "Change formula, format, style or summary on many line items at once, with a before / after diff and the same type-the-count confirmation." },
+    { status: "next", title: "Bulk rename with references", body: "Rename modules and line items from a CSV, listing every formula, page and view that mentions the old name." },
+    { status: "exploring", title: "Import, export and process definitions", body: "Read how imports, exports and processes are defined, not only where they are used. Editing them is a later question." },
+    { status: "exploring", title: "Sync and revision discovery", body: "Show which models sync from or to this one and the revision pairs between them. Discovery only; it would not run a sync." },
+    { status: "exploring", title: "Move and reorder", body: "Reorder line items, lists and modules from a CSV. Anaplan applies these changes strictly in order, so the check step matters most here." },
+    { status: "not", title: "Creating a model from scratch", body: "Anaplan offers copy and delete, not create. The Toolkit will not try to work around that." },
+    { status: "not", title: "Page, board and card authoring", body: "The biggest gap in tooling around Anaplan today. Reports on pages stay; building them is out of scope." },
+    { status: "not", title: "Versions, calendar and subsets", body: "These sit outside Anaplan's own public API, so they will not be built." },
+];
+
+const faqs = [
+    { q: "How do I find an Anaplan action, import, export or process ID for the API?", a: "Open the model, open the Toolkit side panel and choose Actions & File IDs. Every process, import, export and file is listed with its internal ID, searchable by name, with a one-click copy. Process Steps adds a Copy API call button that builds an Anaplan Integration API v2 curl command for you to run with your own token." },
+    { q: "Is there an Anaplan tool to document or audit a whole model?", a: "Yes. Get all data loads every report for the open model and Download all as CSV gives you modules, line items, lists, formulas, saved views, page usage and more in one .zip. Summary can also write model documentation as a Markdown file." },
+    { q: "How can I see where a line item or module is used in Anaplan?", a: "Linked Pages shows which Apps and Pages use each module, Line Items on Pages shows where each line item appears on a page, and the formula editor shows Used by and Depends on when you hover a reference." },
+    { q: "Can I bulk delete Anaplan line items or modules?", a: "Yes. Delete Line Items and Delete Modules read a CSV, check every row against the live model, order the deletes so Anaplan accepts them, and ask you to type the count before anything changes. They are the only views that write to your model." },
+    { q: "Does Anaplan Toolkit check the Planual?", a: "It marks a set of per-line-item Planual rules in the formula editor and the Blueprint grid, and the Lint report lists them across the model with each rule linked to its Planual page. They are approximations of the rules, not a replacement for review." },
+    { q: "How do I know whether an Anaplan model is busy or locked?", a: "Lock Monitor checks the model at an interval you choose, from every second to every minute for up to 12 hours, and records whether it is available, updating, busy, locked or offline, with what is running when busy." },
+    { q: "Is it safe? Does it send my Anaplan data anywhere?", a: "The extension only talks to Anaplan, over the session you are already signed in with. It has no analytics, no telemetry and never asks for a password or token. Results stay in your browser's session storage." },
+    { q: "Which browsers does Anaplan Toolkit support, and is it free?", a: "It is free for Chrome, Edge and other Chromium browsers from the Chrome Web Store, and for Firefox 140 and later from Firefox Add-ons. It is an independent tool and not affiliated with Anaplan, Inc." },
+];
+
+const jsonLd = [
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: "Anaplan Toolkit",
+        alternateName: "Anaplan Toolkit browser extension",
+        applicationCategory: "DeveloperApplication",
+        applicationSubCategory: "Browser extension",
+        operatingSystem: "Chrome, Edge, Firefox",
+        softwareVersion: version,
+        url: "https://umang.dev/anaplan",
+        image: "https://umang.dev/anaplan/summary.png",
+        description: pageDesc,
+        downloadUrl: [chromeStoreUrl, firefoxStoreUrl],
+        installUrl: chromeStoreUrl,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        author: { "@type": "Person", name: "Umang Chauhan", url: "https://umang.dev" },
+        featureList: reportGroups.flatMap((g) => g.items.map((i) => i.name)),
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
     },
 ];
 
@@ -163,8 +232,10 @@ const AnaplanToolkit = () => {
             desc={pageDesc}
             path="/anaplan"
             ogImage="https://umang.dev/anaplan/summary.png"
-            ogTitle="Anaplan Toolkit"
+            ogTitle="Anaplan Toolkit — free Anaplan model analyzer & API helper"
             onLanding
+            keywords={pageKeywords}
+            jsonLd={jsonLd}
         >
             {/* Hero */}
             <section className="relative overflow-hidden">
@@ -204,7 +275,7 @@ const AnaplanToolkit = () => {
                         <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 shadow-2xl shadow-gray-900/10">
                             <Image
                                 src="/anaplan/summary-panel.png"
-                                alt="Anaplan Toolkit side panel showing the Model Summary: model IDs, cell count, size, structure counts and the reports still to load"
+                                alt="Anaplan Toolkit extension side panel showing an Anaplan model summary: model IDs, size, module and line item counts"
                                 width={1408}
                                 height={1948}
                                 priority
@@ -344,6 +415,35 @@ const AnaplanToolkit = () => {
                 </div>
             </section>
 
+            {/* Roadmap */}
+            <section id="roadmap" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6">
+                <div className="max-w-2xl">
+                    <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Roadmap</p>
+                    <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Where the Toolkit is heading</h2>
+                    <p className="mt-4 text-gray-600">
+                        Mapped against what Anaplan&apos;s own interfaces can do, using the capability matrix of{" "}
+                        <a href="https://slanai.slavi.dev/apis" target="_blank" rel="noopener noreferrer" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">slanaplan</a>
+                        , a separate project that documents what is built, what is partial and what is not possible.
+                        A direction, not a promise: order and scope can change.
+                    </p>
+                </div>
+                <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {roadmap.map((r) => (
+                        <div key={r.title} className={`rounded-2xl border border-gray-200 bg-white p-5 ${r.status === "not" ? "opacity-80" : ""}`}>
+                            <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset ${roadmapStatus[r.status].badge}`}>
+                                {roadmapStatus[r.status].label}
+                            </span>
+                            <h3 className="mt-3 font-semibold">{r.title}</h3>
+                            <p className="mt-1 text-sm leading-relaxed text-gray-600">{r.body}</p>
+                        </div>
+                    ))}
+                </div>
+                <p className="mt-8 text-sm text-gray-600">
+                    Want something moved up, or something missing?{" "}
+                    <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit%20roadmap" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">Tell me</a>.
+                </p>
+            </section>
+
             {/* Screenshots */}
             <section className="bg-gray-900 py-20 text-white">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -433,6 +533,20 @@ const AnaplanToolkit = () => {
                             privacy policy
                         </Link>.
                     </p>
+                </div>
+            </section>
+
+            {/* FAQ */}
+            <section id="faq" className="mx-auto max-w-4xl scroll-mt-20 px-4 pb-20 sm:px-6">
+                <p className="text-sm font-semibold uppercase tracking-wider text-red-600">FAQ</p>
+                <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Anaplan questions, answered</h2>
+                <div className="mt-10 divide-y divide-gray-200 rounded-2xl border border-gray-200">
+                    {faqs.map((f) => (
+                        <details key={f.q} className="group p-5">
+                            <summary className="cursor-pointer list-none font-semibold marker:hidden">{f.q}</summary>
+                            <p className="mt-2 text-sm leading-relaxed text-gray-600">{f.a}</p>
+                        </details>
+                    ))}
                 </div>
             </section>
 
