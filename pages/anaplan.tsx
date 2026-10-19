@@ -80,6 +80,36 @@ const reportGroups = [
     },
 ];
 
+// Roadmap lanes follow the status bands of slanaplan's capability matrix
+// (https://slanai.slavi.dev/apis): what the Anaplan JSON-RPC/REST surface can
+// do, versus what the Toolkit already covers. A direction, not a commitment.
+type RoadmapStatus = "shipped" | "building" | "next" | "exploring" | "not";
+
+const roadmapStatus: Record<RoadmapStatus, { label: string; badge: string }> = {
+    shipped: { label: "Shipped", badge: "bg-green-50 text-green-700 ring-green-200" },
+    building: { label: "In progress", badge: "bg-blue-50 text-blue-700 ring-blue-200" },
+    next: { label: "Planned", badge: "bg-amber-50 text-amber-700 ring-amber-200" },
+    exploring: { label: "Exploring", badge: "bg-gray-100 text-gray-700 ring-gray-200" },
+    not: { label: "Not planned", badge: "bg-red-50 text-red-700 ring-red-200" },
+};
+
+const roadmap: { status: RoadmapStatus; title: string; body: string }[] = [
+    { status: "shipped", title: "Read the model's structure", body: "Modules, line items, lists, properties, dimensions, formulas and where each is used — as searchable, exportable reports." },
+    { status: "shipped", title: "Delete structure, safely", body: "Delete Line Items and Delete Modules: checked against the live model first, ordered from the formulas, with a run log." },
+    { status: "shipped", title: "Model status and workspaces", body: "Lock Monitor, workspace storage and model lists — read-only." },
+    { status: "shipped", title: "Revisions and process steps", body: "Revision tags and where they were applied, plus the ordered actions behind every process." },
+    { status: "building", title: "Planual checks in the editor", body: "Rule markers and Blueprint grid badges for per-line-item Planual rules. Being tested against real models." },
+    { status: "next", title: "Bulk create from CSV", body: "The counterpart to bulk delete: upload modules, line items or lists and review them against the model before anything is created." },
+    { status: "next", title: "Bulk edit formulas and formats", body: "Change formula, format, style or summary on many line items at once, with a before / after diff and the same type-the-count confirmation." },
+    { status: "next", title: "Bulk rename with references", body: "Rename modules and line items from a CSV, listing every formula, page and view that mentions the old name." },
+    { status: "exploring", title: "Import, export and process definitions", body: "Read how imports, exports and processes are defined, not only where they are used. Editing them is a later question." },
+    { status: "exploring", title: "Sync and revision discovery", body: "Show which models sync from or to this one and the revision pairs between them. Discovery only; it would not run a sync." },
+    { status: "exploring", title: "Move and reorder", body: "Reorder line items, lists and modules from a CSV. Anaplan applies these changes strictly in order, so the check step matters most here." },
+    { status: "not", title: "Creating a model from scratch", body: "Anaplan offers copy and delete, not create. The Toolkit will not try to work around that." },
+    { status: "not", title: "Page, board and card authoring", body: "The biggest gap in tooling around Anaplan today. Reports on pages stay; building them is out of scope." },
+    { status: "not", title: "Versions, calendar and subsets", body: "These sit outside Anaplan's own public API, so they will not be built." },
+];
+
 const steps = [
     { title: "Open a model", body: "Sign in to Anaplan as usual and open any model. The toolkit uses your existing session — no extra login." },
     { title: "Open the side panel", body: "Click the toolbar icon. A panel opens next to the model, starting on the Model Summary." },
@@ -342,6 +372,35 @@ const AnaplanToolkit = () => {
                         </div>
                     </div>
                 </div>
+            </section>
+
+            {/* Roadmap */}
+            <section id="roadmap" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6">
+                <div className="max-w-2xl">
+                    <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Roadmap</p>
+                    <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Where the Toolkit is heading</h2>
+                    <p className="mt-4 text-gray-600">
+                        Mapped against what Anaplan&apos;s own interfaces can do, using the capability matrix of{" "}
+                        <a href="https://slanai.slavi.dev/apis" target="_blank" rel="noopener noreferrer" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">slanaplan</a>
+                        , a separate project that documents what is built, what is partial and what is not possible.
+                        A direction, not a promise: order and scope can change.
+                    </p>
+                </div>
+                <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {roadmap.map((r) => (
+                        <div key={r.title} className={`rounded-2xl border border-gray-200 bg-white p-5 ${r.status === "not" ? "opacity-80" : ""}`}>
+                            <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset ${roadmapStatus[r.status].badge}`}>
+                                {roadmapStatus[r.status].label}
+                            </span>
+                            <h3 className="mt-3 font-semibold">{r.title}</h3>
+                            <p className="mt-1 text-sm leading-relaxed text-gray-600">{r.body}</p>
+                        </div>
+                    ))}
+                </div>
+                <p className="mt-8 text-sm text-gray-600">
+                    Want something moved up, or something missing?{" "}
+                    <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit%20roadmap" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">Tell me</a>.
+                </p>
             </section>
 
             {/* Screenshots */}
