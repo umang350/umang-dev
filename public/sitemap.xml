@@ -44,4 +44,18 @@
                   <priority>0.3</priority>
                 </url>
               
+                <url>
+                  <loc>https://umang.dev/anaplan/guides/improve-anaplan-model-and-usage</loc>
+                  <lastmod>2026-10-25T00:00:00.000Z</lastmod>
+                  <changefreq>monthly</changefreq>
+                  <priority>0.8</priority>
+                </url>
+              
+                <url>
+                  <loc>https://umang.dev/anaplan/guides/reduce-anaplan-model-size</loc>
+                  <lastmod>2026-10-25T00:00:00.000Z</lastmod>
+                  <changefreq>monthly</changefreq>
+                  <priority>0.8</priority>
+                </url>
+              
         </urlset>
