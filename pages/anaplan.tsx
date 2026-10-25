@@ -90,9 +90,8 @@ const reportGroups = [
     },
 ];
 
-// Roadmap lanes follow the status bands of slanaplan's capability matrix
-// (https://slanai.slavi.dev/apis): what the Anaplan JSON-RPC/REST surface can
-// do, versus what the Toolkit already covers. A direction, not a commitment.
+// Roadmap lanes: what the Toolkit already covers, versus what Anaplan's own
+// interfaces make possible. A direction, not a commitment.
 type RoadmapStatus = "shipped" | "next" | "exploring" | "not";
 
 const roadmapStatus: Record<RoadmapStatus, { label: string; badge: string }> = {
@@ -428,9 +427,6 @@ const AnaplanToolkit = () => {
                     <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Roadmap</p>
                     <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Where the Toolkit is heading</h2>
                     <p className="mt-4 text-gray-600">
-                        Mapped against what Anaplan&apos;s own interfaces can do, using the capability matrix of{" "}
-                        <a href="https://slanai.slavi.dev/apis" target="_blank" rel="noopener noreferrer" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">slanaplan</a>
-                        , a separate project that documents what is built, what is partial and what is not possible.
                         A direction, not a promise: order and scope can change.
                     </p>
                 </div>
