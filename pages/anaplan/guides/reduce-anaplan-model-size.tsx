@@ -6,7 +6,7 @@ const AnaplanReduceSize = () => (
         slug="reduce-anaplan-model-size"
         kicker="Guide"
         title="How to reduce the size of an Anaplan model"
-        desc="Where model size comes from, how to find the modules and line items that cost the most, and how to remove them safely."
+        desc="Where Anaplan model size comes from, how to find the modules, dimensions and line items that cost the most, and how to remove them safely."
         published="2026-10-25"
         readMinutes={9}
     >

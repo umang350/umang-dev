@@ -8,12 +8,16 @@ export const guides = [
     {
         slug: "improve-anaplan-model-and-usage",
         title: "How to improve an Anaplan model and how your team uses it",
+        seoTitle: "Improve an Anaplan Model & How Teams Use It | Anaplan Toolkit",
+        keywords: "improve Anaplan model, Anaplan model health check, Anaplan best practices, Anaplan Planual, Anaplan model audit, Anaplan unused line items, Anaplan CoE",
         desc: "A practical routine for builders and CoE leads: find structural problems, retire what nobody uses, keep formulas readable and make model health a monthly habit.",
     },
     {
         slug: "reduce-anaplan-model-size",
         title: "How to reduce the size of an Anaplan model",
-        desc: "Where model size comes from, how to find the modules and line items that cost the most, and how to remove them safely.",
+        seoTitle: "Reduce Anaplan Model Size: A Practical Guide | Anaplan Toolkit",
+        keywords: "reduce Anaplan model size, Anaplan model size, Anaplan workspace storage, Anaplan cell count, Anaplan sparsity, delete Anaplan line items, Anaplan optimization",
+        desc: "Where Anaplan model size comes from, how to find the modules, dimensions and line items that cost the most, and how to remove them safely.",
     },
 ];
 
@@ -58,9 +62,13 @@ type Props = {
     children: React.ReactNode;
 };
 
+const ogImage = "https://umang.dev/anaplan/summary.png";
+
 const Article = ({ slug, title, desc, kicker, published, readMinutes, children }: Props) => {
     const path = `/anaplan/guides/${slug}`;
     const others = guides.filter((g) => g.slug !== slug);
+    const guide = guides.find((g) => g.slug === slug);
+    const url = `https://umang.dev${path}`;
     const jsonLd = [
         {
             "@context": "https://schema.org",
@@ -69,17 +77,29 @@ const Article = ({ slug, title, desc, kicker, published, readMinutes, children }
             description: desc,
             datePublished: published,
             dateModified: published,
-            mainEntityOfPage: `https://umang.dev${path}`,
+            mainEntityOfPage: url,
+            image: ogImage,
+            inLanguage: "en",
             author: { "@type": "Person", name: "Umang Chauhan", url: "https://umang.dev" },
+            publisher: { "@type": "Person", name: "Umang Chauhan", url: "https://umang.dev" },
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Anaplan Toolkit", item: "https://umang.dev/anaplan" },
+                { "@type": "ListItem", position: 2, name: "Guides", item: "https://umang.dev/anaplan#guides" },
+                { "@type": "ListItem", position: 3, name: title, item: url },
+            ],
         },
     ];
     return (
-        <ToolkitShell title={`${title} — Anaplan Toolkit`} ogTitle={title} desc={desc} path={path} jsonLd={jsonLd}>
+        <ToolkitShell title={guide?.seoTitle ?? `${title} | Anaplan Toolkit`} ogTitle={title} desc={desc} path={path} ogImage={ogImage} ogType="article" keywords={guide?.keywords} jsonLd={jsonLd}>
             <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-20">
                 <nav className="text-sm text-gray-500" aria-label="Breadcrumb">
                     <Link href="/anaplan" className="hover:text-gray-800">Anaplan Toolkit</Link>
                     <span className="mx-2">/</span>
-                    <span className="text-gray-700">Guides</span>
+                    <Link href="/anaplan#guides" className="hover:text-gray-800">Guides</Link>
                 </nav>
                 <p className="mt-8 text-sm font-semibold uppercase tracking-wider text-red-600">{kicker}</p>
                 <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
