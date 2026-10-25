@@ -20,10 +20,11 @@ type Props = {
     // Structured data, rendered as application/ld+json.
     jsonLd?: object[];
     noindex?: boolean;
+    ogType?: "website" | "article";
     children: React.ReactNode;
 };
 
-const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, keywords, jsonLd, noindex = false, children }: Props) => {
+const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, keywords, jsonLd, noindex = false, ogType = "website", children }: Props) => {
     const base = onLanding ? "" : "/anaplan";
     return (
         <div className="min-h-screen w-full bg-white text-gray-900 antialiased">
@@ -38,7 +39,7 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
                 <meta name="author" content="Umang Chauhan" />
                 <meta property="og:site_name" content="Anaplan Toolkit" />
                 <meta property="og:locale" content="en_US" />
-                <meta property="og:type" content="website" />
+                <meta property="og:type" content={ogType} />
                 <meta property="og:url" content={`https://umang.dev${path}`} />
                 <meta property="og:title" content={ogTitle ?? title} />
                 <meta property="og:description" content={desc} />
@@ -63,6 +64,7 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
                         <Link href={`${base}#reports`} className="hover:text-gray-900">Reports</Link>
                         <Link href={`${base}#how`} className="hover:text-gray-900">How it works</Link>
                         <Link href={`${base}#roadmap`} className="hover:text-gray-900">Roadmap</Link>
+                        <Link href={`${base}#guides`} className="hover:text-gray-900">Guides</Link>
                         <Link href={`${base}#faq`} className="hover:text-gray-900">FAQ</Link>
                         <Link href={`${base}#privacy`} className="hover:text-gray-900">Privacy</Link>
                         <a href="https://github.com/sponsors/umang350" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">♥ Sponsor</a>

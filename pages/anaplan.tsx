@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import ToolkitShell from "@/components/anaplan/ToolkitShell";
+import { guides } from "@/components/anaplan/Article";
 
 // Standalone landing page for the Anaplan Toolkit extension. Deliberately
 // does not use the site's Page/Navbar/Footer so it can stand on its own.
@@ -549,6 +550,20 @@ const AnaplanToolkit = () => {
                             <summary className="cursor-pointer list-none font-semibold marker:hidden">{f.q}</summary>
                             <p className="mt-2 text-sm leading-relaxed text-gray-600">{f.a}</p>
                         </details>
+                    ))}
+                </div>
+            </section>
+
+            {/* Guides */}
+            <section id="guides" className="mx-auto max-w-4xl scroll-mt-20 px-4 pb-20 sm:px-6">
+                <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Guides</p>
+                <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Better Anaplan models</h2>
+                <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                    {guides.map((g) => (
+                        <Link key={g.slug} href={`/anaplan/guides/${g.slug}`} className="rounded-2xl border border-gray-200 p-5 hover:border-gray-400">
+                            <p className="font-semibold">{g.title}</p>
+                            <p className="mt-2 text-sm leading-relaxed text-gray-600">{g.desc}</p>
+                        </Link>
                     ))}
                 </div>
             </section>
