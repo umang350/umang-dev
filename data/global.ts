@@ -148,6 +148,11 @@ export const footerJA: Footer = {
           link: "/stats",
           leavesWebsite: false,
         },
+        {
+          name: "Anaplan Toolkit",
+          link: "/anaplan",
+          leavesWebsite: false,
+        },
       ],
     },
     {
@@ -245,6 +250,11 @@ export const footer: Footer = {
         {
           name: "Statistics",
           link: "/stats",
+          leavesWebsite: false,
+        },
+        {
+          name: "Anaplan Toolkit",
+          link: "/anaplan",
           leavesWebsite: false,
         },
       ],
