@@ -7,30 +7,30 @@ import ToolkitShell from "@/components/anaplan/ToolkitShell";
 
 const pageTitle = "Anaplan Toolkit — Free Anaplan Model Analyzer, Formula Editor Tools & API Helper (Chrome & Firefox)";
 const pageDesc =
-    "Free Chrome and Firefox extension for Anaplan model builders. Find action, import, export and process IDs for the Anaplan API, trace module lineage, audit line item formulas, bulk delete modules and line items, check Planual rules, monitor model locks and review workspace storage. Reads only your Anaplan session; no data leaves your browser.";
+    "Free Chrome and Firefox extension for Anaplan model builders. Find action, import, export and process IDs for the Anaplan API, trace module lineage and formula impact, search every formula, lint against the Planual, document the model, bulk delete modules and line items, monitor model locks and review workspace storage. Reads only your Anaplan session; no data leaves your browser.";
 const pageKeywords =
-    "Anaplan tool, Anaplan Chrome extension, Anaplan Firefox add-on, Anaplan API, Anaplan Integration API action IDs, Anaplan process ID, Anaplan import export ID, Anaplan model documentation, Anaplan model audit, Anaplan formula editor, Anaplan Planual, Anaplan lineage, Anaplan dependency, Anaplan unused line items, Anaplan bulk delete, Anaplan lock monitor, Anaplan model busy, Anaplan workspace storage, Anaplan revision tags, Anaplan model builder tools, Anaplan Blueprint";
+    "Anaplan tool, Anaplan Chrome extension, Anaplan Firefox add-on, Anaplan API, Anaplan Integration API action IDs, Anaplan process ID, Anaplan import export ID, Anaplan model documentation, Anaplan model audit, Anaplan formula editor, Anaplan Planual, Anaplan lineage, Anaplan dependency, Anaplan unused line items, Anaplan bulk delete, Anaplan lock monitor, Anaplan model busy, Anaplan workspace storage, Anaplan revision tags, Anaplan model builder tools, Anaplan Blueprint, Anaplan impact analysis, Anaplan formula search, Anaplan lint, Anaplan Planual checker, Anaplan model documentation generator";
 
 const chromeStoreUrl = "https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj";
 const firefoxStoreUrl = "https://addons.mozilla.org/en-US/firefox/addon/anaplan-toolkit/";
 
-const version = "2.11";
+const version = "2.12";
 const sponsorUrl = "https://github.com/sponsors/umang350";
 
 const whatsNew = [
-    { title: "Click through formulas", body: "Cmd/Ctrl+click a module, line item, list or subset in a formula to open it — in Blueprint view, with the row selected. Add Shift for a new tab." },
-    { title: "Hover for the detail", body: "Hover a reference for its format, dimensions, time scale and a readable formula, or a function for its category, description and help link." },
-    { title: "Applies To, clickable", body: "In the Blueprint grid, Cmd/Ctrl+click a list or subset in Applies To to open it, or hover for its parent, item count and the modules that use it." },
-    { title: "Bulk delete, checked first", body: "Delete Line Items and Delete Modules read a CSV, check every row against the live model, and ask you to type the count before anything changes." },
-    { title: "5x faster module deletes", body: "Modules go up to 10 to a request and ones a process uses are skipped. An 11,197-line-item cleanup dropped from 31 minutes to 6. Export a run log." },
-    { title: "Revision Tags & Process Steps", body: "See who tagged each revision and where it was applied, and the ordered actions each process runs — with a Copy API call button." },
+    { title: "Impact analysis", body: "For every line item, which formulas use it and which it uses, directly and all the way down, with the modules and App pages that reach. A Modules tab shows which modules feed which." },
+    { title: "Planual lint", body: "Checks the model against Anaplan's Planual. Every finding shows the rule's own number, linked to its page, plus a Housekeeping tab for unused line items and lists." },
+    { title: "Planual where you build", body: "The part of a formula that breaks a rule is underlined in the editor with its rule number, and Blueprint view shows a badge after each line item. Hide a rule, or switch either off in Settings." },
+    { title: "Search every formula", body: "Find a line item by words, an \"exact phrase\" or a /regular expression/ across every formula in the model." },
+    { title: "Model documentation", body: "From Summary, write the model's lists, modules, line items and formulas as a Markdown file, or copy a compact version to paste into an AI assistant. Nothing is sent anywhere." },
+    { title: "Used by, Depends on", body: "Hover a line item in the formula editor to see what uses it and what it depends on; hover a module for the modules it feeds and is fed by." },
 ];
 
 const reportGroups = [
     {
         group: "Summary",
         items: [
-            { name: "Model Summary", desc: "Model name, IDs, size, structure counts and which reports are loaded. Get all data, or download every report as CSVs in one .zip." },
+            { name: "Model Summary", desc: "Model name, IDs, size, structure counts and which reports are loaded. Get all data, download every report as CSVs in one .zip, or write the model\u2019s documentation as Markdown." },
         ],
     },
     {
@@ -67,6 +67,14 @@ const reportGroups = [
         ],
     },
     {
+        group: "Analysis",
+        items: [
+            { name: "Impact", desc: "Which formulas use each line item and which it uses, directly and downstream, with the modules and App pages reached." },
+            { name: "Lint", desc: "Findings against Anaplan's Planual, each with its rule number, plus housekeeping checks for unused line items and lists." },
+            { name: "Formulas", desc: "Search every formula by words, an exact phrase or a regular expression." },
+        ],
+    },
+    {
         group: "Revisions & Lock",
         items: [
             { name: "Revision Tags", desc: "Who created each revision tag, when and where, and every model it was applied to." },
@@ -85,12 +93,11 @@ const reportGroups = [
 // Roadmap lanes follow the status bands of slanaplan's capability matrix
 // (https://slanai.slavi.dev/apis): what the Anaplan JSON-RPC/REST surface can
 // do, versus what the Toolkit already covers. A direction, not a commitment.
-type RoadmapStatus = "shipped" | "building" | "next" | "exploring" | "not";
+type RoadmapStatus = "shipped" | "next" | "exploring" | "not";
 
 const roadmapStatus: Record<RoadmapStatus, { label: string; badge: string }> = {
     shipped: { label: "Shipped", badge: "bg-green-50 text-green-700 ring-green-200" },
-    building: { label: "In progress", badge: "bg-blue-50 text-blue-700 ring-blue-200" },
-    next: { label: "Planned", badge: "bg-amber-50 text-amber-700 ring-amber-200" },
+        next: { label: "Planned", badge: "bg-amber-50 text-amber-700 ring-amber-200" },
     exploring: { label: "Exploring", badge: "bg-gray-100 text-gray-700 ring-gray-200" },
     not: { label: "Not planned", badge: "bg-red-50 text-red-700 ring-red-200" },
 };
@@ -99,8 +106,8 @@ const roadmap: { status: RoadmapStatus; title: string; body: string }[] = [
     { status: "shipped", title: "Read the model's structure", body: "Modules, line items, lists, properties, dimensions, formulas and where each is used — as searchable, exportable reports." },
     { status: "shipped", title: "Delete structure, safely", body: "Delete Line Items and Delete Modules: checked against the live model first, ordered from the formulas, with a run log." },
     { status: "shipped", title: "Model status and workspaces", body: "Lock Monitor, workspace storage and model lists — read-only." },
+    { status: "shipped", title: "Impact, Planual lint and documentation", body: "Formula impact in both directions, Planual findings in reports, the formula editor and Blueprint grid, and the model written out as Markdown." },
     { status: "shipped", title: "Revisions and process steps", body: "Revision tags and where they were applied, plus the ordered actions behind every process." },
-    { status: "building", title: "Planual checks in the editor", body: "Rule markers and Blueprint grid badges for per-line-item Planual rules. Being tested against real models." },
     { status: "next", title: "Bulk create from CSV", body: "The counterpart to bulk delete: upload modules, line items or lists and review them against the model before anything is created." },
     { status: "next", title: "Bulk edit formulas and formats", body: "Change formula, format, style or summary on many line items at once, with a before / after diff and the same type-the-count confirmation." },
     { status: "next", title: "Bulk rename with references", body: "Rename modules and line items from a CSV, listing every formula, page and view that mentions the old name." },
@@ -114,10 +121,10 @@ const roadmap: { status: RoadmapStatus; title: string; body: string }[] = [
 
 const faqs = [
     { q: "How do I find an Anaplan action, import, export or process ID for the API?", a: "Open the model, open the Toolkit side panel and choose Actions & File IDs. Every process, import, export and file is listed with its internal ID, searchable by name, with a one-click copy. Process Steps adds a Copy API call button that builds an Anaplan Integration API v2 curl command for you to run with your own token." },
-    { q: "Is there an Anaplan tool to document or audit a whole model?", a: "Yes. Get all data loads every report for the open model and Download all as CSV gives you modules, line items, lists, formulas, saved views, page usage and more in one .zip. Summary can also write model documentation as a Markdown file." },
-    { q: "How can I see where a line item or module is used in Anaplan?", a: "Linked Pages shows which Apps and Pages use each module, Line Items on Pages shows where each line item appears on a page, and the formula editor shows Used by and Depends on when you hover a reference." },
+    { q: "Is there an Anaplan tool to document or audit a whole model?", a: "Yes. Get all data loads every report for the open model and Download all as CSV gives you modules, line items, lists, formulas, saved views, page usage and more in one .zip. Summary can also write the model's documentation as a Markdown file, or copy a compact version to paste into an AI assistant; the extension sends nothing anywhere." },
+    { q: "How can I see where a line item or module is used in Anaplan?", a: "Impact lists which formulas use each line item and which it uses, directly and downstream. Linked Pages shows which Apps and Pages use each module, Line Items on Pages shows where each line item appears on a page, and the formula editor shows Used by and Depends on when you hover a reference. Formulas searches every formula by word, phrase or regular expression." },
     { q: "Can I bulk delete Anaplan line items or modules?", a: "Yes. Delete Line Items and Delete Modules read a CSV, check every row against the live model, order the deletes so Anaplan accepts them, and ask you to type the count before anything changes. They are the only views that write to your model." },
-    { q: "Does Anaplan Toolkit check the Planual?", a: "It marks a set of per-line-item Planual rules in the formula editor and the Blueprint grid, and the Lint report lists them across the model with each rule linked to its Planual page. They are approximations of the rules, not a replacement for review." },
+    { q: "Does Anaplan Toolkit check the Planual?", a: "It underlines per-line-item Planual rules in the formula editor with the rule number, adds badges in the Blueprint grid, and the Lint report lists findings across the model with each rule linked to its Planual page. Checks target the Classic engine and approximate the rules, so treat findings as prompts to look, not verdicts." },
     { q: "How do I know whether an Anaplan model is busy or locked?", a: "Lock Monitor checks the model at an interval you choose, from every second to every minute for up to 12 hours, and records whether it is available, updating, busy, locked or offline, with what is running when busy." },
     { q: "Is it safe? Does it send my Anaplan data anywhere?", a: "The extension only talks to Anaplan, over the session you are already signed in with. It has no analytics, no telemetry and never asks for a password or token. Results stay in your browser's session storage." },
     { q: "Which browsers does Anaplan Toolkit support, and is it free?", a: "It is free for Chrome, Edge and other Chromium browsers from the Chrome Web Store, and for Firefox 140 and later from Firefox Add-ons. It is an independent tool and not affiliated with Anaplan, Inc." },
@@ -289,7 +296,7 @@ const AnaplanToolkit = () => {
             <section className="border-y border-gray-200 bg-gray-50">
                 <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 text-center sm:px-6 md:grid-cols-4">
                     {[
-                        ["19", "reports + summary"],
+                        ["22", "reports + summary"],
                         ["1 .zip", "every report as CSV"],
                         ["0", "third-party servers"],
                         ["6h", "per-model cache"],
@@ -371,9 +378,9 @@ const AnaplanToolkit = () => {
                     <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                         {[
                             ["Jump to a reference", "Cmd/Ctrl+click opens a module, line item, list or subset; Shift opens a new tab."],
-                            ["Readable hover cards", "Format, applies to, time scale and a formula with THEN/ELSE on their own lines."],
+                            ["Readable hover cards", "Format, applies to, time scale and a formula with THEN/ELSE on their own lines, plus what uses it and what it depends on."],
                             ["Function help", "Hover ITEM(, [LOOKUP: …], IF and more for the category, description and a help link."],
-                            ["Spot slips early", "Markers for unbalanced brackets, unterminated quotes and a Module.'x' that doesn't exist."],
+                            ["Spot slips early", "Markers for unbalanced brackets, unterminated quotes and a Module.'x' that doesn't exist — and Planual rules underlined with their number."],
                         ].map(([t, b]) => (
                             <div key={t} className="rounded-2xl border border-gray-200 bg-white p-5">
                                 <h3 className="font-semibold">{t}</h3>
