@@ -4,12 +4,20 @@ import MobileNavbar from "../global/MobileNavbar";
 import Navbar from "../global/Navbar";
 import React from "react";
 import Script from "next/script";
+import { useRouter } from "next/router";
 
 function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
   const pageTitle = `${currentPage === "Home"
     ? "Umang Chauhan - Products, Strategy, Creator."
     : `${currentPage} - UMANG.dev`
     }`;
+  // Self-referencing canonical per language, and hreflang pairs pointing at
+  // this page's own counterparts (not the home page).
+  const { locale, asPath } = useRouter();
+  const path = asPath.split(/[?#]/)[0].replace(/\/$/, "");
+  const enUrl = `https://umang.dev${path}`;
+  const jaUrl = `https://umang.dev/ja${path}`;
+  const pageUrl = locale === "ja" ? jaUrl : enUrl;
   return (
     <div
       className="w-full m-auto flex flex-col items-center justify-center min-h-screen opening-box-animate-paddin text-white overflow-hidden md:overflow-visible"
@@ -43,16 +51,17 @@ function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
         <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="alternate" href="https://umang.dev" hrefLang="x-default" />
-        <link rel="alternate" href="https://umang.dev" hrefLang="en" />
-        <link rel="alternate" href="https://umang.dev/ja" hrefLang="ja" />
+        <link rel="canonical" href={pageUrl} />
+        <link rel="alternate" href={enUrl} hrefLang="x-default" />
+        <link rel="alternate" href={enUrl} hrefLang="en" />
+        <link rel="alternate" href={jaUrl} hrefLang="ja" />
 
 
         <meta name="title" content={pageTitle} />
         <meta name="description" content={desc} />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://umang.dev/" />
+        <meta property="og:url" content={pageUrl} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={desc} />
         <meta
@@ -61,7 +70,7 @@ function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
         />
 
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://umang.dev/" />
+        <meta property="twitter:url" content={pageUrl} />
         <meta property="twitter:title" content={pageTitle} />
         <meta property="twitter:description" content={desc} />
         <meta
