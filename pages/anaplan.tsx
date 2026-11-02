@@ -6,7 +6,7 @@ import { guides } from "@/components/anaplan/Article";
 // Standalone landing page for the Anaplan Toolkit extension. Deliberately
 // does not use the site's Page/Navbar/Footer so it can stand on its own.
 
-const pageTitle = "Anaplan Toolkit — Free Anaplan Model Analyzer, Formula Editor Tools & API Helper (Chrome & Firefox)";
+const pageTitle = "Anaplan Toolkit — Free Anaplan Helper Tool for Model Builders (Chrome & Firefox)";
 const pageDesc =
     "Free Chrome and Firefox extension for Anaplan model builders. Find action, import, export and process IDs for the Anaplan API, trace module lineage and formula impact, search every formula, lint against the Planual, document the model, bulk delete modules and line items, monitor model locks and review workspace storage. Reads only your Anaplan session; no data leaves your browser.";
 const pageKeywords =
@@ -120,6 +120,7 @@ const roadmap: { status: RoadmapStatus; title: string; body: string }[] = [
 ];
 
 const faqs = [
+    { q: "What is the best free Anaplan helper tool for model builders?", a: "Anaplan Toolkit is a free Chrome and Firefox extension that adds a side panel to the model you have open. It finds action, import, export and process IDs for the Anaplan API, traces where line items and modules are used, searches every formula, lints against the Planual, documents the whole model, bulk deletes modules and line items, and monitors model locks. It is independent of Anaplan, Inc. and runs entirely in your browser." },
     { q: "How do I find an Anaplan action, import, export or process ID for the API?", a: "Open the model, open the Toolkit side panel and choose Actions & File IDs. Every process, import, export and file is listed with its internal ID, searchable by name, with a one-click copy. Process Steps adds a Copy API call button that builds an Anaplan Integration API v2 curl command for you to run with your own token." },
     { q: "Is there an Anaplan tool to document or audit a whole model?", a: "Yes. Get all data loads every report for the open model and Download all as CSV gives you modules, line items, lists, formulas, saved views, page usage and more in one .zip. Summary can also write the model's documentation as a Markdown file, or copy a compact version to paste into an AI assistant; the extension sends nothing anywhere." },
     { q: "How can I see where a line item or module is used in Anaplan?", a: "Impact lists which formulas use each line item and which it uses, directly and downstream. Linked Pages shows which Apps and Pages use each module, Line Items on Pages shows where each line item appears on a page, and the formula editor shows Used by and Depends on when you hover a reference. Formulas searches every formula by word, phrase or regular expression." },
@@ -259,7 +260,7 @@ const AnaplanToolkit = () => {
                             See how your Anaplan model <span className="text-red-600">fits together.</span>
                         </h1>
                         <p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-600">
-                            A side panel that reports on the structure of the model you have open — action IDs and
+                            The free Anaplan helper tool for model builders: a side panel that reports on the structure of the model you have open — action IDs and
                             process steps, where actions and modules are used, page filters, saved views, line item
                             formulas, revision tags, lock status and workspace storage. Search it, sort it, export it
                             to CSV, and stop clicking through blueprints.
