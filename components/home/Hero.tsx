@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { CSSProperties, useEffect, useRef } from "react";
+import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { featured, instagram, links, more, Project } from "@/data/content/home";
 
 export const ProjectIcon = ({ icon, className = "h-5 w-5" }: { icon: Project["icon"]; className?: string }) => {
@@ -18,18 +18,18 @@ export const ProjectIcon = ({ icon, className = "h-5 w-5" }: { icon: Project["ic
   );
 };
 
-// Positions are percentages of the hero stage on large screens, in the open space between the name and the video.
+// Positions are percentages of the hero stage on large screens, over the sky on either side of the tower.
 const placed: { title: string; left: string; top: string; r: string; delay: string }[] = [
   { title: "Inventory risk system", left: "5%", top: "72%", r: "-6deg", delay: "0s" },
-  { title: "Network Lab", left: "16%", top: "84%", r: "4deg", delay: "1.2s" },
-  { title: "AI PM Guide", left: "40%", top: "72%", r: "-3deg", delay: "2.1s" },
-  { title: "Get Saged", left: "52%", top: "60%", r: "6deg", delay: "0.6s" },
+  { title: "Network Lab", left: "15%", top: "84%", r: "4deg", delay: "1.2s" },
+  { title: "AI PM Guide", left: "26%", top: "72%", r: "-3deg", delay: "2.1s" },
+  { title: "Get Saged", left: "82%", top: "62%", r: "6deg", delay: "0.6s" },
 ];
 
 const reelSpots: { left: string; top: string; r: string; delay: string }[] = [
-  { left: "7%", top: "38%", r: "-8deg", delay: "0.3s" },
-  { left: "41%", top: "15%", r: "6deg", delay: "1.5s" },
-  { left: "53%", top: "30%", r: "-4deg", delay: "0.9s" },
+  { left: "6%", top: "38%", r: "-8deg", delay: "0.3s" },
+  { left: "83%", top: "15%", r: "6deg", delay: "1.5s" },
+  { left: "89%", top: "37%", r: "-4deg", delay: "0.9s" },
 ];
 
 const Tooltip = ({ p }: { p: Project }) => (
@@ -58,28 +58,55 @@ const ReelCard = ({ reel, className = "" }: { reel: typeof instagram.reels[numbe
   </span>
 );
 
-// The Eiffel Tower clip in a selection frame. It plays once and holds its last frame
-// (its ends don't match, so a loop would jump); with reduced motion it stays on the poster.
-const HeroVideo = ({ className }: { className: string }) => {
-  const ref = useRef<HTMLVideoElement>(null);
+// The Paris clip fills the hero. Its first and last frames differ, so two copies take turns:
+// the next one fades in over the last moments of the current one. Playback starts at 0.4s,
+// past a stray passer-by at the right edge in the first frames. Reduced motion keeps the poster.
+const LOOP_START = 0.4;
+const FADE = 0.8;
+
+const BackgroundVideo = ({ className }: { className: string }) => {
+  const refs = [useRef<HTMLVideoElement>(null), useRef<HTMLVideoElement>(null)];
+  const [front, setFront] = useState(0);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    ref.current?.play().catch(() => {});
+    const videos = refs.map((r) => r.current as HTMLVideoElement);
+    let current = 0;
+    let fading = false;
+    let raf = 0;
+    let timer = 0;
+
+    videos[0].currentTime = LOOP_START;
+    videos[0].play().catch(() => {});
+
+    const tick = () => {
+      const v = videos[current];
+      if (!fading && v.duration && v.currentTime >= v.duration - FADE) {
+        fading = true;
+        const next = videos[1 - current];
+        next.currentTime = LOOP_START;
+        next.play().catch(() => {});
+        current = 1 - current;
+        setFront(current);
+        timer = window.setTimeout(() => { v.pause(); fading = false; }, FADE * 1000 + 100);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => { cancelAnimationFrame(raf); window.clearTimeout(timer); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className={className}>
-      <div className="pointer-events-none absolute -inset-3 border border-cream/80" aria-hidden="true">
-        {["-left-1 -top-1", "-right-1 -top-1", "-left-1 -bottom-1", "-right-1 -bottom-1"].map((pos) => (
-          <span key={pos} className={`absolute h-2 w-2 bg-cream ${pos}`} />
-        ))}
-      </div>
-      <video ref={ref} muted playsInline preload="auto" poster="/home/eiffel-poster.jpg"
-        aria-label="Umang standing in front of the Eiffel Tower" className="h-full w-full object-cover shadow-2xl">
-        <source src="/home/eiffel.mp4" type="video/mp4" />
-      </video>
-    </div>
+    <>
+      {refs.map((ref, i) => (
+        <video key={i} ref={ref} muted playsInline preload="auto" poster="/home/paris-poster.jpg" aria-hidden="true"
+          className={className} style={{ opacity: front === i ? 1 : 0, transition: `opacity ${FADE}s ease-in-out` }}>
+          <source media="(max-width: 767px)" src="/home/paris-540.mp4" type="video/mp4" />
+          <source src="/home/paris-720.mp4" type="video/mp4" />
+        </video>
+      ))}
+    </>
   );
 };
 
@@ -91,21 +118,21 @@ function Hero() {
   return (
     <section className="-mt-5 w-full text-left">
       <div className="relative ml-[calc(50%-50vw)] h-[620px] w-screen overflow-hidden bg-[#1450f0] text-cream lg:h-[min(860px,100vh)] lg:min-h-[660px]">
-        {/* The clip's own sky, blurred, fills the panel */}
-        <Image src="/home/eiffel-poster.jpg" alt="" fill priority sizes="100vw" className="scale-110 object-cover object-top blur-2xl" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a2aa8]/40 via-[#1450f0]/15 to-[#3d8bff]/10" aria-hidden="true" />
+        <Image src="/home/paris-poster.jpg" alt="Umang Chauhan in front of the Eiffel Tower" fill priority sizes="100vw" className="object-cover object-[60%_50%] lg:object-center" />
+        <BackgroundVideo className="absolute inset-0 h-full w-full object-cover object-[60%_50%] lg:object-center" />
+        {/* Deepens the sky behind the name so the cream type stays readable */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true"
+          style={{ background: "linear-gradient(90deg, rgba(10,30,110,0.45), rgba(10,30,110,0) 45%), linear-gradient(0deg, rgba(10,20,60,0.4), rgba(10,20,60,0) 35%)" }} />
 
         {/* Keeps the overlaid nav readable */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-[15] h-28 [background:linear-gradient(to_bottom,rgba(0,0,0,0.35),rgba(0,0,0,0))]" aria-hidden="true" />
 
         <div className="relative mx-auto h-full max-w-[1600px]">
-          <HeroVideo className="absolute left-1/2 top-[24%] z-10 h-[52%] -translate-x-1/2 aspect-[9/16] lg:left-auto lg:right-[6%] lg:top-[13%] lg:h-[78%] lg:translate-x-0" />
-
           <h1 className="sr-only">Umang Chauhan, product manager in Tokyo</h1>
           <p aria-hidden="true" className="absolute left-5 top-20 z-20 font-display text-[22vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 lg:text-[168px]">Umang</p>
           <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 font-display text-[19vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 lg:text-[168px]">Chauhan</p>
 
-          {/* Large screens: work and reels float in the space between the name and the video */}
+          {/* Large screens: work and reels float over the sky on either side of the tower */}
           <div className="hidden lg:block">
             {instagram.reels.map((reel, i) => (
               <Float key={reel.thumb} href={reel.href ?? links.instagram} label={`${reel.title}, ${reel.views} views on Instagram`}
@@ -115,7 +142,7 @@ function Hero() {
               </Float>
             ))}
 
-            <Float href={anaplan.href} label={anaplan.title} style={{ left: "27%", top: "52%", ["--r" as string]: "8deg", animationDelay: "0.4s" }} className="z-30">
+            <Float href={anaplan.href} label={anaplan.title} style={{ left: "21%", top: "54%", ["--r" as string]: "8deg", animationDelay: "0.4s" }} className="z-30">
               <span className="flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-white shadow-2xl ring-4 ring-white/30">
                 <Image src="/anaplan/icon.png" alt="" width={48} height={48} className="rounded-lg" />
               </span>
