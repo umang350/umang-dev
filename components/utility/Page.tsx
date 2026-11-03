@@ -6,7 +6,7 @@ import React from "react";
 import Script from "next/script";
 import { useRouter } from "next/router";
 
-function Page({ currentPage, meta: { title, desc }, children }: PageProps) {
+function Page({ currentPage, meta: { title, desc }, overlayNav = false, children }: PageProps) {
   const pageTitle = `${currentPage === "Home"
     ? "Umang Chauhan - Products, Strategy, Creator."
     : `${currentPage} - UMANG.dev`
@@ -116,12 +116,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         />
       </noscript>
 
-      <main className="p-5 w-full flex-1 text-center">
-        <div className="hidden sm:block z-50 sticky">
-          <Navbar currentPage={currentPage} />
+      <main className="relative p-5 w-full flex-1 text-center">
+        {/* overlayNav: the nav floats over a full-bleed hero instead of sitting above it */}
+        <div className={overlayNav ? "absolute inset-x-0 top-0 z-50 hidden p-5 sm:block" : "hidden sm:block z-50 sticky"}>
+          <Navbar currentPage={currentPage} overlay={overlayNav} />
         </div>
-        <div className="-m-5 block sm:hidden z-50 sticky">
-          <MobileNavbar />
+        <div className={overlayNav ? "absolute inset-x-0 top-0 z-50 block sm:hidden" : "-m-5 block sm:hidden z-50 sticky"}>
+          <MobileNavbar overlay={overlayNav} />
         </div>
         {children}
       </main>
@@ -134,6 +135,7 @@ export default Page;
 
 type PageProps = {
   currentPage: string;
+  overlayNav?: boolean;
   meta: {
     title?: string;
     desc: string;

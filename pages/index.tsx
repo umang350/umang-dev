@@ -9,7 +9,7 @@ const PageName = "Home";
 const Home: NextPage = () => {
   return (
     <>
-    <Page currentPage={PageName} meta={{ desc: routes.find(i => i.title === PageName).description }}>
+    <Page currentPage={PageName} overlayNav meta={{ desc: routes.find(i => i.title === PageName).description }}>
       <Hero />
       <HomeSections />
     </Page></>

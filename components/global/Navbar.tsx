@@ -5,15 +5,18 @@ import { useTheme } from 'next-themes';
 import { useRouter } from "next/router";
 
 type currentPageObject = {
-  currentPage: string
+  currentPage: string,
+  overlay?: boolean
 }
 
-function Navbar({ currentPage }: currentPageObject) {
+function Navbar({ currentPage, overlay = false }: currentPageObject) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   const { locale, pathname } = useRouter();
+  const textCls = overlay ? "text-cream" : "text-black dark:text-white";
+  const iconCls = overlay ? "text-base font-normal text-cream/90 hover:text-white" : "text-base font-normal text-gray-600 dark:text-gray-300";
   var routesData: Route[];
   var pageLogoText = "";
 
@@ -27,10 +30,10 @@ function Navbar({ currentPage }: currentPageObject) {
 
 
   return (
-    <nav className="flex items-center justify-between">
+    <nav className={`flex items-center justify-between ${overlay ? "[text-shadow:0_1px_10px_rgba(0,0,0,0.35)]" : ""}`}>
       <li className="list-none font-bold text-lg cursor-pointer">
         <Link href="/">
-          <span className="font-black text-black dark:text-white text-xl flex items-center">
+          <span className={`font-black ${textCls} text-xl flex items-center`}>
             {pageLogoText.split("").map((letter, index) => {
               return (
                 <span key={index} className="hover:text-fun-pink hover:-mt-2 transition-all duration-500 hover:duration-100 click:goodbyeLetterAnim">
@@ -46,9 +49,9 @@ function Navbar({ currentPage }: currentPageObject) {
           return (
             <li
               key={index}
-              className={`list-none text-black dark:text-white ${pathname === item.path
+              className={`list-none ${textCls} ${pathname === item.path
                 ? "opacity-100"
-                : "opacity-40 hover:opacity-100 transition-opacity"
+                : `${overlay ? "opacity-75" : "opacity-40"} hover:opacity-100 transition-opacity`
                 }`}
             >
               <Link href={item.path}>{item.title}</Link>
@@ -59,7 +62,7 @@ function Navbar({ currentPage }: currentPageObject) {
       <div className="space-x-4 flex flex-row items-center">
         <a
           href="https://instagram.com/thisUmang"
-          className="text-base font-normal text-gray-600 dark:text-gray-300"
+          className={iconCls}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +77,7 @@ function Navbar({ currentPage }: currentPageObject) {
         </a>
         <a
           href="https://youtube.com/GetSaged"
-          className="text-base font-normal text-gray-600 dark:text-gray-300"
+          className={iconCls}
         >
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
             width="16" height="16"
@@ -86,7 +89,7 @@ function Navbar({ currentPage }: currentPageObject) {
         </a>
         <a
           href="https://www.linkedin.com/in/umang350/"
-          className="text-base font-normal text-gray-600 dark:text-gray-300"
+          className={iconCls}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +105,7 @@ function Navbar({ currentPage }: currentPageObject) {
         <button
           aria-label="Toggle Dark Mode"
           type="button"
-          className="w-9 h-9 bg-gray-200 rounded-lg dark:bg-gray-600 flex items-center justify-center  hover:ring-2 ring-gray-300  transition-all"
+          className={`w-9 h-9 rounded-lg flex items-center justify-center hover:ring-2 transition-all ${overlay ? "bg-white/15 backdrop-blur-md ring-white/40" : "bg-gray-200 dark:bg-gray-600 ring-gray-300"}`}
           onClick={() =>
             setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
           }
@@ -113,7 +116,7 @@ function Navbar({ currentPage }: currentPageObject) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              className="w-5 h-5 text-gray-800 dark:text-gray-200"
+              className={`w-5 h-5 ${overlay ? "text-cream" : "text-gray-800 dark:text-gray-200"}`}
             >
               {resolvedTheme === 'dark' ? (
                 <path

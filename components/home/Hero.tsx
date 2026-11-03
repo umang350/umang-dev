@@ -28,8 +28,8 @@ const placed: { title: string; left: string; top: string; r: string; delay: stri
 
 const reelSpots: { left: string; top: string; r: string; delay: string }[] = [
   { left: "7%", top: "38%", r: "-8deg", delay: "0.3s" },
-  { left: "79%", top: "8%", r: "6deg", delay: "1.5s" },
-  { left: "88%", top: "30%", r: "-4deg", delay: "0.9s" },
+  { left: "79%", top: "14%", r: "6deg", delay: "1.5s" },
+  { left: "88%", top: "36%", r: "-4deg", delay: "0.9s" },
 ];
 
 const Tooltip = ({ p }: { p: Project }) => (
@@ -115,17 +115,20 @@ function Hero() {
   const anaplan = byTitle("Anaplan Toolkit");
 
   return (
-    <section className="w-full text-left">
-      <div className="relative ml-[calc(50%-50vw)] h-[560px] w-screen overflow-hidden bg-[#1450f0] text-cream lg:h-[min(800px,calc(100vh-90px))] lg:min-h-[620px]">
+    <section className="-mt-5 w-full text-left">
+      <div className="relative ml-[calc(50%-50vw)] h-[620px] w-screen overflow-hidden bg-[#1450f0] text-cream lg:h-[min(860px,100vh)] lg:min-h-[660px]">
         {/* Fills the extra width on screens wider than the photo stage */}
         <Image src="/home/hero-nyc.jpg" alt="" fill sizes="100vw" className="scale-110 object-cover blur-3xl" aria-hidden="true" />
         <div className={tint} aria-hidden="true" />
+
+        {/* Keeps the overlaid nav readable over bright parts of the photo */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-[15] h-28 [background:linear-gradient(to_bottom,rgba(0,0,0,0.45),rgba(0,0,0,0))]" aria-hidden="true" />
 
         <div className="relative mx-auto h-full max-w-[1600px]">
         <FocusPhoto />
 
         <h1 className="sr-only">Umang Chauhan, product manager in Tokyo</h1>
-        <p aria-hidden="true" className="absolute left-5 top-5 z-20 font-display text-[22vw] uppercase [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] leading-[0.85] lg:left-8 lg:top-8 lg:text-[168px]">Umang</p>
+        <p aria-hidden="true" className="absolute left-5 top-20 z-20 font-display text-[22vw] uppercase [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] leading-[0.85] lg:left-8 lg:top-24 lg:text-[168px]">Umang</p>
         <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 font-display text-[19vw] uppercase [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] leading-[0.85] lg:bottom-8 lg:right-8 lg:text-[168px]">Chauhan</p>
 
         {/* Large screens: work and reels float around the frame's path */}
