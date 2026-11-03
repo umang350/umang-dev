@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { copy, instagram, links, Reel, Stop, testimonials, work, WorkPill } from "@/data/content/home";
+import { copy, instagram, links, Reel, Stop, testimonials, work, WorkPill, youtube } from "@/data/content/home";
 
 const panel = "rounded-[28px] bg-[#141414] text-white ring-1 ring-white/5";
 
@@ -108,6 +108,41 @@ const ReelsCarousel = ({ t, ja }: { t: Copy; ja: boolean }) => (
   </section>
 );
 
+const VideoTile = ({ v, t, hidden = false }: { v: typeof youtube.videos[number]; t: Copy; hidden?: boolean }) => (
+  <a href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noreferrer" aria-hidden={hidden} tabIndex={hidden ? -1 : undefined}
+    className="group block w-[260px] shrink-0 sm:w-[340px]">
+    <span className="relative block aspect-video overflow-hidden rounded-2xl ring-1 ring-black/10 dark:ring-white/10">
+      <Image src={v.thumb} alt="" fill sizes="340px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+      <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#ff0000] opacity-0 shadow-xl transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="white" className="ml-0.5 h-6 w-6"><path d="M7 4.5v15l13-7.5-13-7.5z" /></svg>
+      </span>
+      <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/65 px-2.5 py-1 text-sm font-semibold text-white backdrop-blur-sm">{v.views} {t.views}</span>
+    </span>
+    <span className="mt-3 block text-base font-semibold leading-snug group-hover:underline">{v.title}</span>
+  </a>
+);
+
+// Same endless strip as the reels: the list is doubled for a seamless loop, and it pauses on hover.
+const YoutubeSection = ({ t, ja }: { t: Copy; ja: boolean }) => (
+  <section className="relative ml-[calc(50%-50vw)] mt-12 w-screen text-left text-black dark:text-white">
+    <div className="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5">
+      <div>
+        <p className="font-display text-sm uppercase tracking-wide">· {t.onYoutube} · {youtube.handle}</p>
+        <h2 className={`mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.youtubeTitle}</h2>
+      </div>
+      <a href={links.youtube} target="_blank" rel="noreferrer" className="rounded-full bg-[#ff0000] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90">
+        {t.subscribe}
+      </a>
+    </div>
+    <div className="reel-strip mt-8 overflow-hidden">
+      <div className="reel-track flex w-max gap-4 px-2" style={{ animationDuration: "110s", animationDirection: "reverse" }}>
+        {youtube.videos.map((v) => <VideoTile key={v.id} v={v} t={t} />)}
+        {youtube.videos.map((v) => <VideoTile key={`${v.id}-copy`} v={v} t={t} hidden />)}
+      </div>
+    </div>
+  </section>
+);
+
 function HomeSections() {
   const { locale } = useRouter();
   const ja = locale === "ja";
@@ -163,6 +198,7 @@ function HomeSections() {
       </Panel>
 
       <ReelsCarousel t={t} ja={ja} />
+      <YoutubeSection t={t} ja={ja} />
 
       {testimonials.length > 0 && (
         <Panel label={t.testimonialsTitle} ja={ja}>

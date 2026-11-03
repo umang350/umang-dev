@@ -5,6 +5,7 @@ export const links = {
     calendly: "https://calendly.com/thisumang",
     email: "contact@umang.dev",
     instagram: "https://instagram.com/thisumang",
+    youtube: "https://youtube.com/@GetSaged",
     linkedin: "https://www.linkedin.com/in/thisumang/",
     guide: "https://topmate.io/thisumang", // TODO: confirm the Topmate product URL
 }
@@ -35,6 +36,9 @@ export const copy = {
         totalViews: "4M+ views",
         pillars: ["Delhi / Tokyo life", "AI builds", "Company teardowns", "Cost of living", "Not getting scammed"],
         follow: "Follow on Instagram",
+        onYoutube: "On YouTube",
+        youtubeTitle: "54K subscribers",
+        subscribe: "Subscribe on YouTube",
         testimonialsTitle: "Kind words",
         contact: "Contact",
         letsTalk: "Let's talk",
@@ -61,6 +65,9 @@ export const copy = {
         totalViews: "累計400万回再生",
         pillars: ["デリー／東京の暮らし", "AIでつくる", "企業の分析", "生活費のリアル", "詐欺に遭わないコツ"],
         follow: "Instagramをフォロー",
+        onYoutube: "YouTube",
+        youtubeTitle: "登録者5.4万人",
+        subscribe: "YouTubeを購読",
         testimonialsTitle: "いただいた言葉",
         contact: "お問い合わせ",
         letsTalk: "話しましょう",
@@ -170,6 +177,25 @@ export const instagram = {
         { thumb: "/home/reel-10x-salary.jpg", views: "8.7K", title: "10x salary in 4 years" },
         { thumb: "/home/reel-camera-roll.jpg", views: "6.7K", title: "POV: you open my camera roll" },
     ] as Reel[],
+}
+
+export const youtube = {
+    handle: "@GetSaged",
+    // Most viewed first.
+    videos: [
+        { id: "YXEccLAt-Q4", thumb: "/home/yt-iphone-13.jpg", views: "193K", title: "Got iPhone 13 Pro Max for Free | Already booked iPhone 15" },
+        { id: "9fHMBSI7GvI", thumb: "/home/yt-data-engineer.jpg", views: "163K", title: "The Ultimate Data Engineer in 2022 | 5 Lakh LPA to 1 Crore" },
+        { id: "bo_aSGEmm5c", thumb: "/home/yt-google-recruitment.jpg", views: "128K", title: "Google Recruitment Gyaan | Procedure, Tips, CTC" },
+        { id: "FCI6xEkbkT0", thumb: "/home/yt-working-in-japan.jpg", views: "104K", title: "Working in Japan as Engineer | How To Find?" },
+        { id: "gPQKSYGJgJQ", thumb: "/home/yt-java-cpp-python.jpg", views: "96K", title: "Choose Java vs C++ vs Python for Placements" },
+        { id: "_BxLY46i0Lc", thumb: "/home/yt-goldman-sachs.jpg", views: "91K", title: "Goldman Sachs: The Ultimate Recruitment Guide" },
+        { id: "7nHyhlWGb70", thumb: "/home/yt-atlassian.jpg", views: "90K", title: "Atlassian 50+ Lakh CTC for Tier 2,3 Colleges" },
+        { id: "OAYiTVBIWL8", thumb: "/home/yt-jp-morgan.jpg", views: "86K", title: "JP Morgan Strategy | Profiles Ka Flex" },
+        { id: "EyZYXtjPxj0", thumb: "/home/yt-pwc.jpg", views: "84K", title: "PwC Consulting Jobs for Engineers Demystified" },
+        { id: "lB46kwvAwTA", thumb: "/home/yt-morgan-stanley.jpg", views: "84K", title: "Morgan Stanley ka Job Dabba" },
+        { id: "EEJn8THLxhg", thumb: "/home/yt-de-shaw.jpg", views: "76K", title: "DE SHAW Detailed | CTC, Interview Procedure" },
+        { id: "Jqn3BN_DGqk", thumb: "/home/yt-coding-tests.jpg", views: "70K", title: "How to Prepare for Coding Tests" },
+    ],
 }
 
 export type Reel = { thumb: string; views: string; title: string; href?: string; hero?: boolean }
