@@ -176,7 +176,7 @@ function Hero() {
 
       <div className="mt-6 grid gap-6 px-1 lg:grid-cols-[1fr_auto] lg:items-end">
         <p className="max-w-2xl text-lg leading-relaxed text-black dark:text-white sm:text-xl">
-          Product manager in Tokyo. I build global planning products, and AI tools people actually use. Delhi → Tokyo → New York → Tokyo.
+          Product manager in Tokyo. I build global planning products, and AI tools people actually use.
         </p>
         <div className="flex flex-wrap gap-3">
           <a href="#work" className="rounded-full bg-[#1450f0] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90">View work</a>

@@ -24,12 +24,19 @@ export const heroJA = {
     sub: "デリー → 東京 → ニューヨーク → 東京。グローバル規模のサプライチェーン・計画プロダクトを担当し、Anaplan Toolkit などのツールも開発しています。",
 }
 
-export const proof = [
-    { value: "$30M+", label: "lost sales recovered" },
-    { value: "5% → 2%", label: "out-of-stock rate" },
-    { value: "1B+", label: "rows migrated" },
-    { value: "5M+", label: "views as a creator" },
+export type Stop = { city: string; icon: "india-gate" | "torii" | "skyline"; years: string; text: string }
+
+// About me: where the story happened, then college and the current role.
+export const journey: Stop[] = [
+    { city: "Delhi", icon: "india-gate", years: "2016–20", text: "Studied Mathematics & Computer Engineering at Delhi Technological University." },
+    { city: "Tokyo", icon: "torii", years: "2020–24", text: "Joined Fast Retailing (UNIQLO) as a software developer, then led a 9-person engineering team." },
+    { city: "New York", icon: "skyline", years: "2024–25", text: "Product manager for the digital supply chain across the US, Canada and Europe." },
 ]
+
+export const today = {
+    college: { title: "Delhi Technological University", detail: "B.Tech, Mathematics & Computer Engineering" },
+    role: { title: "Product Manager", detail: "Fast Retailing (UNIQLO), global HQ in Tokyo" },
+}
 
 export type Project = {
     title: string
