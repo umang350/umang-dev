@@ -10,32 +10,61 @@ export const links = {
     guide: "https://topmate.io/thisumang", // TODO: confirm the Topmate product URL
 }
 
-export const hero = {
-    badge: "Product Manager · Tokyo",
-    headline: "I build global planning products",
-    accent: "and AI tools people use.",
-    sub: "Delhi → Tokyo → New York → Tokyo. I run supply chain and planning products at global scale, and ship my own tools on the side, like Anaplan Toolkit.",
-}
-
-export const heroJA = {
-    badge: "プロダクトマネージャー · 東京",
-    headline: "グローバルな計画プロダクトと、",
-    accent: "本当に使われるAIツールを作っています。",
-    sub: "デリー → 東京 → ニューヨーク → 東京。グローバル規模のサプライチェーン・計画プロダクトを担当し、Anaplan Toolkit などのツールも開発しています。",
-}
-
+export type Lang = "en" | "ja"
 export type Stop = { city: string; icon: "india-gate" | "torii" | "skyline"; years: string; text: string }
 
-// About me: where the story happened, then college and the current role.
-export const journey: Stop[] = [
-    { city: "Delhi", icon: "india-gate", years: "2016–20", text: "Studied Mathematics & Computer Engineering at Delhi Technological University." },
-    { city: "Tokyo", icon: "torii", years: "2020–24", text: "Joined Fast Retailing (UNIQLO) as a software developer, then led a 9-person engineering team." },
-    { city: "New York", icon: "skyline", years: "2024–25", text: "Product manager for the digital supply chain across the US, Canada and Europe." },
-]
-
-export const today = {
-    college: { title: "Delhi Technological University", detail: "B.Tech, Mathematics & Computer Engineering" },
-    role: { title: "Product Manager", detail: "Fast Retailing (UNIQLO), global HQ in Tokyo" },
+// Every piece of homepage text, per language. Project and product names stay as they are.
+export const copy = {
+    en: {
+        heading: "Umang Chauhan, product manager in Tokyo",
+        based: "Based in Tokyo",
+        open: "Open to product roles and collaborations",
+        aboutTitle: "About me",
+        intro: "Hi, I'm Umang. By day I help one of the world's biggest retailers plan what goes on its shelves. By night I build the tools I wish existed, and film the whole thing.",
+        journey: [
+            { city: "Delhi", icon: "india-gate", years: "2016–20", text: "Studied Mathematics & Computer Engineering at Delhi Technological University." },
+            { city: "Tokyo", icon: "torii", years: "2020–24", text: "Joined Fast Retailing (UNIQLO) as a software developer, then led a 9-person engineering team." },
+            { city: "New York", icon: "skyline", years: "2024–25", text: "Product manager for the digital supply chain across the US, Canada and Europe." },
+        ] as Stop[],
+        college: { label: "College", title: "Delhi Technological University", detail: "B.Tech, Mathematics & Computer Engineering" },
+        role: { label: "Role", title: "Product Manager", detail: "Fast Retailing (UNIQLO), global HQ in Tokyo" },
+        workTitle: "Things I've built",
+        onInstagram: "On Instagram",
+        views: "views",
+        totalViews: "4M+ views",
+        pillars: ["Delhi / Tokyo life", "AI builds", "Company teardowns", "Cost of living", "Not getting scammed"],
+        follow: "Follow on Instagram",
+        testimonialsTitle: "Kind words",
+        contact: "Contact",
+        letsTalk: "Let's talk",
+        bookCall: "Book a call",
+        downloadCv: "Download CV",
+    },
+    ja: {
+        heading: "ウマング・チャウハン、東京のプロダクトマネージャー",
+        based: "東京在住",
+        open: "プロダクト職・コラボのご相談受付中",
+        aboutTitle: "私について",
+        intro: "こんにちは、ウマングです。昼は世界有数の小売企業で、店頭に何を並べるかを計画するプロダクトを作っています。夜は自分が欲しかったツールを作り、その過程をまるごと発信しています。",
+        journey: [
+            { city: "デリー", icon: "india-gate", years: "2016–20", text: "デリー工科大学で数学とコンピュータ工学を専攻。" },
+            { city: "東京", icon: "torii", years: "2020–24", text: "ファーストリテイリング（ユニクロ）にソフトウェア開発者として入社し、その後9名のエンジニアチームを率いる。" },
+            { city: "ニューヨーク", icon: "skyline", years: "2024–25", text: "米国・カナダ・欧州のデジタルサプライチェーンを担当するプロダクトマネージャー。" },
+        ] as Stop[],
+        college: { label: "大学", title: "デリー工科大学", detail: "技術学士（数学・コンピュータ工学）" },
+        role: { label: "職種", title: "プロダクトマネージャー", detail: "ファーストリテイリング（ユニクロ）グローバル本部・東京" },
+        workTitle: "つくったもの",
+        onInstagram: "Instagram",
+        views: "回再生",
+        totalViews: "累計400万回再生",
+        pillars: ["デリー／東京の暮らし", "AIでつくる", "企業の分析", "生活費のリアル", "詐欺に遭わないコツ"],
+        follow: "Instagramをフォロー",
+        testimonialsTitle: "いただいた言葉",
+        contact: "お問い合わせ",
+        letsTalk: "話しましょう",
+        bookCall: "通話を予約",
+        downloadCv: "履歴書をダウンロード",
+    },
 }
 
 export type Project = {
@@ -47,6 +76,7 @@ export type Project = {
     cta?: string
     image?: string
     metric?: { value: string; label: string }
+    ja: { tag: string; outcome: string; metricLabel?: string }
 }
 
 // The first entry is shown as the large card.
@@ -60,6 +90,7 @@ export const featured: Project[] = [
         cta: "See the toolkit",
         image: "/anaplan/summary-panel.png",
         metric: { value: "★★★★★", label: "on the Chrome Web Store" },
+        ja: { tag: "Chrome・Firefox拡張機能 · 無料", outcome: "開いているAnaplanモデルについて22種類のレポートを表示するサイドパネル。アクションID、数式、保存ビュー、ページフィルターなどを検索・エクスポートできます。", metricLabel: "Chromeウェブストアでの評価" },
     },
     {
         title: "Inventory risk system",
@@ -69,6 +100,7 @@ export const featured: Project[] = [
         href: "/about",
         cta: "Read more",
         metric: { value: "5% → 2%", label: "out-of-stock rate, $30M+ recovered" },
+        ja: { tag: "プロダクト · 米国・カナダ・欧州", outcome: "グローバル小売企業のデジタルサプライチェーン向けに、異常を検知して在庫リスクを知らせるシステム。", metricLabel: "欠品率（3,000万ドル超の売上を回復）" },
     },
     {
         title: "Network Lab",
@@ -77,6 +109,7 @@ export const featured: Project[] = [
         outcome: "A community I co-founded, with in-person meetups in Tokyo and New York.",
         href: links.linkedin,
         cta: "See the latest meetup",
+        ja: { tag: "コミュニティ · 東京・ニューヨーク", outcome: "共同創業したコミュニティ。東京とニューヨークで対面のミートアップを開催しています。" },
     },
 ]
 
@@ -88,6 +121,7 @@ export const more: Project[] = [
         outcome: "A practical guide to product management with AI.",
         href: links.guide,
         cta: "Get the guide",
+        ja: { tag: "ガイド", outcome: "AI時代のプロダクトマネジメントの実践ガイド。" },
     },
     {
         title: "Get Saged",
@@ -96,6 +130,7 @@ export const more: Project[] = [
         outcome: "Videos on careers, AI and life abroad.",
         href: "https://youtube.com/GetSaged",
         cta: "Watch",
+        ja: { tag: "YouTube", outcome: "キャリア、AI、海外生活についての動画。" },
     },
 ]
 
@@ -119,7 +154,6 @@ export const testimonials: Testimonial[] = []
 
 export const instagram = {
     handle: "@thisumang",
-    pillars: ["Delhi / Tokyo life", "AI builds", "Company teardowns", "Cost of living", "Not getting scammed"],
     // Most viewed first; all of them run in the reels carousel, and `hero` ones also float in the hero.
     // Add each reel's own URL as `href` when you have it.
     reels: [
@@ -135,7 +169,6 @@ export const instagram = {
         { thumb: "/home/reel-10x-salary.jpg", views: "8.7K", title: "10x salary in 4 years" },
         { thumb: "/home/reel-camera-roll.jpg", views: "6.7K", title: "POV: you open my camera roll" },
     ] as Reel[],
-    totalViews: "4M+",
 }
 
 export type Reel = { thumb: string; views: string; title: string; href?: string; hero?: boolean }

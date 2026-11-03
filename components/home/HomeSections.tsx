@@ -1,13 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
-import { instagram, journey, links, Reel, Stop, testimonials, today, work, WorkPill } from "@/data/content/home";
+import { copy, instagram, links, Reel, Stop, testimonials, work, WorkPill } from "@/data/content/home";
 
 const panel = "rounded-[28px] bg-[#141414] text-white ring-1 ring-white/5";
 
-const Panel = ({ id, label, children }: { id?: string; label: string; children: React.ReactNode }) => (
+type Copy = typeof copy.en;
+
+// Anton has no Japanese glyphs, so Japanese headings use a heavy sans in the same poster spirit.
+const displayFont = (ja: boolean) => (ja ? "font-sans font-black tracking-tight" : "font-display uppercase");
+
+const Panel = ({ id, label, ja, children }: { id?: string; label: string; ja: boolean; children: React.ReactNode }) => (
   <section id={id} className={`${panel} mt-6 scroll-mt-24 p-8 sm:p-12`}>
-    <h2 className="font-display text-[clamp(40px,6vw,72px)] uppercase leading-[0.9]">{label}</h2>
+    <h2 className={`${displayFont(ja)} text-[clamp(40px,6vw,72px)] leading-[0.95]`}>{label}</h2>
     <div className="mt-8">{children}</div>
   </section>
 );
@@ -77,20 +83,20 @@ const ReelTile = ({ reel, hidden = false }: { reel: Reel; hidden?: boolean }) =>
 
 // Every reel runs past in an endless strip (the list is doubled so the loop is seamless).
 // It pauses on hover; with reduced motion it stops and scrolls by hand instead.
-const ReelsCarousel = () => (
+const ReelsCarousel = ({ t, ja }: { t: Copy; ja: boolean }) => (
   <section className="relative ml-[calc(50%-50vw)] mt-6 w-screen text-left text-black dark:text-white">
     <div className="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5">
       <div>
-        <p className="font-display text-sm uppercase tracking-wide">· On Instagram · {instagram.handle}</p>
-        <h2 className="mt-3 font-display text-[clamp(40px,7vw,88px)] uppercase leading-[0.9]">{instagram.totalViews} views</h2>
+        <p className="font-display text-sm uppercase tracking-wide">· {t.onInstagram} · {instagram.handle}</p>
+        <h2 className={`mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.totalViews}</h2>
         <div className="mt-4 flex flex-wrap gap-2">
-          {instagram.pillars.map((pillar) => (
+          {t.pillars.map((pillar) => (
             <span key={pillar} className="rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-600 dark:border-white/15 dark:text-white/80">{pillar}</span>
           ))}
         </div>
       </div>
       <a href={links.instagram} target="_blank" rel="noreferrer" className="rounded-full bg-[#1450f0] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90">
-        Follow on Instagram
+        {t.follow}
       </a>
     </div>
     <div className="reel-strip mt-8 overflow-hidden">
@@ -103,27 +109,30 @@ const ReelsCarousel = () => (
 );
 
 function HomeSections() {
+  const { locale } = useRouter();
+  const ja = locale === "ja";
+  const t = copy[ja ? "ja" : "en"];
+
   return (
     <div className="w-full text-left">
-      <Panel label="About me">
+      <Panel label={t.aboutTitle} ja={ja}>
         <p className="max-w-3xl text-lg leading-relaxed text-white/90">
-          Hi, I&apos;m Umang. By day I help one of the world&apos;s biggest retailers plan what goes on its shelves. By night I
-          build the tools I wish existed, and film the whole thing.
+          {t.intro}
         </p>
 
         {/* The journey: each city is a stop on one line, with a fading rule to the next */}
         <ol className="mt-10 grid gap-8 md:grid-cols-3 md:gap-6">
-          {journey.map((stop, i) => (
+          {t.journey.map((stop, i) => (
             <li key={stop.city} className="relative">
               <div className="flex items-center gap-3">
                 <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#1450f0] text-cream">
                   <LineIcon name={stop.icon} />
                 </span>
-                {i < journey.length - 1 && (
+                {i < t.journey.length - 1 && (
                   <span className="hidden h-px flex-1 bg-gradient-to-r from-white/40 md:block" aria-hidden="true" />
                 )}
               </div>
-              <p className="mt-4 font-display text-3xl uppercase leading-none sm:text-4xl">{stop.city}</p>
+              <p className={`mt-4 ${displayFont(ja)} text-3xl leading-none sm:text-4xl`}>{stop.city}</p>
               <p className="mt-1 text-sm text-white/50">{stop.years}</p>
               <p className="mt-3 text-sm leading-relaxed text-white/75">{stop.text}</p>
             </li>
@@ -132,8 +141,8 @@ function HomeSections() {
 
         <div className="mt-10 grid gap-4 border-t border-white/10 pt-8 sm:grid-cols-2">
           {[
-            { icon: "cap" as const, label: "College", ...today.college },
-            { icon: "briefcase" as const, label: "Role", ...today.role },
+            { icon: "cap" as const, ...t.college },
+            { icon: "briefcase" as const, ...t.role },
           ].map((item) => (
             <div key={item.label} className="flex items-start gap-4 rounded-2xl bg-white/[0.04] p-5">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10 text-cream">
@@ -149,14 +158,14 @@ function HomeSections() {
         </div>
       </Panel>
 
-      <Panel id="work" label="Things I've built">
+      <Panel id="work" label={t.workTitle} ja={ja}>
         <WorkCollage />
       </Panel>
 
-      <ReelsCarousel />
+      <ReelsCarousel t={t} ja={ja} />
 
       {testimonials.length > 0 && (
-        <Panel label="Kind words">
+        <Panel label={t.testimonialsTitle} ja={ja}>
           <div className="grid gap-8 md:grid-cols-3">
             {testimonials.map((t) => (
               <figure key={t.name}>
@@ -169,13 +178,13 @@ function HomeSections() {
       )}
 
       <section className="mt-6 overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0a2aa8] via-[#1450f0] to-[#3d8bff] p-8 text-cream sm:p-12">
-        <p className="font-display text-sm uppercase tracking-wide">· Contact</p>
-        <h2 className="mt-4 font-display text-[clamp(56px,11vw,150px)] uppercase leading-[0.85]">Let&apos;s talk</h2>
+        <p className="font-display text-sm uppercase tracking-wide">· {t.contact}</p>
+        <h2 className={`mt-4 ${displayFont(ja)} text-[clamp(56px,11vw,150px)] leading-[0.9]`}>{t.letsTalk}</h2>
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <a href={`mailto:${links.email}`} className="text-xl font-semibold underline decoration-cream/40 underline-offset-8 hover:decoration-cream">{links.email}</a>
           <span className="flex-1" />
-          <a href={links.calendly} target="_blank" rel="noreferrer" className="rounded-full bg-cream px-6 py-3 text-sm font-semibold text-[#0a2aa8] transition-opacity hover:opacity-90">Book a call</a>
-          <a href={links.cv} download className="rounded-full border border-cream/50 px-6 py-3 text-sm font-semibold transition-colors hover:border-cream">Download CV</a>
+          <a href={links.calendly} target="_blank" rel="noreferrer" className="rounded-full bg-cream px-6 py-3 text-sm font-semibold text-[#0a2aa8] transition-opacity hover:opacity-90">{t.bookCall}</a>
+          <a href={links.cv} download className="rounded-full border border-cream/50 px-6 py-3 text-sm font-semibold transition-colors hover:border-cream">{t.downloadCv}</a>
         </div>
       </section>
     </div>

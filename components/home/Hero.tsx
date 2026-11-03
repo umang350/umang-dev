@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { CSSProperties, useEffect, useRef, useState } from "react";
-import { featured, instagram, links, more, Project } from "@/data/content/home";
+import { useRouter } from "next/router";
+import { copy, featured, instagram, links, more, Project } from "@/data/content/home";
 
 export const ProjectIcon = ({ icon, className = "h-5 w-5" }: { icon: Project["icon"]; className?: string }) => {
   const paths: Record<Project["icon"], React.ReactNode> = {
@@ -43,13 +44,18 @@ const RaisedLetters = ({ text }: { text: string }) => (
   </>
 );
 
-const Tooltip = ({ p }: { p: Project }) => (
-  <span className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-3 w-60 -translate-x-1/2 translate-y-1 rounded-xl bg-white p-3 text-left text-black opacity-0 shadow-2xl transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
-    <span className="block text-[11px] font-medium uppercase tracking-wider text-gray-500">{p.tag}</span>
-    <span className="mt-0.5 block font-semibold">{p.title}</span>
-    <span className="mt-1 block text-xs leading-snug text-gray-600">{p.metric ? `${p.metric.value} ${p.metric.label}` : p.outcome}</span>
-  </span>
-);
+const Tooltip = ({ p, ja }: { p: Project; ja: boolean }) => {
+  const tag = ja ? p.ja.tag : p.tag;
+  const metricLabel = p.metric && (ja ? p.ja.metricLabel ?? p.metric.label : p.metric.label);
+  const detail = p.metric ? `${p.metric.value} ${metricLabel}` : ja ? p.ja.outcome : p.outcome;
+  return (
+    <span className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-3 w-60 -translate-x-1/2 translate-y-1 rounded-xl bg-white p-3 text-left text-black opacity-0 shadow-2xl transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+      <span className="block text-[11px] font-medium uppercase tracking-wider text-gray-500">{tag}</span>
+      <span className="mt-0.5 block font-semibold">{p.title}</span>
+      <span className="mt-1 block text-xs leading-snug text-gray-600">{detail}</span>
+    </span>
+  );
+};
 
 const Float = ({ href, label, style, className, children }: { href?: string; label: string; style: CSSProperties; className: string; children: React.ReactNode }) => {
   const props = { "aria-label": label, style, className: `float-drift group absolute z-20 ${className}` };
@@ -135,13 +141,13 @@ const TokyoTime = () => {
   return <span className="tabular-nums">{time ?? "--:--"}</span>;
 };
 
-const StatusRow = () => (
+const StatusRow = ({ t }: { t: typeof copy.en }) => (
   <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 px-1 text-base text-gray-700 dark:text-white/80 sm:text-lg">
     <span className="inline-flex items-center gap-2">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
         <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" />
       </svg>
-      Based in Tokyo
+      {t.based}
     </span>
     <span className="hidden h-4 w-px bg-gray-300 dark:bg-white/20 sm:block" aria-hidden="true" />
     <span className="inline-flex items-center gap-2">
@@ -156,7 +162,7 @@ const StatusRow = () => (
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75 motion-reduce:animate-none" />
         <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
       </span>
-      Open to product roles and collaborations
+      {t.open}
     </a>
   </div>
 );
@@ -165,6 +171,9 @@ function Hero() {
   const projects = [...featured, ...more];
   const byTitle = (t: string) => projects.find((p) => p.title === t) as Project;
   const anaplan = byTitle("Anaplan Toolkit");
+  const { locale } = useRouter();
+  const ja = locale === "ja";
+  const t = copy[ja ? "ja" : "en"];
 
   return (
     <section className="-mt-5 w-full text-left">
@@ -179,7 +188,7 @@ function Hero() {
         <div className="pointer-events-none absolute inset-x-0 top-0 z-[15] h-28 [background:linear-gradient(to_bottom,rgba(0,0,0,0.35),rgba(0,0,0,0))]" aria-hidden="true" />
 
         <div className="relative mx-auto h-full max-w-[1600px]">
-          <h1 className="sr-only">Umang Chauhan, product manager in Tokyo</h1>
+          <h1 className="sr-only">{t.heading}</h1>
           <p aria-hidden="true" className="absolute left-5 top-20 z-20 cursor-default select-none font-display text-[22vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 lg:text-[168px]"><RaisedLetters text="Umang" /></p>
           <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 cursor-default select-none font-display text-[19vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 lg:text-[168px]"><RaisedLetters text="Chauhan" /></p>
 
@@ -197,7 +206,7 @@ function Hero() {
               <span className="flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-white shadow-2xl ring-4 ring-white/30">
                 <Image src="/anaplan/icon.png" alt="" width={48} height={48} className="rounded-lg" />
               </span>
-              <Tooltip p={anaplan} />
+              <Tooltip p={anaplan} ja={ja} />
             </Float>
 
             {placed.map((spot) => {
@@ -207,7 +216,7 @@ function Hero() {
                   <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#1450f0] shadow-xl ring-4 ring-white/25 transition-colors group-hover:bg-cream">
                     <ProjectIcon icon={p.icon} />
                   </span>
-                  <Tooltip p={p} />
+                  <Tooltip p={p} ja={ja} />
                 </Float>
               );
             })}
@@ -215,7 +224,7 @@ function Hero() {
         </div>
       </div>
 
-      <StatusRow />
+      <StatusRow t={t} />
     </section>
   );
 }
