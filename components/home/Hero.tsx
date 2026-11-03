@@ -59,9 +59,9 @@ const ReelCard = ({ reel, className = "" }: { reel: typeof instagram.reels[numbe
 );
 
 // The Paris clip fills the hero. Its first and last frames differ, so two copies take turns:
-// the next one fades in over the last moments of the current one. Playback starts at 0.4s,
-// past a stray passer-by at the right edge in the first frames. Reduced motion keeps the poster.
-const LOOP_START = 0.4;
+// the next one fades in over the last moments of the current one. Reduced motion keeps the poster.
+// (The encoded files already skip the source clip's first 0.4s, where a passer-by shows at the edge.)
+const LOOP_START = 0;
 const FADE = 0.8;
 
 const BackgroundVideo = ({ className }: { className: string }) => {
@@ -102,8 +102,8 @@ const BackgroundVideo = ({ className }: { className: string }) => {
       {refs.map((ref, i) => (
         <video key={i} ref={ref} muted playsInline preload="auto" poster="/home/paris-poster.jpg" aria-hidden="true"
           className={className} style={{ opacity: front === i ? 1 : 0, transition: `opacity ${FADE}s ease-in-out` }}>
-          <source media="(max-width: 767px)" src="/home/paris-540.mp4" type="video/mp4" />
-          <source src="/home/paris-720.mp4" type="video/mp4" />
+          <source media="(max-width: 767px)" src="/home/paris-hero-540.mp4" type="video/mp4" />
+          <source src="/home/paris-hero-720.mp4" type="video/mp4" />
         </video>
       ))}
     </>
