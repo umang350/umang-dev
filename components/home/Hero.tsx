@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import { featured, instagram, links, more, Project } from "@/data/content/home";
 
 export const ProjectIcon = ({ icon, className = "h-5 w-5" }: { icon: Project["icon"]; className?: string }) => {
@@ -18,18 +18,18 @@ export const ProjectIcon = ({ icon, className = "h-5 w-5" }: { icon: Project["ic
   );
 };
 
-// Positions are percentages of the hero panel on large screens.
+// Positions are percentages of the hero panel on large screens, clear of the frame path.
 const placed: { title: string; left: string; top: string; r: string; delay: string }[] = [
-  { title: "Inventory risk system", left: "6%", top: "58%", r: "-6deg", delay: "0s" },
-  { title: "Network Lab", left: "15%", top: "80%", r: "4deg", delay: "1.2s" },
-  { title: "AI PM Guide", left: "29%", top: "70%", r: "-3deg", delay: "2.1s" },
-  { title: "Get Saged", left: "89%", top: "50%", r: "6deg", delay: "0.6s" },
+  { title: "Inventory risk system", left: "4%", top: "74%", r: "-6deg", delay: "0s" },
+  { title: "Network Lab", left: "12%", top: "86%", r: "4deg", delay: "1.2s" },
+  { title: "AI PM Guide", left: "91%", top: "60%", r: "-3deg", delay: "2.1s" },
+  { title: "Get Saged", left: "80%", top: "62%", r: "6deg", delay: "0.6s" },
 ];
 
 const reelSpots: { left: string; top: string; r: string; delay: string }[] = [
-  { left: "17%", top: "34%", r: "-8deg", delay: "0.3s" },
-  { left: "63%", top: "9%", r: "6deg", delay: "1.5s" },
-  { left: "76%", top: "22%", r: "-4deg", delay: "0.9s" },
+  { left: "7%", top: "38%", r: "-8deg", delay: "0.3s" },
+  { left: "79%", top: "8%", r: "6deg", delay: "1.5s" },
+  { left: "88%", top: "30%", r: "-4deg", delay: "0.9s" },
 ];
 
 const Tooltip = ({ p }: { p: Project }) => (
@@ -58,18 +58,52 @@ const ReelCard = ({ reel, className = "" }: { reel: typeof instagram.reels[numbe
   </span>
 );
 
-const Portrait = ({ className }: { className: string }) => (
-  <div className={className}>
-    <div className="absolute -inset-3 border border-cream/70" aria-hidden="true">
-      {["-left-1 -top-1", "-right-1 -top-1", "-left-1 -bottom-1", "-right-1 -bottom-1"].map((pos) => (
-        <span key={pos} className={`absolute h-2 w-2 bg-cream ${pos}`} />
-      ))}
-    </div>
-    <div className="relative h-full w-full overflow-hidden">
-      <Image src="/home/portrait.jpg" alt="Umang Chauhan" fill priority sizes="300px" className="object-cover object-top" />
-    </div>
-  </div>
-);
+type Spot = { l: number; t: number };
+// Where the sharp frame travels, as % of the panel. Each set keeps the frame clear of the floating items.
+const frameSize = { lg: { w: 26, h: 56 }, sm: { w: 58, h: 40 } };
+const frameSpots: { lg: Spot[]; sm: Spot[] } = {
+  lg: [{ l: 37, t: 28 }, { l: 50, t: 16 }, { l: 25, t: 32 }],
+  sm: [{ l: 21, t: 30 }, { l: 36, t: 24 }, { l: 8, t: 36 }],
+};
+
+// The photo fills the panel, blurred and tinted. A sharp copy of the same photo is clipped
+// to a frame that glides to a new spot every few seconds, like a focus lens.
+const FocusPhoto = () => {
+  const [lg, setLg] = useState(true);
+  const [i, setI] = useState(0);
+
+  useEffect(() => {
+    const wide = window.matchMedia("(min-width: 1024px)");
+    const update = () => setLg(wide.matches);
+    update();
+    wide.addEventListener("change", update);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => wide.removeEventListener("change", update);
+    const timer = window.setInterval(() => setI((n) => n + 1), 3500);
+    return () => { wide.removeEventListener("change", update); window.clearInterval(timer); };
+  }, []);
+
+  const { w, h } = lg ? frameSize.lg : frameSize.sm;
+  const spots = lg ? frameSpots.lg : frameSpots.sm;
+  const { l, t } = spots[i % spots.length];
+  const ease = "1.4s cubic-bezier(0.77, 0, 0.18, 1)";
+  const photo = "scale-110 object-cover object-[50%_55%]";
+
+  return (
+    <>
+      <Image src="/home/hero.jpg" alt="" fill priority sizes="100vw" className={`${photo} blur-xl`} aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0a2aa8]/80 via-[#1450f0]/55 to-[#3d8bff]/40" aria-hidden="true" />
+      <div className="absolute inset-0" style={{ clipPath: `inset(${t}% ${100 - l - w}% ${100 - t - h}% ${l}%)`, transition: `clip-path ${ease}` }}>
+        <Image src="/home/hero.jpg" alt="Umang Chauhan" fill priority sizes="100vw" className={photo} />
+      </div>
+      <div className="pointer-events-none absolute z-10 border border-cream/80" aria-hidden="true"
+        style={{ left: `${l}%`, top: `${t}%`, width: `${w}%`, height: `${h}%`, transition: `left ${ease}, top ${ease}` }}>
+        {["-left-1 -top-1", "-right-1 -top-1", "-left-1 -bottom-1", "-right-1 -bottom-1"].map((pos) => (
+          <span key={pos} className={`absolute h-2 w-2 bg-cream ${pos}`} />
+        ))}
+      </div>
+    </>
+  );
+};
 
 function Hero() {
   const projects = [...featured, ...more];
@@ -78,26 +112,24 @@ function Hero() {
 
   return (
     <section className="w-full text-left">
-      <div className="relative flex flex-col overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0a2aa8] via-[#1450f0] to-[#3d8bff] text-cream lg:block lg:h-[680px]">
-        <div className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
+      <div className="relative h-[560px] overflow-hidden rounded-[28px] bg-[#1450f0] text-cream lg:h-[min(780px,calc(100vh-110px))] lg:min-h-[620px]">
+        <FocusPhoto />
 
         <h1 className="sr-only">Umang Chauhan, product manager in Tokyo</h1>
-        <p aria-hidden="true" className="relative z-10 order-1 px-6 pt-6 font-display text-[22vw] uppercase leading-[0.85] lg:absolute lg:left-8 lg:top-8 lg:p-0 lg:text-[168px]">Umang</p>
-        <p aria-hidden="true" className="relative z-10 order-3 px-6 pb-6 text-right font-display text-[18vw] uppercase leading-[0.85] lg:absolute lg:bottom-8 lg:right-8 lg:p-0 lg:text-[168px]">Chauhan</p>
+        <p aria-hidden="true" className="absolute left-5 top-5 z-20 font-display text-[22vw] uppercase leading-[0.85] lg:left-8 lg:top-8 lg:text-[168px]">Umang</p>
+        <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 font-display text-[19vw] uppercase leading-[0.85] lg:bottom-8 lg:right-8 lg:text-[168px]">Chauhan</p>
 
-        {/* Large screens: everything floats around the portrait */}
+        {/* Large screens: work and reels float around the frame's path */}
         <div className="hidden lg:block">
-          <Portrait className="absolute left-1/2 top-1/2 z-10 h-[340px] w-[290px] -translate-x-1/2 -translate-y-1/2" />
-
           {instagram.reels.map((reel, i) => (
             <Float key={reel.thumb} href={reel.href ?? links.instagram} label={`${reel.title}, ${reel.views} views on Instagram`}
               style={{ left: reelSpots[i].left, top: reelSpots[i].top, ["--r" as string]: reelSpots[i].r, animationDelay: reelSpots[i].delay }}
-              className="transition-transform hover:scale-105">
+              className="z-30 transition-transform hover:scale-105">
               <ReelCard reel={reel} className="h-[150px] w-[112px]" />
             </Float>
           ))}
 
-          <Float href={anaplan.href} label={anaplan.title} style={{ left: "67%", top: "50%", ["--r" as string]: "8deg", animationDelay: "0.4s" }} className="">
+          <Float href={anaplan.href} label={anaplan.title} style={{ left: "16%", top: "66%", ["--r" as string]: "8deg", animationDelay: "0.4s" }} className="z-30">
             <span className="flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-white shadow-2xl ring-4 ring-white/30">
               <Image src="/anaplan/icon.png" alt="" width={48} height={48} className="rounded-lg" />
             </span>
@@ -107,7 +139,7 @@ function Hero() {
           {placed.map((spot) => {
             const p = byTitle(spot.title);
             return (
-              <Float key={p.title} href={p.href} label={p.title} style={{ left: spot.left, top: spot.top, ["--r" as string]: spot.r, animationDelay: spot.delay }} className="">
+              <Float key={p.title} href={p.href} label={p.title} style={{ left: spot.left, top: spot.top, ["--r" as string]: spot.r, animationDelay: spot.delay }} className="z-30">
                 <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#1450f0] shadow-xl ring-4 ring-white/25 transition-colors group-hover:bg-cream">
                   <ProjectIcon icon={p.icon} />
                 </span>
@@ -115,21 +147,6 @@ function Hero() {
               </Float>
             );
           })}
-        </div>
-
-        {/* Small screens: the same pieces, stacked */}
-        <div className="relative order-2 px-6 py-8 lg:hidden">
-          <div className="relative mx-auto h-[300px] w-[250px]">
-            <Portrait className="relative h-full w-full" />
-            <a href={links.instagram} target="_blank" rel="noreferrer" aria-label={`${instagram.reels[0].title} on Instagram`}
-              className="float-drift absolute -left-10 top-6 z-20" style={{ ["--r" as string]: "-8deg" } as CSSProperties}>
-              <ReelCard reel={instagram.reels[0]} className="h-[110px] w-[82px]" />
-            </a>
-            <Link href="/anaplan" aria-label="Anaplan Toolkit"
-              className="float-drift absolute -right-6 bottom-4 z-20 flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-2xl" style={{ ["--r" as string]: "8deg" } as CSSProperties}>
-              <Image src="/anaplan/icon.png" alt="" width={36} height={36} className="rounded-md" />
-            </Link>
-          </div>
         </div>
       </div>
 
