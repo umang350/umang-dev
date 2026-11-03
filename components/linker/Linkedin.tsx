@@ -6,7 +6,7 @@ export const LinkedinButton = () => {
   return (
     <>
       <Link className={styles.libutton}
-        href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=umang350"
+        href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=thisumang"
         target="_blank">
         Follow on LinkedIn
       </Link>

@@ -90,7 +90,7 @@ export default function MobileNavbar({ overlay = false }: { overlay?: boolean })
             </svg>
           </a>
           <a
-            href="https://www.linkedin.com/in/umang350/"
+            href="https://www.linkedin.com/in/thisumang/"
             className="text-base font-normal text-gray-600 dark:text-gray-300"
           >
             <svg

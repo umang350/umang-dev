@@ -6,7 +6,7 @@ export const links = {
     calendly: "https://calendly.com/thisumang",
     email: "contact@umang.dev",
     instagram: "https://instagram.com/thisumang",
-    linkedin: "https://www.linkedin.com/in/umang350/",
+    linkedin: "https://www.linkedin.com/in/thisumang/",
     guide: "https://topmate.io/thisumang", // TODO: confirm the Topmate product URL
 }
 

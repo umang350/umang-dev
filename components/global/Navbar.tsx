@@ -88,7 +88,7 @@ function Navbar({ currentPage, overlay = false }: currentPageObject) {
           </svg>
         </a>
         <a
-          href="https://www.linkedin.com/in/umang350/"
+          href="https://www.linkedin.com/in/thisumang/"
           className={iconCls}
         >
           <svg
