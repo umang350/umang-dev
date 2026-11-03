@@ -12,6 +12,7 @@ module.exports = {
       sans: ["Be Vietnam Pro", "Inter", "system-ui", "sans"],
       monospace: ["DM Mono", "monospace"],
       display: ["Anton", "Impact", "sans-serif"],
+      "display-ja": ["Dela Gothic One", "Hiragino Sans", "sans-serif"],
     },
     colors: {
       black: colors.black,

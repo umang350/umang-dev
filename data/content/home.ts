@@ -16,6 +16,8 @@ export type Stop = { city: string; icon: "india-gate" | "torii" | "skyline"; yea
 // Every piece of homepage text, per language. Project and product names stay as they are.
 export const copy = {
     en: {
+        firstName: "Umang",
+        lastName: "Chauhan",
         heading: "Umang Chauhan, product manager in Tokyo",
         based: "Based in Tokyo",
         open: "Open to product roles and collaborations",
@@ -41,6 +43,8 @@ export const copy = {
         downloadCv: "Download CV",
     },
     ja: {
+        firstName: "ウマング",
+        lastName: "チャウハン",
         heading: "ウマング・チャウハン、東京のプロダクトマネージャー",
         based: "東京在住",
         open: "プロダクト職・コラボのご相談受付中",

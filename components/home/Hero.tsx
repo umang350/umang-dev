@@ -174,6 +174,9 @@ function Hero() {
   const { locale } = useRouter();
   const ja = locale === "ja";
   const t = copy[ja ? "ja" : "en"];
+  // Katakana is full-width and Anton has no Japanese glyphs, so the Japanese name uses Dela Gothic One, set smaller.
+  const nameFont = ja ? "font-display-ja leading-none lg:text-[128px]" : "font-display uppercase leading-[0.85] lg:text-[168px]";
+  const [firstSize, lastSize] = ja ? ["text-[18vw]", "text-[16vw]"] : ["text-[22vw]", "text-[19vw]"];
 
   return (
     <section className="-mt-5 w-full text-left">
@@ -189,8 +192,8 @@ function Hero() {
 
         <div className="relative mx-auto h-full max-w-[1600px]">
           <h1 className="sr-only">{t.heading}</h1>
-          <p aria-hidden="true" className="absolute left-5 top-20 z-20 cursor-default select-none font-display text-[22vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 lg:text-[168px]"><RaisedLetters text="Umang" /></p>
-          <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 cursor-default select-none font-display text-[19vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 lg:text-[168px]"><RaisedLetters text="Chauhan" /></p>
+          <p aria-hidden="true" className={`absolute left-5 top-20 z-20 cursor-default select-none [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 ${firstSize} ${nameFont}`}><RaisedLetters text={t.firstName} /></p>
+          <p aria-hidden="true" className={`absolute bottom-5 right-5 z-20 cursor-default select-none [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 ${lastSize} ${nameFont}`}><RaisedLetters text={t.lastName} /></p>
 
           {/* Large screens: work and reels float over the sky on either side of the tower */}
           <div className="hidden lg:block">

@@ -8,8 +8,8 @@ const panel = "rounded-[28px] bg-[#141414] text-white ring-1 ring-white/5";
 
 type Copy = typeof copy.en;
 
-// Anton has no Japanese glyphs, so Japanese headings use a heavy sans in the same poster spirit.
-const displayFont = (ja: boolean) => (ja ? "font-sans font-black tracking-tight" : "font-display uppercase");
+// Anton has no Japanese glyphs, so Japanese headings use Dela Gothic One, an equally heavy display face.
+const displayFont = (ja: boolean) => (ja ? "font-display-ja" : "font-display uppercase");
 
 const Panel = ({ id, label, ja, children }: { id?: string; label: string; ja: boolean; children: React.ReactNode }) => (
   <section id={id} className={`${panel} mt-6 scroll-mt-24 p-8 sm:p-12`}>
