@@ -11,6 +11,8 @@ module.exports = {
     fontFamily: {
       sans: ["Be Vietnam Pro", "Inter", "system-ui", "sans"],
       monospace: ["DM Mono", "monospace"],
+      display: ["Anton", "Impact", "sans-serif"],
+      "display-ja": ["Dela Gothic One", "Hiragino Sans", "sans-serif"],
     },
     colors: {
       black: colors.black,
@@ -35,6 +37,7 @@ module.exports = {
         "fun-gray-dark": "#1F1F20",
         "fun-gray-darkest": "#141414",
         "fun-pink": "#00c7ff",
+        cream: "#f6eedb",
         "fun-pink-darker": "#000f2e",
         "fun-pink-darkest": "#000c24",
         "fun-pink-dark": "#192742",

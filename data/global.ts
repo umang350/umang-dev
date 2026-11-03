@@ -80,15 +80,6 @@ export const routes: Route[] = [
     title: "Videos",
     path: "/videos",
   },
-  {
-    title: "Creations",
-    path: "/creations",
-  },
-  {
-    title: "Statistics",
-    path: "/stats",
-    description: "Deep dive into statistics"
-  },
 ];
 
 export const routesJA: Route[] = [
@@ -105,15 +96,6 @@ export const routesJA: Route[] = [
   {
     title: "動画",
     path: "/videos",
-  },
-  {
-    title: "創作物",
-    path: "/creations",
-  },
-  {
-    title: "統計学",
-    path: "/stats",
-    description: "Deep dive into statistics"
   },
 ];
 
@@ -136,16 +118,6 @@ export const footerJA: Footer = {
         {
           name: "動画",
           link: "/videos",
-          leavesWebsite: false,
-        },
-        {
-          name: "創作物",
-          link: "/creations",
-          leavesWebsite: false,
-        },
-        {
-          name: "統計学",
-          link: "/stats",
           leavesWebsite: false,
         },
         {
@@ -243,16 +215,6 @@ export const footer: Footer = {
           leavesWebsite: false,
         },
         {
-          name: "Creations",
-          link: "/creations",
-          leavesWebsite: false,
-        },
-        {
-          name: "Statistics",
-          link: "/stats",
-          leavesWebsite: false,
-        },
-        {
           name: "Anaplan Toolkit",
           link: "/anaplan",
           leavesWebsite: false,
@@ -306,7 +268,7 @@ export const footer: Footer = {
     dislaimer: "All rights reserved.",
   },
   language: {
-    title: "Langauge",
+    title: "Language",
     languages: [
       {
         name: "English",

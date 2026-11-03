@@ -7,7 +7,7 @@ import styles from './MobileNavbar.module.css';
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 
-export default function MobileNavbar() {
+export default function MobileNavbar({ overlay = false }: { overlay?: boolean }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { mounted: isMenuMounted, rendered: isMenuRendered } = useDelayedRender(
     isMenuOpen,
@@ -31,6 +31,7 @@ export default function MobileNavbar() {
 
 
   const { resolvedTheme, setTheme } = useTheme();
+  const onPhoto = overlay && !isMenuOpen;
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -52,14 +53,14 @@ export default function MobileNavbar() {
   return (
     <nav>
       <div
-        className={`w-full justify-between flex items-center ${isMenuRendered && 'dark:bg-bg z-50 sticky'} p-5`}
+        className={`w-full justify-between flex items-center ${isMenuRendered && 'dark:bg-bg z-50 sticky'} ${overlay && isMenuOpen ? 'bg-white' : ''} p-5`}
         style={{ zIndex: 101 }}
       >
-        <li className="list-none text-black dark:text-white font-bold text-lg">
+        {!onPhoto && <li className="list-none font-bold text-lg text-black dark:text-white">
           <Link href="/">
             <h1>{pageLogoText}</h1>
           </Link>
-        </li>
+        </li>}
         {isMenuOpen && <div className="space-x-4 flex flex-row items-center ml-auto mr-3">
           <a
             href="https://instagram.com/thisUmang"
@@ -89,7 +90,7 @@ export default function MobileNavbar() {
             </svg>
           </a>
           <a
-            href="https://www.linkedin.com/in/umang350/"
+            href="https://www.linkedin.com/in/thisumang/"
             className="text-base font-normal text-gray-600 dark:text-gray-300"
           >
             <svg
@@ -141,7 +142,7 @@ export default function MobileNavbar() {
         </div>}
 
         <button
-          className={`${styles.burger} visible md:hidden dark:bg-none`}
+          className={`${styles.burger} visible md:hidden dark:bg-none ${onPhoto ? "![background:transparent] text-cream ml-auto" : ""}`}
           aria-label="Toggle menu"
           type="button"
           onClick={toggleMenu}
@@ -153,7 +154,7 @@ export default function MobileNavbar() {
       {isMenuMounted && (
         <ul
           className={`${styles.menu} flex flex-col bg-bg sticky z-50
-            ${isMenuRendered && styles.menuRendered}`}
+            ${isMenuRendered && styles.menuRendered} ${overlay && isMenuRendered ? "!opacity-100" : ""}`}
         >
           {routesData.map((item, index) => {
             return (
