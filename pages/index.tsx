@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Hero from '../components/home/Hero'
 import Page from '../components/utility/Page'
 import { routes } from "@/data/global"
-import Starfield from '@/components/home/Starfield';
+import HomeSections from '@/components/home/HomeSections';
 
 const PageName = "Home";
 
@@ -11,6 +11,7 @@ const Home: NextPage = () => {
     <>
     <Page currentPage={PageName} meta={{ desc: routes.find(i => i.title === PageName).description }}>
       <Hero />
+      <HomeSections />
     </Page></>
   )
 }
