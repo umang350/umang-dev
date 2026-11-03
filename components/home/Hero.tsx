@@ -62,8 +62,8 @@ type Spot = { l: number; t: number };
 // Where the sharp frame travels, as % of the panel. Each set keeps the frame clear of the floating items.
 const frameSize = { lg: { w: 26, h: 56 }, sm: { w: 58, h: 40 } };
 const frameSpots: { lg: Spot[]; sm: Spot[] } = {
-  lg: [{ l: 37, t: 28 }, { l: 50, t: 16 }, { l: 25, t: 32 }],
-  sm: [{ l: 21, t: 30 }, { l: 36, t: 24 }, { l: 8, t: 36 }],
+  lg: [{ l: 37, t: 24 }, { l: 49, t: 14 }, { l: 27, t: 30 }],
+  sm: [{ l: 21, t: 28 }, { l: 34, t: 20 }, { l: 8, t: 34 }],
 };
 
 // The photo fills the panel, blurred and tinted. A sharp copy of the same photo is clipped
@@ -86,14 +86,14 @@ const FocusPhoto = () => {
   const spots = lg ? frameSpots.lg : frameSpots.sm;
   const { l, t } = spots[i % spots.length];
   const ease = "1.4s cubic-bezier(0.77, 0, 0.18, 1)";
-  const photo = "scale-110 object-cover object-[50%_55%]";
+  const photo = "scale-110 object-cover object-center";
 
   return (
     <>
-      <Image src="/home/hero.jpg" alt="" fill priority sizes="100vw" className={`${photo} blur-xl`} aria-hidden="true" />
+      <Image src="/home/hero-nyc.jpg" alt="" fill priority sizes="100vw" className={`${photo} blur-xl`} aria-hidden="true" />
       <div className="absolute inset-0 bg-gradient-to-br from-[#0a2aa8]/80 via-[#1450f0]/55 to-[#3d8bff]/40" aria-hidden="true" />
       <div className="absolute inset-0" style={{ clipPath: `inset(${t}% ${100 - l - w}% ${100 - t - h}% ${l}%)`, transition: `clip-path ${ease}` }}>
-        <Image src="/home/hero.jpg" alt="Umang Chauhan" fill priority sizes="100vw" className={photo} />
+        <Image src="/home/hero-nyc.jpg" alt="Umang Chauhan" fill priority sizes="100vw" className={photo} />
       </div>
       <div className="pointer-events-none absolute z-10 border border-cream/80" aria-hidden="true"
         style={{ left: `${l}%`, top: `${t}%`, width: `${w}%`, height: `${h}%`, transition: `left ${ease}, top ${ease}` }}>
