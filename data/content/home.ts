@@ -33,6 +33,7 @@ export const proof = [
 
 export type Project = {
     title: string
+    icon: "extension" | "chart" | "people" | "book" | "play"
     tag: string
     outcome: string
     href?: string
@@ -45,6 +46,7 @@ export type Project = {
 export const featured: Project[] = [
     {
         title: "Anaplan Toolkit",
+        icon: "extension",
         tag: "Chrome & Firefox extension · Free",
         outcome: "A side panel with 22 reports on the Anaplan model you have open: action IDs, formulas, saved views, page filters and more. Search it, export it, stop clicking through blueprints.",
         href: "/anaplan",
@@ -54,6 +56,7 @@ export const featured: Project[] = [
     },
     {
         title: "Inventory risk system",
+        icon: "chart",
         tag: "Product · US, Canada & Europe",
         outcome: "Anomaly-driven inventory risk detection for a global retailer's digital supply chain.",
         href: "/about",
@@ -62,6 +65,7 @@ export const featured: Project[] = [
     },
     {
         title: "Network Lab",
+        icon: "people",
         tag: "Community · Tokyo & New York",
         outcome: "A community I co-founded, with in-person meetups in Tokyo and New York.",
         href: links.linkedin,
@@ -72,6 +76,7 @@ export const featured: Project[] = [
 export const more: Project[] = [
     {
         title: "AI PM Guide",
+        icon: "book",
         tag: "Guide",
         outcome: "A practical guide to product management with AI.",
         href: links.guide,
@@ -79,6 +84,7 @@ export const more: Project[] = [
     },
     {
         title: "Get Saged",
+        icon: "play",
         tag: "YouTube",
         outcome: "Videos on careers, AI and life abroad.",
         href: "https://youtube.com/GetSaged",
@@ -93,6 +99,10 @@ export const testimonials: Testimonial[] = []
 export const instagram = {
     handle: "@thisumang",
     pillars: ["Delhi / Tokyo life", "AI builds", "Company teardowns", "Cost of living", "Not getting scammed"],
-    // Instagram reel URLs, best performer first, e.g. https://www.instagram.com/reel/XXXX/
-    reels: [] as string[],
+    // Most viewed first. Add each reel's own URL as `href` when you have it.
+    reels: [
+        { thumb: "/home/reel-1.jpg", views: "1.3M", title: "Cool stories start at 27", href: undefined as string | undefined },
+        { thumb: "/home/reel-2.jpg", views: "1.2M", title: "AI tools I use daily", href: undefined as string | undefined },
+        { thumb: "/home/reel-3.jpg", views: "906K", title: "First principles", href: undefined as string | undefined },
+    ],
 }
