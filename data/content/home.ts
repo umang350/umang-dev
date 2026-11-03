@@ -99,6 +99,20 @@ export const more: Project[] = [
     },
 ]
 
+export type WorkPill = { name: string; href: string; size: "lg" | "md" | "sm"; tone: "blue" | "cream" | "amber" | "outline" }
+
+// The work collage: names only, each one a link. Order sets the layout, size and tone set the look.
+export const work: WorkPill[] = [
+    { name: "Anaplan Toolkit", href: "/anaplan", size: "lg", tone: "blue" },
+    { name: "Network Lab", href: links.linkedin, size: "md", tone: "cream" },
+    { name: "Inventory risk system", href: "/about", size: "md", tone: "outline" },
+    { name: "AI PM Guide", href: links.guide, size: "lg", tone: "amber" },
+    { name: "Get Saged", href: "https://youtube.com/GetSaged", size: "md", tone: "outline" },
+    { name: "TV VibeHack", href: "https://github.com/umang350/tv-vibehack", size: "sm", tone: "outline" },
+    { name: "CopyMailTo", href: "https://github.com/umang350/CopyMailTo", size: "md", tone: "blue" },
+    { name: "OpenReply", href: "https://github.com/umang350/openreply-latest-0810", size: "sm", tone: "cream" },
+]
+
 export type Testimonial = { quote: string; name: string; role: string }
 // Add real quotes only.
 export const testimonials: Testimonial[] = []

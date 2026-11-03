@@ -1,29 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-import { featured, instagram, journey, links, more, Project, Reel, Stop, testimonials, today } from "@/data/content/home";
-import { ProjectIcon } from "./Hero";
+import React from "react";
+import { instagram, journey, links, Reel, Stop, testimonials, today, work, WorkPill } from "@/data/content/home";
 
 const panel = "rounded-[28px] bg-[#141414] text-white ring-1 ring-white/5";
 
-const Label = ({ children }: { children: React.ReactNode }) => (
-  <p className="font-display text-sm uppercase tracking-wide text-white">· {children}</p>
-);
-
 const Panel = ({ id, label, children }: { id?: string; label: string; children: React.ReactNode }) => (
-  <section id={id} className={`${panel} mt-6 grid scroll-mt-24 gap-8 p-8 sm:p-12 lg:grid-cols-[200px_1fr]`}>
-    <Label>{label}</Label>
-    <div>{children}</div>
+  <section id={id} className={`${panel} mt-6 scroll-mt-24 p-8 sm:p-12`}>
+    <h2 className="font-display text-[clamp(40px,6vw,72px)] uppercase leading-[0.9]">{label}</h2>
+    <div className="mt-8">{children}</div>
   </section>
 );
-
-const ProjectLink = ({ p, className, children, onEnter }: { p: Project; className: string; children: React.ReactNode; onEnter: () => void }) => {
-  const props = { className, onMouseEnter: onEnter, onFocus: onEnter };
-  if (!p.href) return <div {...props}>{children}</div>;
-  return p.href.startsWith("/")
-    ? <Link href={p.href} {...props}>{children}</Link>
-    : <a href={p.href} target="_blank" rel="noreferrer" {...props}>{children}</a>;
-};
 
 const LineIcon = ({ name, className = "h-7 w-7" }: { name: Stop["icon"] | "cap" | "briefcase"; className?: string }) => {
   const paths: Record<string, React.ReactNode> = {
@@ -39,6 +26,42 @@ const LineIcon = ({ name, className = "h-7 w-7" }: { name: Stop["icon"] | "cap" 
     </svg>
   );
 };
+
+const pillSize: Record<WorkPill["size"], string> = {
+  lg: "px-7 py-4 text-[clamp(28px,4vw,48px)]",
+  md: "px-6 py-3 text-[clamp(22px,3vw,34px)]",
+  sm: "px-5 py-2.5 text-[clamp(18px,2.2vw,26px)]",
+};
+const pillTone: Record<WorkPill["tone"], string> = {
+  blue: "bg-[#1450f0] text-cream",
+  cream: "bg-cream text-[#0a1a4a]",
+  amber: "bg-[#f5b041] text-[#2a1a00]",
+  outline: "text-white ring-1 ring-inset ring-white/25 hover:ring-white/60",
+};
+const tilts = ["-2deg", "1.5deg", "-1deg", "2deg", "-1.5deg", "1deg"];
+
+// Names only, each a link. Pills sit slightly tilted and straighten and lift on hover.
+const WorkCollage = () => (
+  <ul className="flex flex-wrap items-center gap-3 sm:gap-4">
+    {work.map((item, i) => {
+      const className = `group inline-flex items-center gap-3 rounded-full font-display uppercase leading-none transition-transform duration-300 hover:-translate-y-1 hover:!rotate-0 ${pillSize[item.size]} ${pillTone[item.tone]}`;
+      const content = (
+        <>
+          {item.name}
+          <span className="text-[0.6em] opacity-60 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" aria-hidden="true">↗</span>
+        </>
+      );
+      const style = { transform: `rotate(${tilts[i % tilts.length]})` };
+      return (
+        <li key={item.name}>
+          {item.href.startsWith("/")
+            ? <Link href={item.href} className={className} style={style}>{content}</Link>
+            : <a href={item.href} target="_blank" rel="noreferrer" className={className} style={style}>{content}</a>}
+        </li>
+      );
+    })}
+  </ul>
+);
 
 const ReelTile = ({ reel, hidden = false }: { reel: Reel; hidden?: boolean }) => (
   <a href={reel.href ?? links.instagram} target="_blank" rel="noreferrer" aria-hidden={hidden} tabIndex={hidden ? -1 : undefined}
@@ -79,37 +102,16 @@ const ReelsCarousel = () => (
   </section>
 );
 
-const Preview = ({ p }: { p: Project }) => (
-  <div className="overflow-hidden rounded-2xl bg-[#1450f0]">
-    {p.image ? (
-      <div className="relative aspect-[4/5]">
-        <Image src={p.image} alt={`${p.title} screenshot`} fill sizes="300px" className="object-cover object-top" />
-      </div>
-    ) : (
-      <div className="flex aspect-[4/5] flex-col justify-between p-6 text-cream">
-        <ProjectIcon icon={p.icon} className="h-10 w-10" />
-        <div>
-          {p.metric && <p className="font-display text-5xl leading-none">{p.metric.value}</p>}
-          <p className="mt-3 text-sm leading-snug text-cream/80">{p.metric ? p.metric.label : p.outcome}</p>
-        </div>
-      </div>
-    )}
-  </div>
-);
-
 function HomeSections() {
-  const projects = [...featured, ...more];
-  const [active, setActive] = useState(0);
-
   return (
     <div className="w-full text-left">
       <Panel label="About me">
         <p className="max-w-3xl text-lg leading-relaxed text-white/90">
-          I&apos;m Umang. I build planning products for a global retailer, and on the side the tools I wish existed, like
-          Anaplan Toolkit. I share the life and the builds on Instagram and YouTube.
+          Hi, I&apos;m Umang. By day I help one of the world&apos;s biggest retailers plan what goes on its shelves. By night I
+          build the tools I wish existed, and film the whole thing.
         </p>
 
-        {/* The journey: each city is a stop on one line, with an arrow to the next */}
+        {/* The journey: each city is a stop on one line, with a fading rule to the next */}
         <ol className="mt-10 grid gap-8 md:grid-cols-3 md:gap-6">
           {journey.map((stop, i) => (
             <li key={stop.city} className="relative">
@@ -147,30 +149,8 @@ function HomeSections() {
         </div>
       </Panel>
 
-      <Panel id="work" label="Selected work">
-        <div className="grid gap-10 lg:grid-cols-[1fr_280px]">
-          <ul className="group/list">
-            {projects.map((p, i) => (
-              <li key={p.title} className="border-b border-white/10 last:border-0">
-                <ProjectLink p={p} onEnter={() => setActive(i)}
-                  className={`flex items-baseline justify-between gap-4 py-4 transition-opacity ${active === i ? "opacity-100" : "opacity-40 hover:opacity-100"}`}>
-                  <span>
-                    <span className="block font-display text-[clamp(32px,5vw,60px)] uppercase leading-none">{p.title}</span>
-                    <span className="mt-2 block text-xs font-medium text-white/60">[ {p.tag} ]</span>
-                  </span>
-                  <span className="shrink-0 text-xl" aria-hidden="true">↗</span>
-                </ProjectLink>
-                <p className={`pb-4 text-sm leading-relaxed text-white/70 lg:hidden`}>{p.outcome}</p>
-              </li>
-            ))}
-          </ul>
-          <div className="hidden lg:block">
-            <div className="sticky top-24">
-              <Preview p={projects[active]} />
-              <p className="mt-4 text-sm leading-relaxed text-white/70">{projects[active].outcome}</p>
-            </div>
-          </div>
-        </div>
+      <Panel id="work" label="Things I've built">
+        <WorkCollage />
       </Panel>
 
       <ReelsCarousel />
