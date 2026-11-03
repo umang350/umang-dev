@@ -36,3 +36,39 @@ a {
 ._loading_overlay_overlay {
   position: fixed !important;
 }
+/* Homepage floating elements: drift up and down while keeping their tilt */
+@keyframes drift {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-10px) rotate(var(--r, 0deg)); }
+}
+.float-drift {
+  transform: rotate(var(--r, 0deg));
+  animation: drift 6s ease-in-out infinite;
+}
+
+/* Homepage reels: endless strip, fading out at both edges */
+@keyframes reel-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.reel-strip {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.reel-track {
+  animation: reel-scroll 70s linear infinite;
+}
+.reel-strip:hover .reel-track,
+.reel-strip:focus-within .reel-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-drift,
+  .reel-track {
+    animation: none;
+  }
+  .reel-strip {
+    overflow-x: auto;
+  }
+}

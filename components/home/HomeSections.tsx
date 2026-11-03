@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { featured, instagram, links, more, Project, proof, testimonials } from "@/data/content/home";
+import { featured, instagram, links, more, Project, proof, Reel, testimonials } from "@/data/content/home";
 import { ProjectIcon } from "./Hero";
 
 const panel = "rounded-[28px] bg-[#141414] text-white ring-1 ring-white/5";
@@ -24,6 +24,45 @@ const ProjectLink = ({ p, className, children, onEnter }: { p: Project; classNam
     ? <Link href={p.href} {...props}>{children}</Link>
     : <a href={p.href} target="_blank" rel="noreferrer" {...props}>{children}</a>;
 };
+
+const ReelTile = ({ reel, hidden = false }: { reel: Reel; hidden?: boolean }) => (
+  <a href={reel.href ?? links.instagram} target="_blank" rel="noreferrer" aria-hidden={hidden} tabIndex={hidden ? -1 : undefined}
+    aria-label={hidden ? undefined : `${reel.title}, ${reel.views} views on Instagram`}
+    className="group relative block aspect-[493/687] w-[160px] shrink-0 overflow-hidden rounded-2xl ring-1 ring-white/10 sm:w-[210px]">
+    <Image src={reel.thumb} alt="" fill sizes="210px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+    <span className="absolute bottom-2.5 left-2.5 flex items-center gap-1.5 rounded-full bg-black/65 px-2.5 py-1 text-sm font-semibold text-white backdrop-blur-sm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" /><circle cx="12" cy="12" r="3" /></svg>
+      {reel.views}
+    </span>
+  </a>
+);
+
+// Every reel runs past in an endless strip (the list is doubled so the loop is seamless).
+// It pauses on hover; with reduced motion it stops and scrolls by hand instead.
+const ReelsCarousel = () => (
+  <section className="relative ml-[calc(50%-50vw)] mt-6 w-screen text-left text-black dark:text-white">
+    <div className="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5">
+      <div>
+        <p className="font-display text-sm uppercase tracking-wide">· On Instagram · {instagram.handle}</p>
+        <h2 className="mt-3 font-display text-[clamp(40px,7vw,88px)] uppercase leading-[0.9]">{instagram.totalViews} views</h2>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {instagram.pillars.map((pillar) => (
+            <span key={pillar} className="rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-600 dark:border-white/15 dark:text-white/80">{pillar}</span>
+          ))}
+        </div>
+      </div>
+      <a href={links.instagram} target="_blank" rel="noreferrer" className="rounded-full bg-[#1450f0] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90">
+        Follow on Instagram
+      </a>
+    </div>
+    <div className="reel-strip mt-8 overflow-hidden">
+      <div className="reel-track flex w-max gap-4 px-2">
+        {instagram.reels.map((reel) => <ReelTile key={reel.thumb} reel={reel} />)}
+        {instagram.reels.map((reel) => <ReelTile key={`${reel.thumb}-copy`} reel={reel} hidden />)}
+      </div>
+    </div>
+  </section>
+);
 
 const Preview = ({ p }: { p: Project }) => (
   <div className="overflow-hidden rounded-2xl bg-[#1450f0]">
@@ -96,28 +135,7 @@ function HomeSections() {
         </div>
       </Panel>
 
-      <Panel label={`On Instagram · ${instagram.handle}`}>
-        <div className="grid grid-cols-3 gap-2 sm:gap-4">
-          {instagram.reels.map((reel) => (
-            <a key={reel.thumb} href={reel.href ?? links.instagram} target="_blank" rel="noreferrer"
-              className="group relative block aspect-[4/5] overflow-hidden rounded-2xl">
-              <Image src={reel.thumb} alt={reel.title} fill sizes="(min-width: 640px) 300px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-              <span className="absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-black/85 to-transparent p-2 pt-10 sm:p-4 sm:pt-16">
-                <span className="font-display text-lg sm:text-3xl">{reel.views}</span>
-                <span className="mb-1 ml-2 hidden text-xs text-white/70 sm:inline">views</span>
-              </span>
-            </a>
-          ))}
-        </div>
-        <div className="mt-6 flex flex-wrap items-center gap-2">
-          {instagram.pillars.map((pillar) => (
-            <span key={pillar} className="rounded-full border border-white/15 px-3 py-1 text-sm text-white/80">{pillar}</span>
-          ))}
-          <a href={links.instagram} target="_blank" rel="noreferrer" className="ml-auto rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-opacity hover:opacity-90">
-            Follow on Instagram
-          </a>
-        </div>
-      </Panel>
+      <ReelsCarousel />
 
       {testimonials.length > 0 && (
         <Panel label="Kind words">

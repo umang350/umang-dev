@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;700&family=DM+Mono:wght@400;500&family=Anton&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap");
 
 body {
   width: 100%;
@@ -306,17 +306,3 @@ pre {
 .sqD {
   @apply absolute z-[-10];
 }
-
-/* Homepage floating elements: drift up and down while keeping their tilt */
-@keyframes drift {
-  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
-  50% { transform: translateY(-10px) rotate(var(--r, 0deg)); }
-}
-.float-drift {
-  transform: rotate(var(--r, 0deg));
-  animation: drift 6s ease-in-out infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .float-drift { animation: none; }
-}
-

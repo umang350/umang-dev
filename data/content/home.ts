@@ -99,10 +99,22 @@ export const testimonials: Testimonial[] = []
 export const instagram = {
     handle: "@thisumang",
     pillars: ["Delhi / Tokyo life", "AI builds", "Company teardowns", "Cost of living", "Not getting scammed"],
-    // Most viewed first. Add each reel's own URL as `href` when you have it.
+    // Most viewed first; all of them run in the reels carousel, and `hero` ones also float in the hero.
+    // Add each reel's own URL as `href` when you have it.
     reels: [
-        { thumb: "/home/reel-1.jpg", views: "1.3M", title: "Cool stories start at 27", href: undefined as string | undefined },
-        { thumb: "/home/reel-2.jpg", views: "1.2M", title: "AI tools I use daily", href: undefined as string | undefined },
-        { thumb: "/home/reel-3.jpg", views: "906K", title: "First principles", href: undefined as string | undefined },
-    ],
+        { thumb: "/home/reel-cool-stories-27.jpg", views: "1.3M", title: "Cool stories start at 27" },
+        { thumb: "/home/reel-ai-tools-daily.jpg", views: "1.2M", title: "AI tools I use daily" },
+        { thumb: "/home/reel-first-principles.jpg", views: "906K", title: "First principles" },
+        { thumb: "/home/reel-three-networking.jpg", views: "298K", title: "Three networking tips", hero: true },
+        { thumb: "/home/reel-small-talk-hacks.jpg", views: "121K", title: "Small talk hacks", hero: true },
+        { thumb: "/home/reel-mumbai-vs-new-york.jpg", views: "110K", title: "Mumbai vs New York expenses", hero: true },
+        { thumb: "/home/reel-harvard.jpg", views: "31K", title: "This guy studied at Harvard" },
+        { thumb: "/home/reel-never-have-i-ever-ai.jpg", views: "22.5K", title: "Never have I ever: AI edition" },
+        { thumb: "/home/reel-fluent-japanese.jpg", views: "12.3K", title: "Fluent Japanese, obviously chopsticks" },
+        { thumb: "/home/reel-10x-salary.jpg", views: "8.7K", title: "10x salary in 4 years" },
+        { thumb: "/home/reel-camera-roll.jpg", views: "6.7K", title: "POV: you open my camera roll" },
+    ] as Reel[],
+    totalViews: "4M+",
 }
+
+export type Reel = { thumb: string; views: string; title: string; href?: string; hero?: boolean }

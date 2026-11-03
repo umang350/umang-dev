@@ -62,7 +62,7 @@ const Float = ({ href, label, style, className, children }: { href?: string; lab
 const ReelCard = ({ reel, className = "" }: { reel: typeof instagram.reels[number]; className?: string }) => (
   <span className={`relative block overflow-hidden rounded-xl border-2 border-white/80 shadow-2xl ${className}`}>
     <Image src={reel.thumb} alt={reel.title} fill sizes="160px" className="object-cover" />
-    <span className="absolute inset-x-0 bottom-0 flex items-center gap-1 bg-gradient-to-t from-black/80 to-transparent px-2 pb-1.5 pt-6 text-xs font-semibold text-white">
+    <span className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full bg-black/65 px-2 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-3.5 w-3.5" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" /><circle cx="12" cy="12" r="3" /></svg>
       {reel.views}
     </span>
@@ -144,7 +144,7 @@ function Hero() {
 
           {/* Large screens: work and reels float over the sky on either side of the tower */}
           <div className="hidden lg:block">
-            {instagram.reels.map((reel, i) => (
+            {instagram.reels.filter((r) => r.hero).map((reel, i) => (
               <Float key={reel.thumb} href={reel.href ?? links.instagram} label={`${reel.title}, ${reel.views} views on Instagram`}
                 style={{ left: reelSpots[i].left, top: reelSpots[i].top, ["--r" as string]: reelSpots[i].r, animationDelay: reelSpots[i].delay }}
                 className="z-30 transition-transform hover:scale-105">
