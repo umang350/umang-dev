@@ -32,11 +32,11 @@ const reelSpots: { left: string; top: string; r: string; delay: string }[] = [
   { left: "89%", top: "37%", r: "-4deg", delay: "0.9s" },
 ];
 
-// Each letter lifts and turns cyan as the cursor passes over it, then settles slowly.
+// Each letter lifts and warms to the tower's amber as the cursor passes over it, then settles slowly.
 const RaisedLetters = ({ text }: { text: string }) => (
   <>
     {text.split("").map((letter, i) => (
-      <span key={i} className="inline-block transition-[transform,color] duration-700 ease-out hover:-translate-y-[0.12em] hover:text-fun-pink hover:duration-150">
+      <span key={i} className="inline-block transition-[transform,color] duration-700 ease-out hover:-translate-y-[0.12em] hover:text-[#f5b041] hover:duration-150">
         {letter}
       </span>
     ))}
@@ -139,8 +139,8 @@ function Hero() {
 
         <div className="relative mx-auto h-full max-w-[1600px]">
           <h1 className="sr-only">Umang Chauhan, product manager in Tokyo</h1>
-          <p aria-hidden="true" className="absolute left-5 top-20 z-20 font-display text-[22vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 lg:text-[168px]"><RaisedLetters text="Umang" /></p>
-          <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 font-display text-[19vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 lg:text-[168px]"><RaisedLetters text="Chauhan" /></p>
+          <p aria-hidden="true" className="absolute left-5 top-20 z-20 cursor-default select-none font-display text-[22vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 lg:text-[168px]"><RaisedLetters text="Umang" /></p>
+          <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 cursor-default select-none font-display text-[19vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 lg:text-[168px]"><RaisedLetters text="Chauhan" /></p>
 
           {/* Large screens: work and reels float over the sky on either side of the tower */}
           <div className="hidden lg:block">
