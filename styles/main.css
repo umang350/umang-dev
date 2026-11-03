@@ -319,3 +319,11 @@ pre {
 @media (prefers-reduced-motion: reduce) {
   .float-drift { animation: none; }
 }
+
+/* Homepage hero: past the 1600px photo stage, fade its edges into the wide blurred fill */
+@media (min-width: 1601px) {
+  .hero-edge-fade {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+}

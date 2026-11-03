@@ -66,7 +66,9 @@ const frameSpots: { lg: Spot[]; sm: Spot[] } = {
   sm: [{ l: 21, t: 28 }, { l: 34, t: 20 }, { l: 8, t: 34 }],
 };
 
-// The photo fills the panel, blurred and tinted. A sharp copy of the same photo is clipped
+const tint = "absolute inset-0 bg-gradient-to-br from-[#0a2aa8]/45 via-[#1450f0]/25 to-[#3d8bff]/15";
+
+// The photo fills the panel, lightly blurred and tinted. A sharp copy of the same photo is clipped
 // to a frame that glides to a new spot every few seconds, like a focus lens.
 const FocusPhoto = () => {
   const [lg, setLg] = useState(true);
@@ -90,10 +92,12 @@ const FocusPhoto = () => {
 
   return (
     <>
-      <Image src="/home/hero-nyc.jpg" alt="" fill priority sizes="100vw" className={`${photo} blur-xl`} aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0a2aa8]/80 via-[#1450f0]/55 to-[#3d8bff]/40" aria-hidden="true" />
+      <div className="hero-edge-fade absolute inset-0" aria-hidden="true">
+        <Image src="/home/hero-nyc.jpg" alt="" fill priority sizes="(min-width: 1600px) 1600px, 100vw" className={`${photo} blur-[10px]`} />
+        <div className={tint} />
+      </div>
       <div className="absolute inset-0" style={{ clipPath: `inset(${t}% ${100 - l - w}% ${100 - t - h}% ${l}%)`, transition: `clip-path ${ease}` }}>
-        <Image src="/home/hero-nyc.jpg" alt="Umang Chauhan" fill priority sizes="100vw" className={photo} />
+        <Image src="/home/hero-nyc.jpg" alt="Umang Chauhan" fill priority sizes="(min-width: 1600px) 1600px, 100vw" className={photo} />
       </div>
       <div className="pointer-events-none absolute z-10 border border-cream/80" aria-hidden="true"
         style={{ left: `${l}%`, top: `${t}%`, width: `${w}%`, height: `${h}%`, transition: `left ${ease}, top ${ease}` }}>
@@ -112,12 +116,17 @@ function Hero() {
 
   return (
     <section className="w-full text-left">
-      <div className="relative h-[560px] overflow-hidden rounded-[28px] bg-[#1450f0] text-cream lg:h-[min(780px,calc(100vh-110px))] lg:min-h-[620px]">
+      <div className="relative ml-[calc(50%-50vw)] h-[560px] w-screen overflow-hidden bg-[#1450f0] text-cream lg:h-[min(800px,calc(100vh-90px))] lg:min-h-[620px]">
+        {/* Fills the extra width on screens wider than the photo stage */}
+        <Image src="/home/hero-nyc.jpg" alt="" fill sizes="100vw" className="scale-110 object-cover blur-3xl" aria-hidden="true" />
+        <div className={tint} aria-hidden="true" />
+
+        <div className="relative mx-auto h-full max-w-[1600px]">
         <FocusPhoto />
 
         <h1 className="sr-only">Umang Chauhan, product manager in Tokyo</h1>
-        <p aria-hidden="true" className="absolute left-5 top-5 z-20 font-display text-[22vw] uppercase leading-[0.85] lg:left-8 lg:top-8 lg:text-[168px]">Umang</p>
-        <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 font-display text-[19vw] uppercase leading-[0.85] lg:bottom-8 lg:right-8 lg:text-[168px]">Chauhan</p>
+        <p aria-hidden="true" className="absolute left-5 top-5 z-20 font-display text-[22vw] uppercase [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] leading-[0.85] lg:left-8 lg:top-8 lg:text-[168px]">Umang</p>
+        <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 font-display text-[19vw] uppercase [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] leading-[0.85] lg:bottom-8 lg:right-8 lg:text-[168px]">Chauhan</p>
 
         {/* Large screens: work and reels float around the frame's path */}
         <div className="hidden lg:block">
@@ -147,6 +156,7 @@ function Hero() {
               </Float>
             );
           })}
+        </div>
         </div>
       </div>
 
