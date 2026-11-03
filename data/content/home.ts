@@ -11,58 +11,76 @@ export const links = {
 }
 
 export const hero = {
-    kicker: "Hey, I'm Umang.",
-    headline: "I build global planning products in Tokyo, and AI tools people actually use.",
-    sub: "Delhi → Tokyo → NYC. Product manager for supply chain and planning platforms across 3 continents, builder of Anaplan Toolkit, co-founder of Network Lab.",
+    badge: "Product Manager · Tokyo",
+    headline: "I build global planning products",
+    accent: "and AI tools people use.",
+    sub: "Delhi → Tokyo → New York → Tokyo. I run supply chain and planning products at global scale, and ship my own tools on the side, like Anaplan Toolkit.",
+}
+
+export const heroJA = {
+    badge: "プロダクトマネージャー · 東京",
+    headline: "グローバルな計画プロダクトと、",
+    accent: "本当に使われるAIツールを作っています。",
+    sub: "デリー → 東京 → ニューヨーク → 東京。グローバル規模のサプライチェーン・計画プロダクトを担当し、Anaplan Toolkit などのツールも開発しています。",
 }
 
 export const proof = [
     { value: "$30M+", label: "lost sales recovered" },
     { value: "5% → 2%", label: "out-of-stock rate" },
     { value: "1B+", label: "rows migrated" },
-    { value: "5M+", label: "creator views" },
+    { value: "5M+", label: "views as a creator" },
 ]
 
 export type Project = {
     title: string
+    tag: string
     outcome: string
     href?: string
     cta?: string
     image?: string
+    metric?: { value: string; label: string }
 }
 
+// The first entry is shown as the large card.
 export const featured: Project[] = [
     {
         title: "Anaplan Toolkit",
-        outcome: "Free Chrome & Firefox side panel with 22 reports on the Anaplan model you have open. Rated 5 stars.",
+        tag: "Chrome & Firefox extension · Free",
+        outcome: "A side panel with 22 reports on the Anaplan model you have open: action IDs, formulas, saved views, page filters and more. Search it, export it, stop clicking through blueprints.",
         href: "/anaplan",
         cta: "See the toolkit",
-        image: "/anaplan/summary.png",
+        image: "/anaplan/summary-panel.png",
+        metric: { value: "★★★★★", label: "on the Chrome Web Store" },
     },
     {
-        title: "Global planning platform",
-        outcome: "Anomaly-driven inventory risk system across US, Canada and Europe: out-of-stock 5% → 2%, $30M+ in lost sales recovered.",
+        title: "Inventory risk system",
+        tag: "Product · US, Canada & Europe",
+        outcome: "Anomaly-driven inventory risk detection for a global retailer's digital supply chain.",
         href: "/about",
-        cta: "Read the story",
+        cta: "Read more",
+        metric: { value: "5% → 2%", label: "out-of-stock rate, $30M+ recovered" },
     },
     {
         title: "Network Lab",
-        outcome: "A community I co-founded, with meetups in Tokyo and New York.",
+        tag: "Community · Tokyo & New York",
+        outcome: "A community I co-founded, with in-person meetups in Tokyo and New York.",
         href: links.linkedin,
-        cta: "Follow the latest",
+        cta: "See the latest meetup",
     },
 ]
 
 export const more: Project[] = [
     {
         title: "AI PM Guide",
+        tag: "Guide",
         outcome: "A practical guide to product management with AI.",
         href: links.guide,
         cta: "Get the guide",
     },
     {
         title: "Get Saged",
-        outcome: "My YouTube channel on careers, AI and life abroad.",
+        tag: "YouTube",
+        outcome: "Videos on careers, AI and life abroad.",
         href: "https://youtube.com/GetSaged",
         cta: "Watch",
     },
@@ -74,7 +92,7 @@ export const testimonials: Testimonial[] = []
 
 export const instagram = {
     handle: "@thisumang",
-    pillars: ["Delhi / Tokyo life", "AI builds", "Company teardowns", "Cost of life and not getting scammed"],
+    pillars: ["Delhi / Tokyo life", "AI builds", "Company teardowns", "Cost of living", "Not getting scammed"],
     // Instagram reel URLs, best performer first, e.g. https://www.instagram.com/reel/XXXX/
     reels: [] as string[],
 }
