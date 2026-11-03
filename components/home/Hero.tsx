@@ -60,7 +60,6 @@ const ReelCard = ({ reel, className = "" }: { reel: typeof instagram.reels[numbe
 
 // The Paris clip fills the hero. Its first and last frames differ, so two copies take turns:
 // the next one fades in over the last moments of the current one. Reduced motion keeps the poster.
-// (The encoded files already skip the source clip's first 0.4s, where a passer-by shows at the edge.)
 const LOOP_START = 0;
 const FADE = 0.8;
 
@@ -100,10 +99,10 @@ const BackgroundVideo = ({ className }: { className: string }) => {
   return (
     <>
       {refs.map((ref, i) => (
-        <video key={i} ref={ref} muted playsInline preload="auto" poster="/home/paris-poster.jpg" aria-hidden="true"
+        <video key={i} ref={ref} muted playsInline preload="auto" poster="/home/paris-v2-poster.jpg" aria-hidden="true"
           className={className} style={{ opacity: front === i ? 1 : 0, transition: `opacity ${FADE}s ease-in-out` }}>
-          <source media="(max-width: 767px)" src="/home/paris-hero-540.mp4" type="video/mp4" />
-          <source src="/home/paris-hero-720.mp4" type="video/mp4" />
+          <source media="(max-width: 767px)" src="/home/paris-v2-540.mp4" type="video/mp4" />
+          <source src="/home/paris-v2-720.mp4" type="video/mp4" />
         </video>
       ))}
     </>
@@ -118,7 +117,7 @@ function Hero() {
   return (
     <section className="-mt-5 w-full text-left">
       <div className="relative ml-[calc(50%-50vw)] h-[620px] w-screen overflow-hidden bg-[#1450f0] text-cream lg:h-[min(860px,100vh)] lg:min-h-[660px]">
-        <Image src="/home/paris-poster.jpg" alt="Umang Chauhan in front of the Eiffel Tower" fill priority sizes="100vw" className="object-cover object-[60%_50%] lg:object-center" />
+        <Image src="/home/paris-v2-poster.jpg" alt="Umang Chauhan in front of the Eiffel Tower" fill priority sizes="100vw" className="object-cover object-[60%_50%] lg:object-center" />
         <BackgroundVideo className="absolute inset-0 h-full w-full object-cover object-[60%_50%] lg:object-center" />
         {/* Deepens the sky behind the name so the cream type stays readable */}
         <div className="pointer-events-none absolute inset-0" aria-hidden="true"
