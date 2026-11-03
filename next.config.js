@@ -13,6 +13,12 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // The Videos page is gone; the YouTube carousel on the homepage replaces it.
+      {
+        source: '/videos',
+        destination: '/',
+        permanent: true,
+      },
       // The Anaplan Toolkit store listings link to the old privacy policy URL.
       {
         source: '/privacy/anaplan-toolkit',

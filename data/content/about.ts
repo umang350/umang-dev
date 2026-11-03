@@ -1,12 +1,24 @@
 export const information = {
-    title: "About Me.",
-    subheading: "Product Manager 📦 Developer🗼 Content Creator 💥 Strategizer 📈",
+    title: "About me",
+    eyebrow: "Product · Code · Content",
+    roles: ["Product Manager", "Developer", "Content Creator", "Strategist"],
     desc: "My passion is to build products of utility for the masses and create a global world filled with correct human intelligence and computational accessibility bringing efficiency and transparency to the ecosystem of technology and life.",
     descPoints: [
-        "🚀 Scaling global supply chain & inventory tools at Fast Retailing (Uniqlo) from Tokyo",
-        "⚡ Built a 100K+ global creator community with 5M+ views inspiring young professionals",
-        "🔥 Bridging product, engineering & data to drive real-world impact across 3 continents"
-    ]
+        "Scaling global supply chain & inventory tools at Fast Retailing (Uniqlo) from Tokyo",
+        "Built a 100K+ global creator community with 5M+ views inspiring young professionals",
+        "Bridging product, engineering & data to drive real-world impact across 3 continents"
+    ],
+    experienceTitle: "The path so far",
+    skillsTitle: "Toolbox",
+    skills: [
+        { label: "Product Management", tags: ["Roadmapping", "PRDs", "Backlog Prioritization", "Metrics/KPIs", "User Research", "Tech Architecture"] },
+        { label: "Data & Analytics", tags: ["SQL", "Anaplan", "Tableau", "Python", "Excel", "BigQuery", "PowerBI", "Google Analytics"] },
+        { label: "Platforms", tags: ["JavaScript", "Java", "React", "Git", "Jenkins", "Docker", "AWS", "GCP", "REST APIs", "Microservices"] },
+    ],
+    contact: "Contact",
+    letsTalk: "Let's talk",
+    contactText: "Currently a Product Manager at Fast Retailing (Uniqlo) in Tokyo. Open to interesting product roles, collaborations and questions. Write in and I'll get back to you. I swear.",
+    bookCall: "Book a call",
 }
 
 export const experience = [
@@ -61,14 +73,26 @@ export const experience = [
 ]
 
 export const informationJA = {
-    title: "私について。",
-    subheading: "プロダクトマネージャー📦 開発者🗼 コンテンツ作成者💥 戦略家📈",
+    title: "私について",
+    eyebrow: "プロダクト · コード · コンテンツ",
+    roles: ["プロダクトマネージャー", "開発者", "コンテンツ作成者", "戦略家"],
     desc: "私の情熱は、大衆のための実用的な製品を作り、正確な人間の知能とコンピューティングのアクセシビリティに満ちたグローバルな世界を作り、テクノロジーとライフスタイルのエコシステムに効率と透明性をもたらすことです。",
     descPoints: [
-        "🚀 東京からファーストリテイリング（ユニクロ）でグローバルなサプライチェーン・在庫ツールを拡大中",
-        "⚡ 5M+再生回数を誇る10万人超のグローバルクリエイターコミュニティを構築",
-        "🔥 プロダクト・エンジニアリング・データを橋渡しし、3大陸で実世界のインパクトを創出"
-    ]
+        "東京からファーストリテイリング（ユニクロ）でグローバルなサプライチェーン・在庫ツールを拡大中",
+        "5M+再生回数を誇る10万人超のグローバルクリエイターコミュニティを構築",
+        "プロダクト・エンジニアリング・データを橋渡しし、3大陸で実世界のインパクトを創出"
+    ],
+    experienceTitle: "経歴",
+    skillsTitle: "スキル",
+    skills: [
+        { label: "プロダクトマネジメント", tags: ["ロードマップ", "PRD", "バックログ優先順位付け", "指標・KPI", "ユーザーリサーチ", "技術アーキテクチャ"] },
+        { label: "データ・分析", tags: ["SQL", "Anaplan", "Tableau", "Python", "Excel", "BigQuery", "PowerBI", "Google Analytics"] },
+        { label: "プラットフォーム", tags: ["JavaScript", "Java", "React", "Git", "Jenkins", "Docker", "AWS", "GCP", "REST APIs", "Microservices"] },
+    ],
+    contact: "お問い合わせ",
+    letsTalk: "話しましょう",
+    contactText: "現在は東京のファーストリテイリング（ユニクロ）でプロダクトマネージャーをしています。プロダクト職、コラボ、ご質問などお気軽にご連絡ください。必ず返信します。",
+    bookCall: "通話を予約",
 }
 
 export const experienceJA = [

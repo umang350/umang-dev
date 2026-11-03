@@ -76,10 +76,6 @@ export const routes: Route[] = [
     path: "/about",
     description: "Find out more about me!"
   },
-  {
-    title: "Videos",
-    path: "/videos",
-  },
 ];
 
 export const routesJA: Route[] = [
@@ -92,10 +88,6 @@ export const routesJA: Route[] = [
     title: "私について",
     path: "/about",
     description: "Find out more about me!"
-  },
-  {
-    title: "動画",
-    path: "/videos",
   },
 ];
 
@@ -113,11 +105,6 @@ export const footerJA: Footer = {
         {
           name: "私について",
           link: "/about",
-          leavesWebsite: false,
-        },
-        {
-          name: "動画",
-          link: "/videos",
           leavesWebsite: false,
         },
         {
@@ -207,11 +194,6 @@ export const footer: Footer = {
         {
           name: "About Me",
           link: "/about",
-          leavesWebsite: false,
-        },
-        {
-          name: "Videos",
-          link: "/videos",
           leavesWebsite: false,
         },
         {

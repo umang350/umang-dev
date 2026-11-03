@@ -5,7 +5,7 @@ import { routes } from "@/data/global"
 const PageName = "About Me";
 const About = () => {
     return (
-        <Page currentPage={PageName} meta={{
+        <Page currentPage={PageName} overlayNav meta={{
             desc: routes.find(i => i.title === PageName).description
         }}>
             <AboutMe />
