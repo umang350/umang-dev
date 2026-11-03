@@ -56,11 +56,11 @@ export default function MobileNavbar({ overlay = false }: { overlay?: boolean })
         className={`w-full justify-between flex items-center ${isMenuRendered && 'dark:bg-bg z-50 sticky'} ${overlay && isMenuOpen ? 'bg-white' : ''} p-5`}
         style={{ zIndex: 101 }}
       >
-        <li className={`list-none font-bold text-lg ${onPhoto ? "text-cream" : "text-black dark:text-white"}`}>
+        {!onPhoto && <li className="list-none font-bold text-lg text-black dark:text-white">
           <Link href="/">
             <h1>{pageLogoText}</h1>
           </Link>
-        </li>
+        </li>}
         {isMenuOpen && <div className="space-x-4 flex flex-row items-center ml-auto mr-3">
           <a
             href="https://instagram.com/thisUmang"
@@ -142,7 +142,7 @@ export default function MobileNavbar({ overlay = false }: { overlay?: boolean })
         </div>}
 
         <button
-          className={`${styles.burger} visible md:hidden dark:bg-none ${onPhoto ? "!bg-transparent text-cream" : ""}`}
+          className={`${styles.burger} visible md:hidden dark:bg-none ${onPhoto ? "![background:transparent] text-cream ml-auto" : ""}`}
           aria-label="Toggle menu"
           type="button"
           onClick={toggleMenu}

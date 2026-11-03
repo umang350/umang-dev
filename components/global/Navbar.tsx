@@ -31,7 +31,7 @@ function Navbar({ currentPage, overlay = false }: currentPageObject) {
 
   return (
     <nav className={`flex items-center justify-between ${overlay ? "[text-shadow:0_1px_10px_rgba(0,0,0,0.35)]" : ""}`}>
-      <li className="list-none font-bold text-lg cursor-pointer">
+      {!overlay && <li className="list-none font-bold text-lg cursor-pointer">
         <Link href="/">
           <span className={`font-black ${textCls} text-xl flex items-center`}>
             {pageLogoText.split("").map((letter, index) => {
@@ -43,8 +43,8 @@ function Navbar({ currentPage, overlay = false }: currentPageObject) {
             })}
           </span>
         </Link>
-      </li>
-      <ul className="flex items-center space-x-10 pl-5 pr-5">
+      </li>}
+      <ul className={`flex items-center space-x-10 pr-5 ${overlay ? "" : "pl-5"}`}>
         {routesData.map((item, index) => {
           return (
             <li

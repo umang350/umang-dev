@@ -32,6 +32,17 @@ const reelSpots: { left: string; top: string; r: string; delay: string }[] = [
   { left: "89%", top: "37%", r: "-4deg", delay: "0.9s" },
 ];
 
+// Each letter lifts as the cursor passes over it, then settles slowly.
+const RaisedLetters = ({ text }: { text: string }) => (
+  <>
+    {text.split("").map((letter, i) => (
+      <span key={i} className="inline-block transition-transform duration-700 ease-out hover:-translate-y-[0.12em] hover:duration-150">
+        {letter}
+      </span>
+    ))}
+  </>
+);
+
 const Tooltip = ({ p }: { p: Project }) => (
   <span className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-3 w-60 -translate-x-1/2 translate-y-1 rounded-xl bg-white p-3 text-left text-black opacity-0 shadow-2xl transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
     <span className="block text-[11px] font-medium uppercase tracking-wider text-gray-500">{p.tag}</span>
@@ -128,8 +139,8 @@ function Hero() {
 
         <div className="relative mx-auto h-full max-w-[1600px]">
           <h1 className="sr-only">Umang Chauhan, product manager in Tokyo</h1>
-          <p aria-hidden="true" className="absolute left-5 top-20 z-20 font-display text-[22vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 lg:text-[168px]">Umang</p>
-          <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 font-display text-[19vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 lg:text-[168px]">Chauhan</p>
+          <p aria-hidden="true" className="absolute left-5 top-20 z-20 font-display text-[22vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 lg:text-[168px]"><RaisedLetters text="Umang" /></p>
+          <p aria-hidden="true" className="absolute bottom-5 right-5 z-20 font-display text-[19vw] uppercase leading-[0.85] [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 lg:text-[168px]"><RaisedLetters text="Chauhan" /></p>
 
           {/* Large screens: work and reels float over the sky on either side of the tower */}
           <div className="hidden lg:block">

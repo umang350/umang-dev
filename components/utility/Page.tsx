@@ -118,9 +118,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
       <main className="relative p-5 w-full flex-1 text-center">
         {/* overlayNav: the nav floats over a full-bleed hero instead of sitting above it */}
-        <div className={overlayNav ? "absolute inset-x-0 top-0 z-50 hidden p-5 sm:block" : "hidden sm:block z-50 sticky"}>
-          <Navbar currentPage={currentPage} overlay={overlayNav} />
-        </div>
+        {overlayNav ? (
+          <div className="absolute left-1/2 top-0 z-50 hidden w-screen -translate-x-1/2 sm:block">
+            <div className="mx-auto max-w-[1600px] px-5 pt-5 lg:px-8">
+              <Navbar currentPage={currentPage} overlay />
+            </div>
+          </div>
+        ) : (
+          <div className="hidden sm:block z-50 sticky">
+            <Navbar currentPage={currentPage} />
+          </div>
+        )}
         <div className={overlayNav ? "absolute inset-x-0 top-0 z-50 block sm:hidden" : "-m-5 block sm:hidden z-50 sticky"}>
           <MobileNavbar overlay={overlayNav} />
         </div>
