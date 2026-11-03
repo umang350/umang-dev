@@ -120,6 +120,47 @@ const BackgroundVideo = ({ className }: { className: string }) => {
   );
 };
 
+// Local time in Tokyo, filled in after mount so server and browser renders match.
+const TokyoTime = () => {
+  const [time, setTime] = useState<string | null>(null);
+
+  useEffect(() => {
+    const format = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Tokyo" });
+    const tick = () => setTime(format.format(new Date()));
+    tick();
+    const timer = window.setInterval(tick, 30000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return <span className="tabular-nums">{time ?? "--:--"}</span>;
+};
+
+const StatusRow = () => (
+  <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 px-1 text-base text-gray-700 dark:text-white/80 sm:text-lg">
+    <span className="inline-flex items-center gap-2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
+        <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" />
+      </svg>
+      Based in Tokyo
+    </span>
+    <span className="hidden h-4 w-px bg-gray-300 dark:bg-white/20 sm:block" aria-hidden="true" />
+    <span className="inline-flex items-center gap-2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
+      </svg>
+      <span><TokyoTime /> JST</span>
+    </span>
+    <span className="hidden h-4 w-px bg-gray-300 dark:bg-white/20 sm:block" aria-hidden="true" />
+    <a href={`mailto:${links.email}`} className="inline-flex items-center gap-2.5 underline-offset-4 hover:underline">
+      <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75 motion-reduce:animate-none" />
+        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
+      </span>
+      Open to product roles and collaborations
+    </a>
+  </div>
+);
+
 function Hero() {
   const projects = [...featured, ...more];
   const byTitle = (t: string) => projects.find((p) => p.title === t) as Project;
@@ -174,9 +215,7 @@ function Hero() {
         </div>
       </div>
 
-      <p className="mt-6 max-w-2xl px-1 text-lg leading-relaxed text-black dark:text-white sm:text-xl">
-        Product manager in Tokyo. I build global planning products, and AI tools people actually use.
-      </p>
+      <StatusRow />
     </section>
   );
 }
