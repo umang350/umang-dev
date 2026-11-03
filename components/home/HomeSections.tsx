@@ -184,7 +184,6 @@ function HomeSections() {
           <a href={`mailto:${links.email}`} className="text-xl font-semibold underline decoration-cream/40 underline-offset-8 hover:decoration-cream">{links.email}</a>
           <span className="flex-1" />
           <a href={links.calendly} target="_blank" rel="noreferrer" className="rounded-full bg-cream px-6 py-3 text-sm font-semibold text-[#0a2aa8] transition-opacity hover:opacity-90">{t.bookCall}</a>
-          <a href={links.cv} download className="rounded-full border border-cream/50 px-6 py-3 text-sm font-semibold transition-colors hover:border-cream">{t.downloadCv}</a>
         </div>
       </section>
     </div>

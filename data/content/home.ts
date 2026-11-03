@@ -2,7 +2,6 @@
 // so nothing is rendered until there is a real value for it.
 
 export const links = {
-    cv: "/UmangResume.pdf",
     calendly: "https://calendly.com/thisumang",
     email: "contact@umang.dev",
     instagram: "https://instagram.com/thisumang",
@@ -40,7 +39,6 @@ export const copy = {
         contact: "Contact",
         letsTalk: "Let's talk",
         bookCall: "Book a call",
-        downloadCv: "Download CV",
     },
     ja: {
         firstName: "ウマング",
@@ -67,7 +65,6 @@ export const copy = {
         contact: "お問い合わせ",
         letsTalk: "話しましょう",
         bookCall: "通話を予約",
-        downloadCv: "履歴書をダウンロード",
     },
 }
 
@@ -161,12 +158,12 @@ export const instagram = {
     // Most viewed first; all of them run in the reels carousel, and `hero` ones also float in the hero.
     // Add each reel's own URL as `href` when you have it.
     reels: [
-        { thumb: "/home/reel-cool-stories-27.jpg", views: "1.3M", title: "Cool stories start at 27" },
+        { thumb: "/home/reel-cool-stories-27.jpg", views: "1.3M", title: "Cool stories start at 27", hero: true },
         { thumb: "/home/reel-ai-tools-daily.jpg", views: "1.2M", title: "AI tools I use daily" },
-        { thumb: "/home/reel-first-principles.jpg", views: "906K", title: "First principles" },
+        { thumb: "/home/reel-first-principles.jpg", views: "906K", title: "First principles", hero: true },
         { thumb: "/home/reel-three-networking.jpg", views: "298K", title: "Three networking tips", hero: true },
-        { thumb: "/home/reel-small-talk-hacks.jpg", views: "121K", title: "Small talk hacks", hero: true },
-        { thumb: "/home/reel-mumbai-vs-new-york.jpg", views: "110K", title: "Mumbai vs New York expenses", hero: true },
+        { thumb: "/home/reel-small-talk-hacks.jpg", views: "121K", title: "Small talk hacks" },
+        { thumb: "/home/reel-mumbai-vs-new-york.jpg", views: "110K", title: "Mumbai vs New York expenses" },
         { thumb: "/home/reel-harvard.jpg", views: "31K", title: "This guy studied at Harvard" },
         { thumb: "/home/reel-never-have-i-ever-ai.jpg", views: "22.5K", title: "Never have I ever: AI edition" },
         { thumb: "/home/reel-fluent-japanese.jpg", views: "12.3K", title: "Fluent Japanese, obviously chopsticks" },

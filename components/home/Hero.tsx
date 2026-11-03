@@ -4,17 +4,24 @@ import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { copy, featured, instagram, links, more, Project } from "@/data/content/home";
 
+// Each project gets a mark you can recognise at a glance: the brand's own glyph where there is one.
+const marks: Record<Project["icon"], { filled?: boolean; color?: string; node: React.ReactNode }> = {
+  extension: { node: <path d="M14 4a2 2 0 1 1 4 0v2h3v5h-2a2 2 0 1 0 0 4h2v5h-5v-2a2 2 0 1 0-4 0v2H7v-5H5a2 2 0 1 1 0-4h2V6h7V4z" /> },
+  // Inventory risk system: a parcel
+  chart: { node: <path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM3.3 7.5L12 12.5l8.7-5M12 22V12.5M7.5 5.3l9 5.1" /> },
+  // Network Lab: LinkedIn "in"
+  people: { filled: true, color: "#0a66c2", node: <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z" /> },
+  // AI PM Guide: sparkles
+  book: { filled: true, node: <path d="M10 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6zM19 14l.9 2.6L22.5 17.5l-2.6.9L19 21l-.9-2.6-2.6-.9 2.6-.9L19 14z" /> },
+  // Get Saged: YouTube
+  play: { filled: true, color: "#ff0000", node: <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z" /> },
+};
+
 export const ProjectIcon = ({ icon, className = "h-5 w-5" }: { icon: Project["icon"]; className?: string }) => {
-  const paths: Record<Project["icon"], React.ReactNode> = {
-    extension: <path d="M14 4a2 2 0 1 1 4 0v2h3v5h-2a2 2 0 1 0 0 4h2v5h-5v-2a2 2 0 1 0-4 0v2H7v-5H5a2 2 0 1 1 0-4h2V6h7V4z" />,
-    chart: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />,
-    people: <path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7 10v-1a6 6 0 0 1 12 0v1M17 11a3 3 0 1 0 0-6M22 21v-1a5 5 0 0 0-4-4.9" />,
-    book: <path d="M4 5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2V5zm0 16a2 2 0 0 1 2-2h14v2H6" />,
-    play: <path d="M2 7a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7zm8 1.5v7l6-3.5-6-3.5z" />,
-  };
+  const { node, filled, color } = marks[icon];
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
-      {paths[icon]}
+    <svg viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke={filled ? "none" : "currentColor"} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className={className} style={color ? { color } : undefined} aria-hidden="true">
+      {node}
     </svg>
   );
 };
@@ -28,9 +35,9 @@ const placed: { title: string; left: string; top: string; r: string; delay: stri
 ];
 
 const reelSpots: { left: string; top: string; r: string; delay: string }[] = [
-  { left: "6%", top: "38%", r: "-8deg", delay: "0.3s" },
-  { left: "83%", top: "15%", r: "6deg", delay: "1.5s" },
-  { left: "89%", top: "37%", r: "-4deg", delay: "0.9s" },
+  { left: "5%", top: "34%", r: "-7deg", delay: "0.3s" },
+  { left: "80%", top: "11%", r: "6deg", delay: "1.5s" },
+  { left: "88%", top: "46%", r: "-4deg", delay: "0.9s" },
 ];
 
 // Each letter lifts and warms to the tower's amber as the cursor passes over it, then settles slowly.
@@ -66,10 +73,14 @@ const Float = ({ href, label, style, className, children }: { href?: string; lab
 };
 
 const ReelCard = ({ reel, className = "" }: { reel: typeof instagram.reels[number]; className?: string }) => (
-  <span className={`relative block overflow-hidden rounded-xl border-2 border-white/80 shadow-2xl ${className}`}>
-    <Image src={reel.thumb} alt={reel.title} fill sizes="160px" className="object-cover" />
-    <span className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full bg-black/65 px-2 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-3.5 w-3.5" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" /><circle cx="12" cy="12" r="3" /></svg>
+  <span className={`relative block overflow-hidden rounded-2xl bg-black shadow-[0_18px_40px_rgba(0,10,60,0.45)] ring-[3px] ring-white/90 ${className}`}>
+    <Image src={reel.thumb} alt={reel.title} fill sizes="200px" className="object-cover transition-transform duration-500 group-hover:scale-110" />
+    <span className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/75 to-transparent" aria-hidden="true" />
+    <span className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/25 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="white" className="ml-0.5 h-5 w-5"><path d="M7 4.5v15l13-7.5-13-7.5z" /></svg>
+    </span>
+    <span className="absolute bottom-2 left-2.5 flex items-center gap-1.5 text-sm font-bold leading-none text-white drop-shadow">
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true"><path d="M7 4.5v15l13-7.5-13-7.5z" /></svg>
       {reel.views}
     </span>
   </span>
@@ -201,13 +212,13 @@ function Hero() {
               <Float key={reel.thumb} href={reel.href ?? links.instagram} label={`${reel.title}, ${reel.views} views on Instagram`}
                 style={{ left: reelSpots[i].left, top: reelSpots[i].top, ["--r" as string]: reelSpots[i].r, animationDelay: reelSpots[i].delay }}
                 className="z-30 transition-transform hover:scale-105">
-                <ReelCard reel={reel} className="h-[150px] w-[112px]" />
+                <ReelCard reel={reel} className="h-[190px] w-[134px]" />
               </Float>
             ))}
 
             <Float href={anaplan.href} label={anaplan.title} style={{ left: "21%", top: "54%", ["--r" as string]: "8deg", animationDelay: "0.4s" }} className="z-30">
               <span className="flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-white shadow-2xl ring-4 ring-white/30">
-                <Image src="/anaplan/icon.png" alt="" width={48} height={48} className="rounded-lg" />
+                <Image src="/anaplan/logo-a.png" alt="" width={44} height={44} />
               </span>
               <Tooltip p={anaplan} ja={ja} />
             </Float>
@@ -216,8 +227,8 @@ function Hero() {
               const p = byTitle(spot.title);
               return (
                 <Float key={p.title} href={p.href} label={p.title} style={{ left: spot.left, top: spot.top, ["--r" as string]: spot.r, animationDelay: spot.delay }} className="z-30">
-                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#1450f0] shadow-xl ring-4 ring-white/25 transition-colors group-hover:bg-cream">
-                    <ProjectIcon icon={p.icon} />
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-[#1450f0] shadow-xl ring-4 ring-white/25 transition-colors group-hover:bg-cream">
+                    <ProjectIcon icon={p.icon} className="h-8 w-8" />
                   </span>
                   <Tooltip p={p} ja={ja} />
                 </Float>
