@@ -86,41 +86,76 @@ const ReelCard = ({ reel, className = "" }: { reel: typeof instagram.reels[numbe
   </span>
 );
 
-// The Paris clip fills the hero. Its first and last frames differ, so two copies take turns:
-// the next one fades in over the last moments of the current one. Reduced motion keeps the poster.
+// The Paris clip fills the hero. Its first and last frames differ, so two copies take turns.
+// The standby copy sits parked on its first frame, so when the time comes it only has to play.
+// It is started a moment before the fade, and fades in on top of the old copy (which stays fully
+// opaque underneath, so the sky never dips to the blue behind). Opacity is set straight on the
+// elements, not through React state, so the fade starts on the same frame the clip does.
+// Reduced motion keeps the poster.
 const LOOP_START = 0;
-const FADE = 0.8;
+const FADE = 0.55;
+const LEAD = 0.15;
+const EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
 
 const BackgroundVideo = ({ className }: { className: string }) => {
   const refs = [useRef<HTMLVideoElement>(null), useRef<HTMLVideoElement>(null)];
-  const [front, setFront] = useState(0);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const videos = refs.map((r) => r.current as HTMLVideoElement);
+    const timers: number[] = [];
     let current = 0;
-    let fading = false;
-    let raf = 0;
-    let timer = 0;
+    let cancelled = false;
 
+    const park = (v: HTMLVideoElement) => { v.pause(); v.currentTime = LOOP_START; };
+
+    // Wait out the rest of the playing clip, then hand over to the parked one.
+    const schedule = (v: HTMLVideoElement) => {
+      const go = () => {
+        const wait = Math.max(0, (v.duration - v.currentTime - FADE - LEAD) * 1000);
+        timers.push(window.setTimeout(swap, wait));
+      };
+      if (v.duration) go(); else v.addEventListener("loadedmetadata", go, { once: true });
+    };
+
+    const swap = () => {
+      const old = videos[current];
+      const next = videos[1 - current];
+      let flipped = false;
+      // Fade as soon as the parked copy is really running; if it never reports in, fade anyway.
+      const flip = () => {
+        if (flipped || cancelled) return;
+        flipped = true;
+        current = 1 - current;
+        old.style.zIndex = "1";
+        next.style.zIndex = "2";
+        next.style.opacity = "1";
+        schedule(next);
+        // Once the fade has really finished, snap the old copy away and put it back on its first frame.
+        let done = false;
+        const settle = () => {
+          if (done || cancelled) return;
+          done = true;
+          old.style.transition = "none";
+          old.style.opacity = "0";
+          void old.offsetWidth;
+          old.style.transition = `opacity ${FADE}s ${EASE}`;
+          park(old);
+        };
+        next.addEventListener("transitionend", settle, { once: true });
+        timers.push(window.setTimeout(settle, FADE * 1000 + 400));
+      };
+      next.addEventListener("playing", flip, { once: true });
+      timers.push(window.setTimeout(flip, 300));
+      next.play().catch(() => {});
+    };
+
+    park(videos[1]);
     videos[0].currentTime = LOOP_START;
     videos[0].play().catch(() => {});
+    schedule(videos[0]);
 
-    const tick = () => {
-      const v = videos[current];
-      if (!fading && v.duration && v.currentTime >= v.duration - FADE) {
-        fading = true;
-        const next = videos[1 - current];
-        next.currentTime = LOOP_START;
-        next.play().catch(() => {});
-        current = 1 - current;
-        setFront(current);
-        timer = window.setTimeout(() => { v.pause(); fading = false; }, FADE * 1000 + 100);
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => { cancelAnimationFrame(raf); window.clearTimeout(timer); };
+    return () => { cancelled = true; timers.forEach((t) => window.clearTimeout(t)); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -128,7 +163,7 @@ const BackgroundVideo = ({ className }: { className: string }) => {
     <>
       {refs.map((ref, i) => (
         <video key={i} ref={ref} muted playsInline preload="auto" poster="/home/paris-v2-poster.jpg" aria-hidden="true"
-          className={className} style={{ opacity: front === i ? 1 : 0, transition: `opacity ${FADE}s ease-in-out` }}>
+          className={className} style={{ opacity: i === 0 ? 1 : 0, zIndex: i === 0 ? 2 : 1, transition: `opacity ${FADE}s ${EASE}`, willChange: "opacity" }}>
           <source media="(max-width: 767px)" src="/home/paris-v2-540.mp4" type="video/mp4" />
           <source src="/home/paris-v2-720.mp4" type="video/mp4" />
         </video>
@@ -195,7 +230,7 @@ function Hero() {
         <Image src="/home/paris-v2-poster.jpg" alt="Umang Chauhan in front of the Eiffel Tower" fill priority sizes="100vw" className="object-cover object-[60%_50%] lg:object-center" />
         <BackgroundVideo className="absolute inset-0 h-full w-full object-cover object-[60%_50%] lg:object-center" />
         {/* Deepens the sky behind the name so the cream type stays readable */}
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true"
+        <div className="pointer-events-none absolute inset-0 z-[3]" aria-hidden="true"
           style={{ background: "linear-gradient(90deg, rgba(10,30,110,0.45), rgba(10,30,110,0) 45%), linear-gradient(0deg, rgba(10,20,60,0.4), rgba(10,20,60,0) 35%)" }} />
 
         {/* Keeps the overlaid nav readable */}
