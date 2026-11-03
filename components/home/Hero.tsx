@@ -32,11 +32,11 @@ const reelSpots: { left: string; top: string; r: string; delay: string }[] = [
   { left: "89%", top: "37%", r: "-4deg", delay: "0.9s" },
 ];
 
-// Each letter lifts as the cursor passes over it, then settles slowly.
+// Each letter lifts and turns cyan as the cursor passes over it, then settles slowly.
 const RaisedLetters = ({ text }: { text: string }) => (
   <>
     {text.split("").map((letter, i) => (
-      <span key={i} className="inline-block transition-transform duration-700 ease-out hover:-translate-y-[0.12em] hover:duration-150">
+      <span key={i} className="inline-block transition-[transform,color] duration-700 ease-out hover:-translate-y-[0.12em] hover:text-fun-pink hover:duration-150">
         {letter}
       </span>
     ))}
