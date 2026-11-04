@@ -2,7 +2,7 @@
 
 Personal site of Umang Chauhan, live at **[umang.dev](https://umang.dev)**. Built with Next.js (Pages Router), TypeScript and Tailwind CSS, and deployed on Vercel.
 
-![umang.dev homepage](public/readme/home.jpg)
+![umang.dev homepage](public/readme/hero.jpg)
 
 ## What's on the site
 
