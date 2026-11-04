@@ -57,6 +57,10 @@ a {
 }
 .reel-track {
   animation: reel-scroll 70s linear infinite;
+  will-change: transform;
+}
+.reel-strip[data-off="1"] .reel-track {
+  animation-play-state: paused;
 }
 .reel-strip:hover .reel-track,
 .reel-strip:focus-within .reel-track {
@@ -75,7 +79,7 @@ a {
   stroke-dasharray: 1;
   animation: icon-trace 7s cubic-bezier(0.65, 0, 0.35, 1) var(--d, 0s) infinite;
 }
-/* The rule to the next city grows once its icon is drawn, holds, then fades as the icon is wiped */
+/* The bright rule to the next city grows over a faint one that is always there, then fades as the icon is wiped */
 @keyframes rule-run {
   0%, 12% { transform: scaleX(0); opacity: 1; }
   45%     { transform: scaleX(1); opacity: 1; }

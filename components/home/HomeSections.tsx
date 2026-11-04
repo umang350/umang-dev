@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useEffect, useRef } from "react";
+import type { Post } from "@/lib/substack";
 import { copy, instagram, links, Reel, Stop, testimonials, work, WorkPill, youtube } from "@/data/content/home";
 
 const panel = "rounded-[28px] bg-[#141414] text-white ring-1 ring-white/5";
@@ -16,6 +17,51 @@ const Panel = ({ id, label, ja, children }: { id?: string; label: string; ja: bo
     <h2 className={`${displayFont(ja)} text-[clamp(40px,6vw,72px)] leading-[0.95]`}>{label}</h2>
     <div className="mt-8">{children}</div>
   </section>
+);
+
+// The endless strips only animate while on screen, so three of them never run at once off-screen.
+const Strip = ({ children }: { children: React.ReactNode }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => { el.dataset.off = e.isIntersecting ? "" : "1"; }, { rootMargin: "200px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return <div ref={ref} className="reel-strip mt-8 overflow-hidden">{children}</div>;
+};
+
+const brandColor = { instagram: "#e1306c", youtube: "#ff0000", substack: "#ff6719" };
+
+// Small platform marks for the section eyebrows.
+const BrandIcon = ({ name }: { name: keyof typeof brandColor }) => (
+  <svg viewBox="0 0 24 24" className="h-6 w-6 shrink-0" aria-hidden="true">
+    {name === "instagram" && (
+      <g fill="none" stroke={brandColor.instagram} strokeWidth={2}>
+        <rect x="3" y="3" width="18" height="18" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="1" fill={brandColor.instagram} stroke="none" />
+      </g>
+    )}
+    {name === "youtube" && (
+      <>
+        <rect x="1" y="4.5" width="22" height="15" rx="4.5" fill={brandColor.youtube} />
+        <path d="M10 8.7v6.6l5.6-3.3z" fill="#fff" />
+      </>
+    )}
+    {name === "substack" && (
+      <g fill={brandColor.substack}>
+        <rect x="3" y="2.5" width="18" height="2.6" />
+        <rect x="3" y="7.2" width="18" height="2.6" />
+        <path d="M3 12h18v10l-9-5.2L3 22z" />
+      </g>
+    )}
+  </svg>
+);
+
+const Eyebrow = ({ icon, children }: { icon: keyof typeof brandColor; children: React.ReactNode }) => (
+  <p className="flex items-center gap-2.5 font-display text-base uppercase tracking-wide"><BrandIcon name={icon} />{children}</p>
 );
 
 const delay = (seconds: number): CSSProperties => ({ ["--d" as string]: `${seconds}s` });
@@ -80,7 +126,7 @@ const ReelTile = ({ reel, hidden = false }: { reel: Reel; hidden?: boolean }) =>
   <a href={reel.href ?? links.instagram} target="_blank" rel="noreferrer" aria-hidden={hidden} tabIndex={hidden ? -1 : undefined}
     aria-label={hidden ? undefined : `${reel.title}, ${reel.views} views on Instagram`}
     className="group relative block aspect-[493/687] w-[160px] shrink-0 overflow-hidden rounded-2xl ring-1 ring-white/10 sm:w-[210px]">
-    <Image src={reel.thumb} alt="" fill sizes="210px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+    <Image src={reel.thumb} alt="" fill unoptimized sizes="210px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
     <span className="absolute bottom-2.5 left-2.5 flex items-center gap-1.5 rounded-full bg-black/65 px-2.5 py-1 text-sm font-semibold text-white backdrop-blur-sm">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" /><circle cx="12" cy="12" r="3" /></svg>
       {reel.views}
@@ -91,10 +137,10 @@ const ReelTile = ({ reel, hidden = false }: { reel: Reel; hidden?: boolean }) =>
 // Every reel runs past in an endless strip (the list is doubled so the loop is seamless).
 // It pauses on hover; with reduced motion it stops and scrolls by hand instead.
 const ReelsCarousel = ({ t, ja }: { t: Copy; ja: boolean }) => (
-  <section className="relative ml-[calc(50%-50vw)] mt-6 w-screen text-left text-black dark:text-white">
+  <section className="relative ml-[calc(50%-50vw)] mt-12 w-screen text-left text-black dark:text-white">
     <div className="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5">
       <div>
-        <p className="font-display text-sm uppercase tracking-wide">· {t.onInstagram} · {instagram.handle}</p>
+        <Eyebrow icon="instagram">{t.onInstagram} · {instagram.handle}</Eyebrow>
         <h2 className={`mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.totalViews}</h2>
         <div className="mt-4 flex flex-wrap gap-2">
           {t.pillars.map((pillar) => (
@@ -106,12 +152,12 @@ const ReelsCarousel = ({ t, ja }: { t: Copy; ja: boolean }) => (
         {t.follow}
       </a>
     </div>
-    <div className="reel-strip mt-8 overflow-hidden">
-      <div className="reel-track flex w-max gap-4 px-2">
+    <Strip>
+      <div className="reel-track flex w-max gap-4 px-2" style={{ animationDirection: "reverse" }}>
         {instagram.reels.map((reel) => <ReelTile key={reel.thumb} reel={reel} />)}
         {instagram.reels.map((reel) => <ReelTile key={`${reel.thumb}-copy`} reel={reel} hidden />)}
       </div>
-    </div>
+    </Strip>
   </section>
 );
 
@@ -119,7 +165,7 @@ const VideoTile = ({ v, t, hidden = false }: { v: typeof youtube.videos[number];
   <a href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noreferrer" aria-hidden={hidden} tabIndex={hidden ? -1 : undefined}
     className="group block w-[260px] shrink-0 sm:w-[340px]">
     <span className="relative block aspect-video overflow-hidden rounded-2xl ring-1 ring-black/10 dark:ring-white/10">
-      <Image src={v.thumb} alt="" fill sizes="340px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+      <Image src={v.thumb} alt="" fill unoptimized sizes="340px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
       <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#ff0000] opacity-0 shadow-xl transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="white" className="ml-0.5 h-6 w-6"><path d="M7 4.5v15l13-7.5-13-7.5z" /></svg>
       </span>
@@ -134,23 +180,65 @@ const YoutubeSection = ({ t, ja }: { t: Copy; ja: boolean }) => (
   <section className="relative ml-[calc(50%-50vw)] mt-12 w-screen text-left text-black dark:text-white">
     <div className="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5">
       <div>
-        <p className="font-display text-sm uppercase tracking-wide">· {t.onYoutube} · {youtube.handle}</p>
+        <Eyebrow icon="youtube">{t.onYoutube} · {youtube.handle}</Eyebrow>
         <h2 className={`mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.youtubeTitle}</h2>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <span className="rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-600 dark:border-white/15 dark:text-white/80">{t.youtubeViews}</span>
+        </div>
       </div>
       <a href={links.youtube} target="_blank" rel="noreferrer" className="rounded-full bg-[#ff0000] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90">
         {t.subscribe}
       </a>
     </div>
-    <div className="reel-strip mt-8 overflow-hidden">
-      <div className="reel-track flex w-max gap-4 px-2" style={{ animationDuration: "110s", animationDirection: "reverse" }}>
+    <Strip>
+      <div className="reel-track flex w-max gap-4 px-2" style={{ animationDuration: "110s" }}>
         {youtube.videos.map((v) => <VideoTile key={v.id} v={v} t={t} />)}
         {youtube.videos.map((v) => <VideoTile key={`${v.id}-copy`} v={v} t={t} hidden />)}
       </div>
-    </div>
+    </Strip>
   </section>
 );
 
-function HomeSections() {
+const postDate = (iso: string, ja: boolean) =>
+  new Date(iso).toLocaleDateString(ja ? "ja-JP" : "en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+
+const clamp = (n: number): CSSProperties => ({ display: "-webkit-box", WebkitLineClamp: n, WebkitBoxOrient: "vertical", overflow: "hidden" });
+
+const PostCard = ({ p, ja, hidden = false }: { p: Post; ja: boolean; hidden?: boolean }) => (
+  <a href={p.href} target="_blank" rel="noreferrer" aria-hidden={hidden} tabIndex={hidden ? -1 : undefined}
+    className="group flex w-[280px] shrink-0 flex-col rounded-2xl bg-gray-100 p-5 ring-1 ring-black/10 dark:bg-white/[0.04] dark:ring-white/10 sm:w-[360px]">
+    <span className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white/50">{postDate(p.date, ja)}</span>
+    <span className={`mt-2 block min-h-[2.2em] ${ja ? "font-display-ja text-2xl" : "font-display text-[28px] uppercase"} leading-[1.1] group-hover:text-[#ff6719]`} style={clamp(2)}>{p.title}</span>
+    <span className="mt-3 block min-h-[3.75rem] text-sm text-gray-500 dark:text-white/60" style={clamp(3)}>{p.blurb}</span>
+    <span className="relative mt-5 block aspect-[2.4/1] overflow-hidden rounded-xl bg-gray-200 dark:bg-white/5">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {p.image && <img src={p.image} alt="" loading="lazy" className="h-full w-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100" />}
+    </span>
+  </a>
+);
+
+// The same endless strip as the reels and videos, with a card per post.
+const SubstackSection = ({ posts, t, ja }: { posts: Post[]; t: Copy; ja: boolean }) => (
+  <section className="relative ml-[calc(50%-50vw)] mt-12 w-screen text-left text-black dark:text-white">
+    <div className="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5">
+      <div>
+        <Eyebrow icon="substack">{t.onSubstack} · Umang Raw Enough</Eyebrow>
+        <h2 className={`mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.substackTitle}</h2>
+      </div>
+      <a href={links.substack} target="_blank" rel="noreferrer" className="rounded-full bg-[#ff6719] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90">
+        {t.readPosts}
+      </a>
+    </div>
+    <Strip>
+      <div className="reel-track flex w-max gap-4 px-2" style={{ animationDuration: `${posts.length * 9}s` }}>
+        {posts.map((p) => <PostCard key={p.href} p={p} ja={ja} />)}
+        {posts.map((p) => <PostCard key={`${p.href}-copy`} p={p} ja={ja} hidden />)}
+      </div>
+    </Strip>
+  </section>
+);
+
+function HomeSections({ posts = [] }: { posts?: Post[] }) {
   const { locale } = useRouter();
   const ja = locale === "ja";
   const t = copy[ja ? "ja" : "en"];
@@ -175,7 +263,9 @@ function HomeSections() {
                       <span style={delay(t0)} className="flex"><LineIcon name={stop.icon} draw /></span>
                     </span>
                     {i < t.journey.length - 1 && (
-                      <span className="rule hidden h-px flex-1 origin-left bg-gradient-to-r from-white/40 md:block" style={delay(t0)} aria-hidden="true" />
+                      <span className="relative hidden h-px flex-1 bg-white/20 md:block" aria-hidden="true">
+                        <span className="rule absolute inset-0 origin-left bg-gradient-to-r from-white/60" style={delay(t0)} />
+                      </span>
                     )}
                   </div>
                   <p className={`mt-4 ${displayFont(ja)} text-3xl leading-none sm:text-4xl`}>{stop.city}</p>
@@ -210,6 +300,7 @@ function HomeSections() {
         <WorkCollage />
       </Panel>
 
+      {posts.length > 0 && <SubstackSection posts={posts} t={t} ja={ja} />}
       <ReelsCarousel t={t} ja={ja} />
       <YoutubeSection t={t} ja={ja} />
 
