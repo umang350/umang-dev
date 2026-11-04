@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { CSSProperties } from "react";
 import { copy, instagram, links, Reel, Stop, testimonials, work, WorkPill, youtube } from "@/data/content/home";
 
 const panel = "rounded-[28px] bg-[#141414] text-white ring-1 ring-white/5";
@@ -18,17 +18,24 @@ const Panel = ({ id, label, ja, children }: { id?: string; label: string; ja: bo
   </section>
 );
 
-const LineIcon = ({ name, className = "h-7 w-7" }: { name: Stop["icon"] | "cap" | "briefcase"; className?: string }) => {
+const delay = (seconds: number): CSSProperties => ({ ["--d" as string]: `${seconds}s` });
+
+const LineIcon = ({ name, className = "h-7 w-7", draw = false }: { name: Stop["icon"] | "cap" | "briefcase"; className?: string; draw?: boolean }) => {
   const paths: Record<string, React.ReactNode> = {
-    "india-gate": <path d="M3 21h18M5 21V8h14v13M9.5 21v-5a2.5 2.5 0 0 1 5 0v5M4 8h16M6 5h12v3H6zM10 3h4v2h-4z" />,
-    torii: <path d="M3 5c6 1.4 12 1.4 18 0M4.5 9h15M7 6.2V21M17 6.2V21M11 9v3h2V9" />,
-    skyline: <path d="M3 21h18M5 21v-7h3v7M10 21V7h4v14M12 7V3M16 21v-9h3v9" />,
-    cap: <path d="M2 9l10-5 10 5-10 5-10-5zM6 11.2V16c3.5 2.4 8.5 2.4 12 0v-4.8M22 9v5" />,
-    briefcase: <path d="M3 8h18v12H3zM8.5 8V5h7v3M3 13h18" />,
+    "india-gate": <path pathLength={1} d="M3 21h18M5 21V8h14v13M9.5 21v-5a2.5 2.5 0 0 1 5 0v5M4 8h16M6 5h12v3H6zM10 3h4v2h-4z" />,
+    torii: <path pathLength={1} d="M3 5c6 1.4 12 1.4 18 0M4.5 9h15M7 6.2V21M17 6.2V21M11 9v3h2V9" />,
+    skyline: <path pathLength={1} d="M3 21h18M5 21v-7h3v7M10 21V7h4v14M12 7V3M16 21v-9h3v9" />,
+    cap: <path pathLength={1} d="M2 9l10-5 10 5-10 5-10-5zM6 11.2V16c3.5 2.4 8.5 2.4 12 0v-4.8M22 9v5" />,
+    briefcase: <path pathLength={1} d="M3 8h18v12H3zM8.5 8V5h7v3M3 13h18" />,
   };
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
-      {paths[name]}
+      {draw ? (
+        <>
+          <g opacity={0.3}>{paths[name]}</g>
+          <g className="trace">{paths[name]}</g>
+        </>
+      ) : paths[name]}
     </svg>
   );
 };
@@ -155,41 +162,47 @@ function HomeSections() {
           {t.intro}
         </p>
 
-        {/* The journey: each city is a stop on one line, with a fading rule to the next */}
-        <ol className="mt-10 grid gap-8 md:grid-cols-3 md:gap-6">
-          {t.journey.map((stop, i) => (
-            <li key={stop.city} className="relative">
-              <div className="flex items-center gap-3">
-                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#1450f0] text-cream">
-                  <LineIcon name={stop.icon} />
-                </span>
-                {i < t.journey.length - 1 && (
-                  <span className="hidden h-px flex-1 bg-gradient-to-r from-white/40 md:block" aria-hidden="true" />
-                )}
-              </div>
-              <p className={`mt-4 ${displayFont(ja)} text-3xl leading-none sm:text-4xl`}>{stop.city}</p>
-              <p className="mt-1 text-sm text-white/50">{stop.years}</p>
-              <p className="mt-3 text-sm leading-relaxed text-white/75">{stop.text}</p>
-            </li>
-          ))}
-        </ol>
+        {/* The journey: each city's icon is drawn, held, wiped and drawn again on a loop, the cities a beat apart,
+            with a faint outline underneath so the circles are never empty. */}
+        <div>
+          <ol className="mt-10 grid gap-8 md:grid-cols-3 md:gap-6">
+            {t.journey.map((stop, i) => {
+              const t0 = i * 0.7;
+              return (
+                <li key={stop.city} className="relative">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#1450f0] text-cream" style={delay(t0)}>
+                      <span style={delay(t0)} className="flex"><LineIcon name={stop.icon} draw /></span>
+                    </span>
+                    {i < t.journey.length - 1 && (
+                      <span className="rule hidden h-px flex-1 origin-left bg-gradient-to-r from-white/40 md:block" style={delay(t0)} aria-hidden="true" />
+                    )}
+                  </div>
+                  <p className={`mt-4 ${displayFont(ja)} text-3xl leading-none sm:text-4xl`}>{stop.city}</p>
+                  <p className="mt-1 text-sm text-white/50">{stop.years}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-white/75">{stop.text}</p>
+                </li>
+              );
+            })}
+          </ol>
 
-        <div className="mt-10 grid gap-4 border-t border-white/10 pt-8 sm:grid-cols-2">
-          {[
-            { icon: "cap" as const, ...t.college },
-            { icon: "briefcase" as const, ...t.role },
-          ].map((item) => (
-            <div key={item.label} className="flex items-start gap-4 rounded-2xl bg-white/[0.04] p-5">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10 text-cream">
-                <LineIcon name={item.icon} className="h-6 w-6" />
-              </span>
-              <span>
-                <span className="block text-xs font-medium uppercase tracking-wider text-white/50">{item.label}</span>
-                <span className="mt-1 block font-semibold">{item.title}</span>
-                <span className="block text-sm text-white/70">{item.detail}</span>
-              </span>
-            </div>
-          ))}
+          <div className="mt-10 grid gap-4 border-t border-white/10 pt-8 sm:grid-cols-2">
+            {[
+              { icon: "cap" as const, ...t.college },
+              { icon: "briefcase" as const, ...t.role },
+            ].map((item, i) => (
+              <div key={item.label} className="flex items-start gap-4 rounded-2xl bg-white/[0.04] p-5">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10 text-cream" style={delay(2.1 + i * 0.6)}>
+                  <LineIcon name={item.icon} className="h-6 w-6" draw />
+                </span>
+                <span>
+                  <span className="block text-xs font-medium uppercase tracking-wider text-white/50">{item.label}</span>
+                  <span className="mt-1 block font-semibold">{item.title}</span>
+                  <span className="block text-sm text-white/70">{item.detail}</span>
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </Panel>
 

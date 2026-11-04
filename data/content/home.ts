@@ -19,8 +19,9 @@ export const copy = {
         firstName: "Umang",
         lastName: "Chauhan",
         heading: "Umang Chauhan, product manager in Tokyo",
-        based: "Based in Tokyo",
-        open: "Open to product roles and collaborations",
+        based: "Currently in Tokyo",
+        cities: { tokyo: "Tokyo", newYork: "New York", delhi: "Delhi" },
+        open: "Building, filming, always up for a chat",
         aboutTitle: "About me",
         intro: "Hi, I'm Umang. By day I help one of the world's biggest retailers plan what goes on its shelves. By night I build the tools I wish existed, and film the whole thing.",
         journey: [
@@ -48,8 +49,9 @@ export const copy = {
         firstName: "ウマング",
         lastName: "チャウハン",
         heading: "ウマング・チャウハン、東京のプロダクトマネージャー",
-        based: "東京在住",
-        open: "プロダクト職・コラボのご相談受付中",
+        based: "現在は東京にいます",
+        cities: { tokyo: "東京", newYork: "ニューヨーク", delhi: "デリー" },
+        open: "つくって、撮って、気軽に話そう",
         aboutTitle: "私について",
         intro: "こんにちは、ウマングです。昼は世界有数の小売企業で、店頭に何を並べるかを計画するプロダクトを作っています。夜は自分が欲しかったツールを作り、その過程をまるごと発信しています。",
         journey: [
@@ -77,7 +79,7 @@ export const copy = {
 
 export type Project = {
     title: string
-    icon: "extension" | "chart" | "people" | "book" | "play"
+    icon: "extension" | "chart" | "network" | "book" | "play" | "linkedin"
     tag: string
     outcome: string
     href?: string
@@ -112,7 +114,7 @@ export const featured: Project[] = [
     },
     {
         title: "Network Lab",
-        icon: "people",
+        icon: "network",
         tag: "Community · Tokyo & New York",
         outcome: "A community I co-founded, with in-person meetups in Tokyo and New York.",
         href: links.linkedin,
@@ -130,6 +132,15 @@ export const more: Project[] = [
         href: links.guide,
         cta: "Get the guide",
         ja: { tag: "ガイド", outcome: "AI時代のプロダクトマネジメントの実践ガイド。" },
+    },
+    {
+        title: "LinkedIn",
+        icon: "linkedin",
+        tag: "Social",
+        outcome: "Connect with me on LinkedIn.",
+        href: links.linkedin,
+        cta: "Connect",
+        ja: { tag: "SNS", outcome: "LinkedInでつながりましょう。" },
     },
     {
         title: "Get Saged",

@@ -9,10 +9,12 @@ const marks: Record<Project["icon"], { filled?: boolean; color?: string; node: R
   extension: { node: <path d="M14 4a2 2 0 1 1 4 0v2h3v5h-2a2 2 0 1 0 0 4h2v5h-5v-2a2 2 0 1 0-4 0v2H7v-5H5a2 2 0 1 1 0-4h2V6h7V4z" /> },
   // Inventory risk system: a parcel
   chart: { node: <path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM3.3 7.5L12 12.5l8.7-5M12 22V12.5M7.5 5.3l9 5.1" /> },
-  // Network Lab: LinkedIn "in"
-  people: { filled: true, color: "#0a66c2", node: <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z" /> },
-  // AI PM Guide: sparkles
-  book: { filled: true, node: <path d="M10 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6zM19 14l.9 2.6L22.5 17.5l-2.6.9L19 21l-.9-2.6-2.6-.9 2.6-.9L19 14z" /> },
+  // Network Lab: three people-nodes, connected
+  network: { node: <path d="M12 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM5.5 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18.5 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM10.7 7.6L7 15.4M13.3 7.6l3.7 7.8M8.5 19h7" /> },
+  // LinkedIn "in"
+  linkedin: { filled: true, color: "#0a66c2", node: <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z" /> },
+  // AI PM Guide: an open book
+  book: { node: <path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2zM22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z" /> },
   // Get Saged: YouTube
   play: { filled: true, color: "#ff0000", node: <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z" /> },
 };
@@ -28,10 +30,10 @@ export const ProjectIcon = ({ icon, className = "h-5 w-5" }: { icon: Project["ic
 
 // Positions are percentages of the hero stage on large screens, over the sky on either side of the tower.
 const placed: { title: string; left: string; top: string; r: string; delay: string }[] = [
-  { title: "Inventory risk system", left: "5%", top: "72%", r: "-6deg", delay: "0s" },
-  { title: "Network Lab", left: "15%", top: "84%", r: "4deg", delay: "1.2s" },
-  { title: "AI PM Guide", left: "26%", top: "72%", r: "-3deg", delay: "2.1s" },
-  { title: "Get Saged", left: "82%", top: "62%", r: "6deg", delay: "0.6s" },
+  { title: "LinkedIn", left: "6%", top: "67%", r: "-6deg", delay: "0s" },
+  { title: "Network Lab", left: "73%", top: "64%", r: "4deg", delay: "1.2s" },
+  { title: "AI PM Guide", left: "19%", top: "77%", r: "-3deg", delay: "2.1s" },
+  { title: "Get Saged", left: "79%", top: "48%", r: "6deg", delay: "0.6s" },
 ];
 
 const reelSpots: { left: string; top: string; r: string; delay: string }[] = [
@@ -65,7 +67,7 @@ const Tooltip = ({ p, ja }: { p: Project; ja: boolean }) => {
 };
 
 const Float = ({ href, label, style, className, children }: { href?: string; label: string; style: CSSProperties; className: string; children: React.ReactNode }) => {
-  const props = { "aria-label": label, style, className: `float-drift group absolute z-20 ${className}` };
+  const props = { "aria-label": label, style, className: `float-drift group absolute z-20 hover:!z-40 focus-visible:!z-40 ${className}` };
   if (!href) return <span {...props}>{children}</span>;
   return href.startsWith("/")
     ? <Link href={href} {...props}>{children}</Link>
@@ -172,19 +174,35 @@ const BackgroundVideo = ({ className }: { className: string }) => {
   );
 };
 
-// Local time in Tokyo, filled in after mount so server and browser renders match.
-const TokyoTime = () => {
-  const [time, setTime] = useState<string | null>(null);
+// Local time in each of the three cities, filled in after mount so server and browser renders match.
+const zones = [
+  { key: "tokyo", timeZone: "Asia/Tokyo" },
+  { key: "newYork", timeZone: "America/New_York" },
+  { key: "delhi", timeZone: "Asia/Kolkata" },
+] as const;
+
+const Clocks = ({ cities }: { cities: typeof copy.en.cities }) => {
+  const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
-    const format = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Tokyo" });
-    const tick = () => setTime(format.format(new Date()));
+    const tick = () => setNow(new Date());
     tick();
     const timer = window.setInterval(tick, 30000);
     return () => window.clearInterval(timer);
   }, []);
 
-  return <span className="tabular-nums">{time ?? "--:--"}</span>;
+  return (
+    <>
+      {zones.map(({ key, timeZone }) => (
+        <span key={key} className="inline-flex items-baseline gap-1.5">
+          <span className="text-gray-500 dark:text-white/55">{cities[key]}</span>
+          <span className="tabular-nums">
+            {now ? new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone }).format(now) : "--:--"}
+          </span>
+        </span>
+      ))}
+    </>
+  );
 };
 
 const StatusRow = ({ t }: { t: typeof copy.en }) => (
@@ -197,10 +215,10 @@ const StatusRow = ({ t }: { t: typeof copy.en }) => (
     </span>
     <span className="hidden h-4 w-px bg-gray-300 dark:bg-white/20 sm:block" aria-hidden="true" />
     <span className="inline-flex items-center gap-2">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 shrink-0" aria-hidden="true">
         <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
       </svg>
-      <span><TokyoTime /> JST</span>
+      <span className="inline-flex flex-wrap items-baseline gap-x-5 gap-y-1"><Clocks cities={t.cities} /></span>
     </span>
     <span className="hidden h-4 w-px bg-gray-300 dark:bg-white/20 sm:block" aria-hidden="true" />
     <a href={`mailto:${links.email}`} className="inline-flex items-center gap-2.5 underline-offset-4 hover:underline">
@@ -209,6 +227,9 @@ const StatusRow = ({ t }: { t: typeof copy.en }) => (
         <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
       </span>
       {t.open}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 shrink-0" aria-hidden="true">
+        <path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.5A8.5 8.5 0 1 1 21 11.5z" />
+      </svg>
     </a>
   </div>
 );
@@ -240,6 +261,17 @@ function Hero() {
           <h1 className="sr-only">{t.heading}</h1>
           <p aria-hidden="true" className={`absolute left-5 top-20 z-20 cursor-default select-none [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 ${firstSize} ${nameFont}`}><RaisedLetters text={t.firstName} /></p>
           <p aria-hidden="true" className={`absolute bottom-5 right-5 z-20 cursor-default select-none [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 ${lastSize} ${nameFont}`}><RaisedLetters text={t.lastName} /></p>
+
+          {/* The one clear action: a frosted-glass pill, so it reads as a button without out-shouting the name and the photo. */}
+          <a href={links.calendly} target="_blank" rel="noreferrer" style={{ transform: "rotate(-2deg)" }}
+            className={`group absolute right-5 z-30 inline-flex items-center gap-2.5 rounded-full bg-white/15 py-2 pl-5 pr-2 text-cream shadow-[0_8px_24px_rgba(0,10,60,0.25)] ring-1 ring-white/50 backdrop-blur-md transition-[transform,background-color] duration-300 hover:-translate-y-1 hover:bg-white/25 hover:!rotate-0 lg:gap-3 lg:py-2.5 lg:pl-6 lg:pr-2.5 lg:left-8 lg:right-auto lg:bottom-8 ${ja ? "font-display-ja bottom-[calc(16vw+2.25rem)] text-[clamp(16px,4.4vw,19px)] lg:text-3xl" : "font-display uppercase bottom-[calc(19vw+2.25rem)] text-[clamp(18px,5vw,22px)] lg:text-4xl"}`}>
+            {t.bookCall}
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-cream text-[#1450f0] transition-transform duration-300 group-hover:scale-110 lg:h-12 lg:w-12" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 lg:h-5 lg:w-5">
+                <path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4" />
+              </svg>
+            </span>
+          </a>
 
           {/* Large screens: work and reels float over the sky on either side of the tower */}
           <div className="hidden lg:block">
