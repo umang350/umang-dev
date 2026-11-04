@@ -7,6 +7,7 @@ export const links = {
     instagram: "https://instagram.com/thisumang",
     youtube: "https://youtube.com/@GetSaged",
     linkedin: "https://www.linkedin.com/in/thisumang/",
+    luma: "https://luma.com/user/thisumang",
     guide: "https://topmate.io/thisumang", // TODO: confirm the Topmate product URL
 }
 
@@ -79,7 +80,7 @@ export const copy = {
 
 export type Project = {
     title: string
-    icon: "extension" | "chart" | "network" | "book" | "play" | "linkedin"
+    icon: "extension" | "network" | "book" | "play" | "linkedin"
     tag: string
     outcome: string
     href?: string
@@ -103,21 +104,11 @@ export const featured: Project[] = [
         ja: { tag: "Chrome・Firefox拡張機能 · 無料", outcome: "開いているAnaplanモデルについて22種類のレポートを表示するサイドパネル。アクションID、数式、保存ビュー、ページフィルターなどを検索・エクスポートできます。", metricLabel: "Chromeウェブストアでの評価" },
     },
     {
-        title: "Inventory risk system",
-        icon: "chart",
-        tag: "Product · US, Canada & Europe",
-        outcome: "Anomaly-driven inventory risk detection for a global retailer's digital supply chain.",
-        href: "/about",
-        cta: "Read more",
-        metric: { value: "5% → 2%", label: "out-of-stock rate, $30M+ recovered" },
-        ja: { tag: "プロダクト · 米国・カナダ・欧州", outcome: "グローバル小売企業のデジタルサプライチェーン向けに、異常を検知して在庫リスクを知らせるシステム。", metricLabel: "欠品率（3,000万ドル超の売上を回復）" },
-    },
-    {
         title: "Network Lab",
         icon: "network",
         tag: "Community · Tokyo & New York",
         outcome: "A community I co-founded, with in-person meetups in Tokyo and New York.",
-        href: links.linkedin,
+        href: links.luma,
         cta: "See the latest meetup",
         ja: { tag: "コミュニティ · 東京・ニューヨーク", outcome: "共同創業したコミュニティ。東京とニューヨークで対面のミートアップを開催しています。" },
     },
@@ -158,8 +149,7 @@ export type WorkPill = { name: string; href: string; size: "lg" | "md" | "sm"; t
 // The work collage: names only, each one a link. Order sets the layout, size and tone set the look.
 export const work: WorkPill[] = [
     { name: "Anaplan Toolkit", href: "/anaplan", size: "lg", tone: "blue" },
-    { name: "Network Lab", href: links.linkedin, size: "md", tone: "cream" },
-    { name: "Inventory risk system", href: "/about", size: "md", tone: "outline" },
+    { name: "Network Lab", href: links.luma, size: "md", tone: "cream" },
     { name: "AI PM Guide", href: links.guide, size: "lg", tone: "amber" },
     { name: "Get Saged", href: "https://youtube.com/GetSaged", size: "md", tone: "outline" },
     { name: "TV VibeHack", href: "https://github.com/umang350/tv-vibehack", size: "sm", tone: "outline" },

@@ -7,8 +7,6 @@ import { copy, featured, instagram, links, more, Project } from "@/data/content/
 // Each project gets a mark you can recognise at a glance: the brand's own glyph where there is one.
 const marks: Record<Project["icon"], { filled?: boolean; color?: string; node: React.ReactNode }> = {
   extension: { node: <path d="M14 4a2 2 0 1 1 4 0v2h3v5h-2a2 2 0 1 0 0 4h2v5h-5v-2a2 2 0 1 0-4 0v2H7v-5H5a2 2 0 1 1 0-4h2V6h7V4z" /> },
-  // Inventory risk system: a parcel
-  chart: { node: <path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM3.3 7.5L12 12.5l8.7-5M12 22V12.5M7.5 5.3l9 5.1" /> },
   // Network Lab: three people-nodes, connected
   network: { node: <path d="M12 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM5.5 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18.5 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM10.7 7.6L7 15.4M13.3 7.6l3.7 7.8M8.5 19h7" /> },
   // LinkedIn "in"
