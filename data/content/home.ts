@@ -165,17 +165,17 @@ export const instagram = {
     // Most viewed first; all of them run in the reels carousel, and `hero` ones also float in the hero.
     // Add each reel's own URL as `href` when you have it.
     reels: [
-        { thumb: "/home/reel-cool-stories-27.jpg", views: "1.3M", title: "Cool stories start at 27", hero: true },
-        { thumb: "/home/reel-ai-tools-daily.jpg", views: "1.2M", title: "AI tools I use daily" },
-        { thumb: "/home/reel-first-principles.jpg", views: "906K", title: "First principles", hero: true },
-        { thumb: "/home/reel-three-networking.jpg", views: "298K", title: "Three networking tips", hero: true },
-        { thumb: "/home/reel-small-talk-hacks.jpg", views: "121K", title: "Small talk hacks" },
-        { thumb: "/home/reel-mumbai-vs-new-york.jpg", views: "110K", title: "Mumbai vs New York expenses" },
-        { thumb: "/home/reel-harvard.jpg", views: "31K", title: "This guy studied at Harvard" },
-        { thumb: "/home/reel-never-have-i-ever-ai.jpg", views: "22.5K", title: "Never have I ever: AI edition" },
-        { thumb: "/home/reel-fluent-japanese.jpg", views: "12.3K", title: "Fluent Japanese, obviously chopsticks" },
-        { thumb: "/home/reel-10x-salary.jpg", views: "8.7K", title: "10x salary in 4 years" },
-        { thumb: "/home/reel-camera-roll.jpg", views: "6.7K", title: "POV: you open my camera roll" },
+        { thumb: "/home/reel-cool-stories-27.jpg", views: "1.3M", title: "Cool stories start at 27", href: "https://www.instagram.com/reel/DS3hrOHEwm9/", hero: true },
+        { thumb: "/home/reel-ai-tools-daily.jpg", views: "1.2M", title: "AI tools I use daily", href: "https://www.instagram.com/reel/DOUH3FDEVnZ/" },
+        { thumb: "/home/reel-first-principles.jpg", views: "906K", title: "First principles", href: "https://www.instagram.com/reel/DNdYQmKNQqS/", hero: true },
+        { thumb: "/home/reel-three-networking.jpg", views: "298K", title: "Three networking tips", href: "https://www.instagram.com/reel/DLsR8gsOgq6/", hero: true },
+        { thumb: "/home/reel-small-talk-hacks.jpg", views: "121K", title: "Small talk hacks", href: "https://www.instagram.com/reel/DL6puEOOEGx/" },
+        { thumb: "/home/reel-mumbai-vs-new-york.jpg", views: "110K", title: "Mumbai vs New York expenses", href: "https://www.instagram.com/reel/DL2Ndc-Jubs/" },
+        { thumb: "/home/reel-harvard.jpg", views: "31K", title: "This guy studied at Harvard", href: "https://www.instagram.com/reel/DLg5uOhO9HC/" },
+        { thumb: "/home/reel-never-have-i-ever-ai.jpg", views: "22.5K", title: "Never have I ever: AI edition", href: "https://www.instagram.com/reel/DMDPPJSuZR4/" },
+        { thumb: "/home/reel-fluent-japanese.jpg", views: "12.3K", title: "Fluent Japanese, obviously chopsticks", href: "https://www.instagram.com/reel/DL9wzRktomR/" },
+        { thumb: "/home/reel-10x-salary.jpg", views: "8.7K", title: "10x salary in 4 years", href: "https://www.instagram.com/reel/DL1EtnquNja/" },
+        { thumb: "/home/reel-camera-roll.jpg", views: "6.7K", title: "POV: you open my camera roll", href: "https://www.instagram.com/reel/DMG6bC0tHjA/" },
     ] as Reel[],
 }
 
