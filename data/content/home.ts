@@ -8,6 +8,7 @@ export const links = {
     youtube: "https://youtube.com/@GetSaged",
     linkedin: "https://www.linkedin.com/in/thisumang/",
     luma: "https://luma.com/user/thisumang",
+    substack: "https://thisumang.substack.com/",
     guide: "https://topmate.io/thisumang", // TODO: confirm the Topmate product URL
 }
 
@@ -150,6 +151,7 @@ export type WorkPill = { name: string; href: string; size: "lg" | "md" | "sm"; t
 export const work: WorkPill[] = [
     { name: "Anaplan Toolkit", href: "/anaplan", size: "lg", tone: "blue" },
     { name: "Network Lab", href: links.luma, size: "md", tone: "cream" },
+    { name: "Substack", href: links.substack, size: "md", tone: "outline" },
     { name: "AI PM Guide", href: links.guide, size: "lg", tone: "amber" },
     { name: "Get Saged", href: "https://youtube.com/GetSaged", size: "md", tone: "outline" },
     { name: "TV VibeHack", href: "https://github.com/umang350/tv-vibehack", size: "sm", tone: "outline" },
