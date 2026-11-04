@@ -21,13 +21,15 @@ type Props = {
     jsonLd?: object[];
     noindex?: boolean;
     ogType?: "website" | "article";
+    // Dark chrome for the landing page.
+    dark?: boolean;
     children: React.ReactNode;
 };
 
-const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, keywords, jsonLd, noindex = false, ogType = "website", children }: Props) => {
+const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, keywords, jsonLd, noindex = false, ogType = "website", dark = false, children }: Props) => {
     const base = onLanding ? "" : "/anaplan";
     return (
-        <div className="min-h-screen w-full bg-white text-gray-900 antialiased">
+        <div className={`min-h-screen w-full antialiased ${dark ? "bg-[#09090d] text-gray-100" : "bg-white text-gray-900"}`}>
             <Head>
                 <title>{title}</title>
                 <meta name="description" content={desc} />
@@ -48,19 +50,19 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
                 <meta name="twitter:description" content={desc} />
                 {ogImage && <meta name="twitter:image" content={ogImage} />}
                 <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
-                <meta name="theme-color" content="#ffffff" />
+                <meta name="theme-color" content={dark ? "#09090d" : "#ffffff"} />
                 {jsonLd?.map((d, i) => (
                     <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }} />
                 ))}
             </Head>
 
-            <header className="sticky top-0 z-20 border-b border-gray-200/70 bg-white/80 backdrop-blur">
+            <header className={`sticky top-0 z-30 border-b backdrop-blur ${dark ? "border-white/10 bg-[#09090d]/70" : "border-gray-200/70 bg-white/80"}`}>
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
                     <Link href={onLanding ? "#top" : "/anaplan"} className="flex items-center gap-2.5">
                         <Image src="/anaplan/icon.png" alt="" width={28} height={28} className="rounded-md" />
                         <span className="text-[15px] font-semibold tracking-tight">Anaplan Toolkit</span>
                     </Link>
-                    <nav className="hidden items-center gap-7 text-sm text-gray-600 md:flex">
+                    <nav className={`hidden items-center gap-7 text-sm md:flex ${dark ? "text-gray-400 [&_a:hover]:text-white" : "text-gray-600"}`}>
                         <Link href={`${base}#reports`} className="hover:text-gray-900">Reports</Link>
                         <Link href={`${base}#how`} className="hover:text-gray-900">How it works</Link>
                         <Link href={`${base}#roadmap`} className="hover:text-gray-900">Roadmap</Link>
@@ -69,7 +71,7 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
                         <Link href={`${base}#privacy`} className="hover:text-gray-900">Privacy</Link>
                         <a href="https://github.com/sponsors/umang350" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">♥ Sponsor</a>
                     </nav>
-                    <Link href={`${base}#get`} className="rounded-lg bg-gray-900 px-3.5 py-2 text-sm font-medium text-white hover:bg-gray-700">
+                    <Link href={`${base}#get`} className={`rounded-lg px-3.5 py-2 text-sm font-medium ${dark ? "bg-white text-gray-900 hover:bg-gray-200" : "bg-gray-900 text-white hover:bg-gray-700"}`}>
                         Get it
                     </Link>
                 </div>
@@ -77,7 +79,7 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
 
             <main id="top">{children}</main>
 
-            <footer className="border-t border-gray-200">
+            <footer className={`border-t ${dark ? "border-white/10 [&_a:hover]:text-white" : "border-gray-200"}`}>
                 <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 text-sm text-gray-500 sm:px-6 md:flex-row md:items-center md:justify-between">
                     <p>
                         © 2026 Umang Chauhan · <a href="https://umang.dev" className="hover:text-gray-800">umang.dev</a>

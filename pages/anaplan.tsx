@@ -1,4 +1,5 @@
 import Image from "next/image";
+import React, { useState } from "react";
 import Link from "next/link";
 import ToolkitShell from "@/components/anaplan/ToolkitShell";
 import { guides } from "@/components/anaplan/Article";
@@ -96,10 +97,10 @@ const reportGroups = [
 type RoadmapStatus = "shipped" | "next" | "exploring" | "not";
 
 const roadmapStatus: Record<RoadmapStatus, { label: string; badge: string }> = {
-    shipped: { label: "Shipped", badge: "bg-green-50 text-green-700 ring-green-200" },
-        next: { label: "Planned", badge: "bg-amber-50 text-amber-700 ring-amber-200" },
-    exploring: { label: "Exploring", badge: "bg-gray-100 text-gray-700 ring-gray-200" },
-    not: { label: "Not planned", badge: "bg-red-50 text-red-700 ring-red-200" },
+    shipped: { label: "Shipped", badge: "bg-green-500/15 text-green-300" },
+        next: { label: "Planned", badge: "bg-amber-500/15 text-amber-300" },
+    exploring: { label: "Exploring", badge: "bg-white/10 text-gray-300" },
+    not: { label: "Not planned", badge: "bg-red-500/15 text-red-300" },
 };
 
 const roadmap: { status: RoadmapStatus; title: string; body: string }[] = [
@@ -183,11 +184,6 @@ const shots = [
     { src: "/anaplan/saved-views-list.png", alt: "All Saved Views report", caption: "All Saved Views" },
 ];
 
-const Check = () => (
-    <svg viewBox="0 0 20 20" className="h-5 w-5 flex-none text-red-600" fill="currentColor" aria-hidden="true">
-        <path fillRule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" clipRule="evenodd" />
-    </svg>
-);
 
 type Store = "chrome" | "firefox";
 
@@ -208,25 +204,40 @@ const stores: Record<Store, { url: string; logo: string; eyebrow: string; name: 
     },
 };
 
-// Store badge with the browser's own logo. "dark" sits on light backgrounds,
-// "light" on the red call-to-action panel.
-const StoreButton = ({ store, tone = "dark" }: { store: Store; tone?: "dark" | "light" }) => {
+const marquee = [
+    "Action IDs", "Process steps", "Impact analysis", "Planual lint", "Formula search", "Model docs as Markdown", "Lock Monitor",
+    "Saved views", "Linked pages", "Bulk delete", "Revision tags", "Workspace storage", "CSV export",
+];
+
+const Dot = () => <span className="h-1.5 w-1.5 flex-none rounded-full bg-red-500" />;
+
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-red-400">{children}</p>
+);
+
+const Heading = ({ children }: { children: React.ReactNode }) => (
+    <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-5xl">{children}</h2>
+);
+
+const card = "rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm";
+
+const StoreButton = ({ store, tone = "light" }: { store: Store; tone?: "light" | "dark" }) => {
     const s = stores[store];
     const toneClass =
-        tone === "dark"
-            ? "bg-gray-900 text-white ring-gray-900 hover:bg-gray-800"
-            : "bg-white text-gray-900 ring-white/40 hover:bg-gray-50";
+        tone === "light"
+            ? "bg-white text-gray-900 hover:bg-gray-100 ring-white/40"
+            : "bg-gray-900 text-white hover:bg-gray-800 ring-white/10";
     return (
         <a
             href={s.url}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={s.label}
-            className={`group inline-flex h-14 min-w-[13rem] items-center gap-3 rounded-xl px-4 shadow-sm ring-1 transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 ${toneClass}`}
+            className={`group inline-flex h-14 min-w-[13rem] items-center gap-3 rounded-2xl px-4 shadow-lg ring-1 transition hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 ${toneClass}`}
         >
             <Image src={s.logo} alt="" width={32} height={32} unoptimized className="h-8 w-8 flex-none" />
             <span className="flex flex-col text-left leading-tight">
-                <span className={`text-[11px] font-medium ${tone === "dark" ? "text-gray-300" : "text-gray-500"}`}>{s.eyebrow}</span>
+                <span className={`text-[11px] font-medium ${tone === "light" ? "text-gray-500" : "text-gray-300"}`}>{s.eyebrow}</span>
                 <span className="text-base font-semibold tracking-tight">{s.name}</span>
             </span>
         </a>
@@ -234,6 +245,10 @@ const StoreButton = ({ store, tone = "dark" }: { store: Store; tone?: "dark" | "
 };
 
 const AnaplanToolkit = () => {
+    const [tab, setTab] = useState(0);
+
+    const group = reportGroups[tab];
+
     return (
         <ToolkitShell
             title={pageTitle}
@@ -242,352 +257,448 @@ const AnaplanToolkit = () => {
             ogImage="https://umang.dev/anaplan/summary.png"
             ogTitle="Anaplan Toolkit — free Anaplan model analyzer & API helper"
             onLanding
+            dark
             keywords={pageKeywords}
             jsonLd={jsonLd}
         >
             {/* Hero */}
             <section className="relative overflow-hidden">
-                <div className="pointer-events-none absolute inset-x-0 -top-40 -z-0 flex justify-center" aria-hidden="true">
-                    <div className="h-[480px] w-[900px] rounded-full bg-gradient-to-br from-red-100 via-rose-50 to-transparent opacity-80 blur-3xl" />
+                <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+                    <div className="absolute left-[-10rem] top-[-10rem] h-[32rem] w-[44rem] rounded-full bg-red-600/25 blur-[140px]" />
+                    <div className="absolute right-[-8rem] top-24 h-[28rem] w-[28rem] rounded-full bg-indigo-500/20 blur-[120px]" />
+                    <div
+                        className="absolute inset-0 opacity-[0.07]"
+                        style={{
+                            backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+                            backgroundSize: "56px 56px",
+                            maskImage: "radial-gradient(ellipse 80% 70% at 50% 20%, #000, transparent)",
+                            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 20%, #000, transparent)",
+                        }}
+                    />
                 </div>
-                <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-16 pt-16 sm:px-6 md:pt-24 lg:grid-cols-2">
+
+                <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-16 pt-12 sm:px-6 md:pt-16 lg:grid-cols-[1.1fr_0.9fr]">
                     <div>
-                        <span className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-700">
-                            <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
-                            Chrome &amp; Firefox extension · v{version}
+                        <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-gray-200">
+                            <Dot />
+                            Free Chrome &amp; Firefox extension for Anaplan · v{version}
                         </span>
-                        <h1 className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
-                            See how your Anaplan model <span className="text-red-600">fits together.</span>
+                        <h1 className="mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl">
+                            The side panel Anaplan{" "}
+                            <span className="bg-gradient-to-r from-red-400 via-red-500 to-orange-400 bg-clip-text text-transparent">is missing.</span>
                         </h1>
-                        <p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-600">
-                            The free Anaplan helper tool for model builders: a side panel that reports on the structure of the model you have open — action IDs and
-                            process steps, where actions and modules are used, page filters, saved views, line item
-                            formulas, revision tags, lock status and workspace storage. Search it, sort it, export it
-                            to CSV, and stop clicking through blueprints.
+                        <p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-300">
+                            Stop digging through blueprints, tabs and exports to answer simple questions about your model. Open the panel beside any
+                            model and get the answer in one click.
                         </p>
+
+                        <ul className="mt-6 grid gap-x-6 gap-y-2.5 text-[15px] text-gray-200 sm:grid-cols-2">
+                            {[
+                                ["Find IDs", "action, import, export and process IDs for the API"],
+                                ["Trace impact", "what uses a line item, and what it depends on"],
+                                ["Lint & document", "Planual checks and the model as Markdown"],
+                                ["Watch locks", "know when the model is busy, locked or free"],
+                            ].map(([t, b]) => (
+                                <li key={t} className="flex gap-2.5">
+                                    <span className="mt-2"><Dot /></span>
+                                    <span><b className="font-semibold text-white">{t}</b> <span className="text-gray-400">· {b}</span></span>
+                                </li>
+                            ))}
+                        </ul>
+
                         <div className="mt-8 flex flex-wrap items-center gap-3">
                             <StoreButton store="chrome" />
-                            <StoreButton store="firefox" />
+                            <StoreButton store="firefox" tone="dark" />
                         </div>
-                        <p className="mt-4 text-sm text-gray-500">
-                            Free and built in spare time.{" "}
-                            <a href={sponsorUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">♥ Sponsor on GitHub</a>
+                        <p className="mt-4 text-sm text-gray-400">
+                            Free · Reports are read-only · No data leaves your browser · Independent of Anaplan, Inc.
                         </p>
-                        <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
-                            <li className="flex items-center gap-2"><Check /> Reports are read-only</li>
-                            <li className="flex items-center gap-2"><Check /> No data leaves your browser</li>
-                            <li className="flex items-center gap-2"><Check /> CSV export everywhere</li>
-                        </ul>
                     </div>
-                    <div className="relative mx-auto w-full max-w-md">
-                        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 shadow-2xl shadow-gray-900/10">
-                            <Image
-                                src="/anaplan/summary-panel.png"
-                                alt="Anaplan Toolkit extension side panel showing an Anaplan model summary: model IDs, size, module and line item counts"
-                                width={1408}
-                                height={1948}
-                                priority
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            {/* Stats strip */}
-            <section className="border-y border-gray-200 bg-gray-50">
-                <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 text-center sm:px-6 md:grid-cols-4">
-                    {[
-                        ["22", "reports + summary"],
-                        ["1 .zip", "every report as CSV"],
-                        ["0", "third-party servers"],
-                        ["6h", "per-model cache"],
-                    ].map(([n, l]) => (
-                        <div key={l}>
-                            <div className="text-2xl font-bold tracking-tight sm:text-3xl">{n}</div>
-                            <div className="mt-1 text-sm text-gray-500">{l}</div>
+                    <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+                        <div className="pointer-events-none absolute -right-6 -top-6 hidden w-64 rotate-3 overflow-hidden rounded-2xl border border-white/10 opacity-40 sm:block" aria-hidden="true">
+                            <Image src="/anaplan/summary-panel.png" alt="" width={1408} height={1948} priority />
                         </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* What's new */}
-            <section className="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
-                <div className="max-w-2xl">
-                    <p className="text-sm font-semibold uppercase tracking-wider text-red-600">New in {version}</p>
-                    <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">What&apos;s new</h2>
-                </div>
-                <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {whatsNew.map((n) => (
-                        <div key={n.title} className="flex gap-3 rounded-2xl border border-gray-200 bg-white p-5">
-                            <Check />
-                            <div>
-                                <h3 className="font-semibold">{n.title}</h3>
-                                <p className="mt-1 text-sm leading-relaxed text-gray-600">{n.body}</p>
+                        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#111118]/95 shadow-[0_40px_120px_-20px_rgba(244,63,94,0.35)] backdrop-blur">
+                            <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
+                                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+                                <span className="ml-3 text-[11px] text-gray-400">Anaplan Toolkit · one click each</span>
+                            </div>
+                            <div className="space-y-3 p-4 sm:p-5">
+                                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-400">Questions Anaplan can&apos;t answer on one screen</p>
+                                {[
+                                    { q: "What breaks if I change Gross Revenue?", a: "14 formulas · 6 modules · 3 App pages", src: "Impact" },
+                                    { q: "What's the ID of my “Load Actuals” import?", a: "112000000087", src: "Actions & File IDs", copy: true },
+                                    { q: "Can I start my import, or is the model busy?", a: "Busy for 41s · a process is running", src: "Lock Monitor", warn: true },
+                                    { q: "Which App pages read this saved view?", a: "Sales Board · P&L Overview", src: "Saved Views in Screens" },
+                                ].map((r) => (
+                                    <div key={r.q} className="rounded-xl border border-white/10 bg-white/[0.04] p-3.5">
+                                        <div className="flex items-start justify-between gap-3">
+                                            <div className="text-sm font-medium text-white">{r.q}</div>
+                                            <span className="flex-none rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-gray-300">{r.src}</span>
+                                        </div>
+                                        <div className={`mt-2 flex items-center gap-2 font-mono text-[13px] ${r.warn ? "text-amber-300" : "text-green-300"}`}>
+                                            <span aria-hidden="true">→</span>
+                                            <span>{r.a}</span>
+                                            {r.copy && <span className="rounded bg-red-500/20 px-1.5 py-0.5 font-sans text-[10px] text-red-300">copy</span>}
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* Reports */}
-            <section id="reports" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6">
-                <div className="max-w-2xl">
-                    <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Reports</p>
-                    <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Answers Anaplan doesn&apos;t put on one screen</h2>
-                    <p className="mt-4 text-gray-600">
-                        Each report is gathered on demand from the model in your active tab, cached for that model,
-                        searchable, and exportable to CSV.
-                    </p>
-                </div>
-                <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {reportGroups.map((g) => (
-                        <div key={g.group} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                            <div className="text-xs font-semibold uppercase tracking-wider text-gray-500">{g.group}</div>
-                            <ul className="mt-4 space-y-4">
-                                {g.items.map((r) => (
-                                    <li key={r.name}>
-                                        <div className="font-semibold">{r.name}</div>
-                                        <p className="mt-1 text-sm leading-relaxed text-gray-600">{r.desc}</p>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                    <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-6">
-                        <div className="text-xs font-semibold uppercase tracking-wider text-gray-500">In every report</div>
-                        <ul className="mt-4 space-y-3 text-sm text-gray-700">
-                            <li className="flex gap-2"><Check /> Fuzzy search across every column</li>
-                            <li className="flex gap-2"><Check /> Sort by any column header</li>
-                            <li className="flex gap-2"><Check /> One-click CSV export, in your sort order</li>
-                            <li className="flex gap-2"><Check /> Cached per model — switch models freely</li>
-                            <li className="flex gap-2"><Check /> Live progress while large models load</li>
-                            <li className="flex gap-2"><Check /> Stays fast on tables with thousands of rows</li>
-                        </ul>
                     </div>
                 </div>
             </section>
 
-            {/* Formula editor spotlight */}
-            <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
-                <div className="rounded-3xl border border-gray-200 bg-gradient-to-br from-white to-red-50/60 p-8 sm:p-12">
-                    <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Formula editor</p>
-                    <h2 className="mt-2 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">Navigate formulas like code</h2>
-                    <p className="mt-4 max-w-2xl text-gray-600">
-                        Work through a dependency chain without hunting through tabs. Everything reads Anaplan&apos;s
-                        in-page model data — no server is contacted and nothing is changed.
-                    </p>
-                    <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        {[
-                            ["Jump to a reference", "Cmd/Ctrl+click opens a module, line item, list or subset; Shift opens a new tab."],
-                            ["Readable hover cards", "Format, applies to, time scale and a formula with THEN/ELSE on their own lines, plus what uses it and what it depends on."],
-                            ["Function help", "Hover ITEM(, [LOOKUP: …], IF and more for the category, description and a help link."],
-                            ["Spot slips early", "Markers for unbalanced brackets, unterminated quotes and a Module.'x' that doesn't exist — and Planual rules underlined with their number."],
-                        ].map(([t, b]) => (
-                            <div key={t} className="rounded-2xl border border-gray-200 bg-white p-5">
-                                <h3 className="font-semibold">{t}</h3>
-                                <p className="mt-1 text-sm leading-relaxed text-gray-600">{b}</p>
+            {/* Marquee */}
+            <section className="overflow-hidden border-y border-white/10 bg-white/[0.02] py-5" aria-hidden="true">
+                <div className="tk-marquee flex w-max gap-10 whitespace-nowrap text-sm font-medium text-gray-400" style={{ animation: "tk-marquee 40s linear infinite" }}>
+                    {[...marquee, ...marquee].map((m, i) => (
+                        <span key={i} className="flex items-center gap-10">{m}<Dot /></span>
+                    ))}
+                </div>
+            </section>
+
+            {/* Stats */}
+            <section className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-16 text-center sm:px-6 md:grid-cols-4">
+                {[
+                    ["22", "reports on model structure, usage and status, one panel"],
+                    ["1 click", "to export every report as CSVs in one .zip"],
+                    ["0", "passwords, tokens or third-party servers involved"],
+                    ["$0", "free to use, no sign-up"],
+                ].map(([n, l]) => (
+                    <div key={l}>
+                        <div className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl">{n}</div>
+                        <div className="mx-auto mt-2 max-w-[13rem] text-sm leading-snug text-gray-400">{l}</div>
+                    </div>
+                ))}
+            </section>
+
+            {/* Bento: what's new */}
+            <section id="features" className="mx-auto max-w-6xl scroll-mt-20 px-4 pb-24 sm:px-6">
+                <div className="max-w-2xl">
+                    <Eyebrow>New in {version}</Eyebrow>
+                    <Heading>Built for the questions you actually ask</Heading>
+                </div>
+                <div className="mt-12 grid gap-4 lg:grid-cols-6">
+                    {/* Impact */}
+                    <div className={`${card} overflow-hidden p-7 lg:col-span-4`}>
+                        <h3 className="text-xl font-semibold text-white">{whatsNew[0].title}</h3>
+                        <p className="mt-2 max-w-lg text-sm leading-relaxed text-gray-300">{whatsNew[0].body}</p>
+                        <div className="mt-6 flex flex-wrap items-center gap-2 font-mono text-xs" aria-hidden="true">
+                            {["Units", "Gross Revenue", "Net Revenue", "P&L Summary", "Board Page"].map((n, i, a) => (
+                                <span key={n} className="flex items-center gap-2">
+                                    <span className={`rounded-lg px-3 py-1.5 ${i === 2 ? "bg-red-500 text-white" : "border border-white/15 bg-white/5 text-gray-200"}`}>{n}</span>
+                                    {i < a.length - 1 && <span className="text-red-400">→</span>}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                    {/* Planual */}
+                    <div className={`${card} p-7 lg:col-span-2`}>
+                        <h3 className="text-xl font-semibold text-white">{whatsNew[1].title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-gray-300">{whatsNew[1].body}</p>
+                    </div>
+                    {/* Formula search */}
+                    <div className={`${card} p-7 lg:col-span-2`}>
+                        <h3 className="text-xl font-semibold text-white">{whatsNew[3].title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-gray-300">{whatsNew[3].body}</p>
+                        <div className="mt-5 rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-gray-300" aria-hidden="true">
+                            <span className="text-red-400">/</span>LOOKUP:.*<span className="text-red-400">/</span> <span className="text-gray-500">· 38 matches</span>
+                        </div>
+                    </div>
+                    {/* Where you build */}
+                    <div className={`${card} p-7 lg:col-span-2`}>
+                        <h3 className="text-xl font-semibold text-white">{whatsNew[2].title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-gray-300">{whatsNew[2].body}</p>
+                        <div className="mt-5 rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-gray-300" aria-hidden="true">
+                            SUM(Units) <span className="underline decoration-red-500 decoration-wavy underline-offset-4">/ 0</span> <span className="ml-1 rounded bg-red-500/20 px-1.5 py-0.5 text-[10px] text-red-300">Rule 2.07</span>
+                        </div>
+                    </div>
+                    {/* Docs */}
+                    <div className={`${card} p-7 lg:col-span-2`}>
+                        <h3 className="text-xl font-semibold text-white">{whatsNew[4].title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-gray-300">{whatsNew[4].body}</p>
+                        <div className="mt-5 rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-gray-400" aria-hidden="true">
+                            <div className="text-gray-200"># Forecast Model</div>
+                            <div>## Modules (42)</div>
+                            <div>- Sales &amp; Revenue</div>
+                        </div>
+                    </div>
+                    {/* Used by */}
+                    <div className={`${card} p-7 lg:col-span-6`}>
+                        <div className="grid items-center gap-6 md:grid-cols-[1fr_auto]">
+                            <div>
+                                <h3 className="text-xl font-semibold text-white">{whatsNew[5].title}</h3>
+                                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-300">{whatsNew[5].body}</p>
+                            </div>
+                            <a href="#reports" className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 hover:bg-gray-200">
+                                Browse all 22 reports →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Report explorer */}
+            <section id="reports" className="scroll-mt-20 border-t border-white/10 bg-white/[0.02] py-24">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                    <div className="max-w-2xl">
+                        <Eyebrow>Reports</Eyebrow>
+                        <Heading>Answers Anaplan doesn&apos;t put on one screen</Heading>
+                        <p className="mt-4 text-gray-300">
+                            Each report is gathered on demand from the model in your active tab, cached for that model, searchable and exportable to CSV.
+                        </p>
+                    </div>
+                    <div className="mt-10 flex flex-wrap gap-2" role="tablist">
+                        {reportGroups.map((g, i) => (
+                            <button
+                                key={g.group}
+                                role="tab"
+                                aria-selected={tab === i}
+                                onClick={() => setTab(i)}
+                                className={`rounded-full px-4 py-2 text-sm font-medium transition ${tab === i ? "bg-red-500 text-white" : "border border-white/15 bg-white/5 text-gray-300 hover:bg-white/10"}`}
+                            >
+                                {g.group}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3" role="tabpanel">
+                        {group.items.map((r) => (
+                            <div key={r.name} className={`${card} p-6`}>
+                                <h3 className="font-semibold text-white">{r.name}</h3>
+                                <p className="mt-2 text-sm leading-relaxed text-gray-300">{r.desc}</p>
                             </div>
                         ))}
                     </div>
+                    <ul className="mt-10 grid gap-x-8 gap-y-3 text-sm text-gray-300 sm:grid-cols-2 lg:grid-cols-3">
+                        {["Fuzzy search across every column", "Sort by any column header", "One-click CSV export, in your sort order", "Cached per model — switch freely", "Live progress while large models load", "Fast on tables with thousands of rows"].map((t) => (
+                            <li key={t} className="flex items-center gap-2.5"><Dot />{t}</li>
+                        ))}
+                    </ul>
                 </div>
             </section>
 
-            {/* Lock Monitor spotlight */}
-            <section className="border-t border-gray-200 bg-gray-50 py-20">
-                <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2">
-                    <div>
-                        <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Lock Monitor</p>
-                        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Know when the model is free</h2>
-                        <p className="mt-4 text-gray-600">
-                            Before a big import or a deployment, find out whether anything else is running. The Lock
-                            Monitor asks Anaplan for the model&apos;s status at an interval you choose and records every
-                            answer.
+            {/* Gallery */}
+            <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+                <div className="max-w-2xl">
+                    <Eyebrow>In the panel</Eyebrow>
+                    <Heading>Lives right beside your model</Heading>
+                    <p className="mt-4 text-gray-300">
+                        The panel follows the model in front of you. Switch tabs or models and it switches with you, keeping each model&apos;s results under its own key.
+                    </p>
+                </div>
+                <div className="mt-10 grid gap-5 md:grid-cols-3">
+                    {shots.map((s) => (
+                        <figure key={s.src} className="group">
+                            <div className="overflow-hidden rounded-2xl border border-white/10 bg-gray-800 transition duration-300 group-hover:-translate-y-1 group-hover:border-red-500/40">
+                                <Image src={s.src} alt={s.alt} width={1280} height={800} />
+                            </div>
+                            <figcaption className="mt-3 text-sm text-gray-400">{s.caption}</figcaption>
+                        </figure>
+                    ))}
+                </div>
+            </section>
+
+            {/* Formula editor + Lock monitor */}
+            <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+                <div className="grid gap-4 lg:grid-cols-2">
+                    <div className={`${card} p-8 sm:p-10`}>
+                        <Eyebrow>Formula editor</Eyebrow>
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">Navigate formulas like code</h2>
+                        <p className="mt-3 text-sm leading-relaxed text-gray-300">
+                            Work through a dependency chain without hunting through tabs. Everything reads Anaplan&apos;s in-page model data; no server is contacted and nothing is changed.
                         </p>
-                        <ul className="mt-6 space-y-3 text-sm text-gray-700">
-                            <li className="flex gap-2"><Check /> Available, Updating, Busy, Locked or Offline — and what&apos;s running when it&apos;s busy</li>
-                            <li className="flex gap-2"><Check /> Every second up to every minute, for up to 12 hours</li>
-                            <li className="flex gap-2"><Check /> A timeline plus every check with its reply time, exportable to CSV</li>
-                            <li className="flex gap-2"><Check /> Optional notifications when the model has been busy for 30 seconds, and when it&apos;s free again</li>
+                        <ul className="mt-6 space-y-4">
+                            {[
+                                ["Jump to a reference", "Cmd/Ctrl+click opens a module, line item, list or subset; Shift opens a new tab."],
+                                ["Readable hover cards", "Format, applies to, time scale and a formula with THEN/ELSE on their own lines, plus used by and depends on."],
+                                ["Function help", "Hover ITEM(, [LOOKUP: …], IF and more for the category, description and a help link."],
+                                ["Spot slips early", "Markers for unbalanced brackets, unterminated quotes and a Module.'x' that doesn't exist."],
+                            ].map(([t, b]) => (
+                                <li key={t} className="flex gap-3">
+                                    <span className="mt-1.5"><Dot /></span>
+                                    <div>
+                                        <div className="font-semibold text-white">{t}</div>
+                                        <p className="mt-0.5 text-sm leading-relaxed text-gray-400">{b}</p>
+                                    </div>
+                                </li>
+                            ))}
                         </ul>
                     </div>
-                    <div className="mx-auto w-full max-w-md">
-                        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl shadow-gray-900/10">
+                    <div className={`${card} flex flex-col p-8 sm:p-10`}>
+                        <Eyebrow>Lock Monitor</Eyebrow>
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">Know when the model is free</h2>
+                        <p className="mt-3 text-sm leading-relaxed text-gray-300">
+                            Before a big import or a deployment, find out whether anything else is running. It asks Anaplan for the model&apos;s status at an interval you choose, from every second to every minute for up to 12 hours, and records every answer.
+                        </p>
+                        <div className="mt-6 flex flex-wrap gap-2 text-xs">
+                            {[["Available", "bg-green-500/15 text-green-300"], ["Updating", "bg-blue-500/15 text-blue-300"], ["Busy", "bg-amber-500/15 text-amber-300"], ["Locked", "bg-red-500/15 text-red-300"], ["Offline", "bg-gray-500/20 text-gray-300"]].map(([t, c]) => (
+                                <span key={t} className={`rounded-full px-3 py-1 font-medium ${c}`}>{t}</span>
+                            ))}
+                        </div>
+                        <div className="relative mt-6 flex-1 overflow-hidden rounded-2xl border border-white/10" style={{ minHeight: 220, maxHeight: 340 }}>
                             <Image
                                 src="/anaplan/lock-monitor.png"
                                 alt="Lock Monitor checks: the model available for 100% of 12 checks a second apart, median reply 208 ms, with each check listed"
                                 width={1404}
                                 height={1936}
+                                className="w-full"
                             />
+                            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#101016] to-transparent" />
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Roadmap */}
-            <section id="roadmap" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6">
-                <div className="max-w-2xl">
-                    <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Roadmap</p>
-                    <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Where the Toolkit is heading</h2>
-                    <p className="mt-4 text-gray-600">
-                        A direction, not a promise: order and scope can change.
-                    </p>
-                </div>
-                <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {roadmap.map((r) => (
-                        <div key={r.title} className={`rounded-2xl border border-gray-200 bg-white p-5 ${r.status === "not" ? "opacity-80" : ""}`}>
-                            <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset ${roadmapStatus[r.status].badge}`}>
-                                {roadmapStatus[r.status].label}
-                            </span>
-                            <h3 className="mt-3 font-semibold">{r.title}</h3>
-                            <p className="mt-1 text-sm leading-relaxed text-gray-600">{r.body}</p>
-                        </div>
-                    ))}
-                </div>
-                <p className="mt-8 text-sm text-gray-600">
-                    Want something moved up, or something missing?{" "}
-                    <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit%20roadmap" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">Tell me</a>.
-                </p>
-            </section>
-
-            {/* Screenshots */}
-            <section className="bg-gray-900 py-20 text-white">
-                <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                    <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Lives right beside your model</h2>
-                    <p className="mt-4 max-w-2xl text-gray-300">
-                        The panel follows the model in front of you. Switch tabs or models and it switches with you,
-                        keeping each model&apos;s results under its own key.
-                    </p>
-                    <div className="mt-10 grid gap-6 md:grid-cols-3">
-                        {shots.map((s) => (
-                            <figure key={s.src}>
-                                <div className="overflow-hidden rounded-xl border border-white/10 bg-gray-800">
-                                    <Image src={s.src} alt={s.alt} width={1280} height={800} />
-                                </div>
-                                <figcaption className="mt-3 text-sm text-gray-400">{s.caption}</figcaption>
-                            </figure>
-                        ))}
                     </div>
                 </div>
             </section>
 
             {/* How it works */}
-            <section id="how" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6">
-                <p className="text-sm font-semibold uppercase tracking-wider text-red-600">How it works</p>
-                <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Three steps, no setup</h2>
-                <ol className="mt-12 grid gap-6 md:grid-cols-3">
-                    {steps.map((s, i) => (
-                        <li key={s.title} className="rounded-2xl border border-gray-200 p-6">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white">{i + 1}</div>
-                            <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
-                            <p className="mt-2 text-sm leading-relaxed text-gray-600">{s.body}</p>
-                        </li>
-                    ))}
-                </ol>
-
-                <div className="mt-12 overflow-hidden rounded-2xl border border-gray-200">
-                    <div className="border-b border-gray-200 bg-gray-50 px-6 py-4">
-                        <h3 className="font-semibold">Keyboard shortcuts</h3>
-                        <p className="mt-1 text-sm text-gray-600">
-                            Inside the Anaplan modelling UI. <kbd className="font-mono">⌘⌥</kbd> on macOS,{" "}
-                            <kbd className="font-mono">Ctrl+Alt</kbd> on Windows and Linux.
-                        </p>
-                    </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">
-                            <thead className="text-gray-500">
-                                <tr>
-                                    <th className="px-6 py-3 font-medium">Shortcut</th>
-                                    <th className="px-6 py-3 font-medium">In Anaplan&apos;s</th>
-                                    <th className="px-6 py-3 font-medium">Opens</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
-                                {shortcuts.map((k) => (
-                                    <tr key={k.where + k.keys}>
-                                        <td className="px-6 py-3">
-                                            <kbd className="rounded-md border border-gray-300 bg-white px-2 py-0.5 font-mono text-xs shadow-sm">{k.keys}</kbd>
-                                        </td>
-                                        <td className="px-6 py-3 text-gray-600">{k.where}</td>
-                                        <td className="px-6 py-3 font-medium">{k.opens}</td>
+            <section id="how" className="scroll-mt-20 border-t border-white/10 bg-white/[0.02] py-24">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                    <Eyebrow>How it works</Eyebrow>
+                    <Heading>Three steps, no setup</Heading>
+                    <ol className="mt-12 grid gap-4 md:grid-cols-3">
+                        {steps.map((s, i) => (
+                            <li key={s.title} className={`${card} relative p-7`}>
+                                <div className="text-6xl font-extrabold leading-none text-white/10">0{i + 1}</div>
+                                <h3 className="mt-4 text-lg font-semibold text-white">{s.title}</h3>
+                                <p className="mt-2 text-sm leading-relaxed text-gray-300">{s.body}</p>
+                            </li>
+                        ))}
+                    </ol>
+                    <div className={`${card} mt-4 overflow-hidden`}>
+                        <div className="border-b border-white/10 px-6 py-4">
+                            <h3 className="font-semibold text-white">Keyboard shortcuts</h3>
+                            <p className="mt-1 text-sm text-gray-400">
+                                Inside the Anaplan modelling UI. <kbd className="font-mono">⌘⌥</kbd> on macOS, <kbd className="font-mono">Ctrl+Alt</kbd> on Windows and Linux.
+                            </p>
+                        </div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left text-sm">
+                                <thead className="text-gray-500">
+                                    <tr>
+                                        <th className="px-6 py-3 font-medium">Shortcut</th>
+                                        <th className="px-6 py-3 font-medium">In Anaplan&apos;s</th>
+                                        <th className="px-6 py-3 font-medium">Opens</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody className="divide-y divide-white/5">
+                                    {shortcuts.map((k) => (
+                                        <tr key={k.where + k.keys}>
+                                            <td className="px-6 py-3"><kbd className="rounded-md border border-white/20 bg-white/10 px-2 py-0.5 font-mono text-xs text-white">{k.keys}</kbd></td>
+                                            <td className="px-6 py-3 text-gray-400">{k.where}</td>
+                                            <td className="px-6 py-3 font-medium text-gray-100">{k.opens}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* Privacy */}
-            <section id="privacy" className="scroll-mt-20 border-t border-gray-200 bg-gray-50 py-20">
+            <section id="privacy" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-24 sm:px-6">
+                <div className="max-w-2xl">
+                    <Eyebrow>Privacy</Eyebrow>
+                    <Heading>Your model data stays yours</Heading>
+                </div>
+                <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {privacy.map((p) => (
+                        <div key={p.title} className={`${card} p-6`}>
+                            <svg viewBox="0 0 20 20" className="h-6 w-6 text-red-400" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                                <path d="M10 2l6 2.5v5c0 4-2.6 6.7-6 8-3.4-1.3-6-4-6-8v-5L10 2z" strokeLinejoin="round" />
+                                <path d="M7.2 10l2 2 3.6-3.8" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                            <h3 className="mt-4 font-semibold text-white">{p.title}</h3>
+                            <p className="mt-2 text-sm leading-relaxed text-gray-300">{p.body}</p>
+                        </div>
+                    ))}
+                </div>
+                <p className="mt-8 text-sm text-gray-400">
+                    Permissions: access to <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs text-gray-200">https://*.anaplan.com/*</code>, the side panel, and local storage, plus notifications only if you turn on the Lock Monitor&apos;s <em>Notify me</em>. Read the full{" "}
+                    <Link href="/anaplan/toolkit/privacy" className="font-medium text-red-400 underline underline-offset-2 hover:text-red-300">privacy policy</Link>.
+                </p>
+            </section>
+
+            {/* Roadmap */}
+            <section id="roadmap" className="scroll-mt-20 border-t border-white/10 bg-white/[0.02] py-24">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                    <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Privacy</p>
-                    <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Your model data stays yours</h2>
-                    <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                        {privacy.map((p) => (
-                            <div key={p.title} className="rounded-2xl border border-gray-200 bg-white p-6">
-                                <h3 className="font-semibold">{p.title}</h3>
-                                <p className="mt-2 text-sm leading-relaxed text-gray-600">{p.body}</p>
+                    <div className="max-w-2xl">
+                        <Eyebrow>Roadmap</Eyebrow>
+                        <Heading>Where the Toolkit is heading</Heading>
+                        <p className="mt-4 text-gray-300">A direction, not a promise: order and scope can change.</p>
+                    </div>
+                    <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {roadmap.map((r) => (
+                            <div key={r.title} className={`${card} p-5 ${r.status === "not" ? "opacity-70" : ""}`}>
+                                <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${roadmapStatus[r.status].badge}`}>
+                                    {roadmapStatus[r.status].label}
+                                </span>
+                                <h3 className="mt-3 font-semibold text-white">{r.title}</h3>
+                                <p className="mt-1 text-sm leading-relaxed text-gray-400">{r.body}</p>
                             </div>
                         ))}
                     </div>
-                    <p className="mt-8 text-sm text-gray-600">
-                        Permissions: access to <code className="rounded bg-gray-200/70 px-1.5 py-0.5 text-xs">https://*.anaplan.com/*</code>,
-                        the side panel, and local storage — plus notifications, only if you turn on the Lock
-                        Monitor&apos;s <em>Notify me</em>. Read the full{" "}
-                        <Link href="/anaplan/toolkit/privacy" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">
-                            privacy policy
-                        </Link>.
+                    <p className="mt-8 text-sm text-gray-400">
+                        Want something moved up, or something missing?{" "}
+                        <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit%20roadmap" className="font-medium text-red-400 underline underline-offset-2 hover:text-red-300">Tell me</a>.
                     </p>
                 </div>
             </section>
 
             {/* FAQ */}
-            <section id="faq" className="mx-auto max-w-4xl scroll-mt-20 px-4 pb-20 sm:px-6">
-                <p className="text-sm font-semibold uppercase tracking-wider text-red-600">FAQ</p>
-                <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Anaplan questions, answered</h2>
-                <div className="mt-10 divide-y divide-gray-200 rounded-2xl border border-gray-200">
+            <section id="faq" className="mx-auto max-w-4xl scroll-mt-20 px-4 py-24 sm:px-6">
+                <Eyebrow>FAQ</Eyebrow>
+                <Heading>Anaplan questions, answered</Heading>
+                <div className="mt-10 divide-y divide-white/10 rounded-3xl border border-white/10 bg-white/[0.03]">
                     {faqs.map((f) => (
-                        <details key={f.q} className="group p-5">
-                            <summary className="cursor-pointer list-none font-semibold marker:hidden">{f.q}</summary>
-                            <p className="mt-2 text-sm leading-relaxed text-gray-600">{f.a}</p>
+                        <details key={f.q} className="group p-5 sm:px-7">
+                            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-white marker:hidden [&::-webkit-details-marker]:hidden">
+                                {f.q}
+                                <span className="flex-none text-xl text-red-400 transition group-open:rotate-45">+</span>
+                            </summary>
+                            <p className="mt-3 text-sm leading-relaxed text-gray-300">{f.a}</p>
                         </details>
                     ))}
                 </div>
             </section>
 
             {/* Guides */}
-            <section id="guides" className="mx-auto max-w-4xl scroll-mt-20 px-4 pb-20 sm:px-6">
-                <p className="text-sm font-semibold uppercase tracking-wider text-red-600">Guides</p>
-                <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Better Anaplan models</h2>
+            <section id="guides" className="mx-auto max-w-4xl scroll-mt-20 px-4 pb-24 sm:px-6">
+                <Eyebrow>Guides</Eyebrow>
+                <Heading>Better Anaplan models</Heading>
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
                     {guides.map((g) => (
-                        <Link key={g.slug} href={`/anaplan/guides/${g.slug}`} className="rounded-2xl border border-gray-200 p-5 hover:border-gray-400">
-                            <p className="font-semibold">{g.title}</p>
-                            <p className="mt-2 text-sm leading-relaxed text-gray-600">{g.desc}</p>
+                        <Link key={g.slug} href={`/anaplan/guides/${g.slug}`} className={`${card} p-6 transition hover:border-red-500/40 hover:bg-white/[0.06]`}>
+                            <p className="font-semibold text-white">{g.title}</p>
+                            <p className="mt-2 text-sm leading-relaxed text-gray-300">{g.desc}</p>
+                            <p className="mt-4 text-sm font-medium text-red-400">Read the guide →</p>
                         </Link>
                     ))}
                 </div>
             </section>
 
             {/* Get it */}
-            <section id="get" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6">
-                <div className="relative overflow-hidden rounded-3xl bg-red-600 px-6 py-14 text-center text-white sm:px-12">
-                    <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-white/10 blur-2xl" aria-hidden="true" />
-                    <Image src="/anaplan/icon.png" alt="" width={64} height={64} className="mx-auto rounded-2xl ring-4 ring-white/20" />
-                    <h2 className="mt-6 text-3xl font-bold tracking-tight sm:text-4xl">Get Anaplan Toolkit</h2>
-                    <p className="mx-auto mt-4 max-w-xl text-red-50">
-                        Free on the Chrome Web Store (Chrome, Edge and other Chromium browsers)
-                        and Firefox Add-ons (Firefox 140+).
+            <section id="get" className="mx-auto max-w-6xl scroll-mt-20 px-4 pb-24 sm:px-6">
+                <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-red-600 via-red-500 to-orange-500 px-6 py-16 text-center text-white sm:px-12">
+                    <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/15 blur-3xl" aria-hidden="true" />
+                    <div className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-black/20 blur-3xl" aria-hidden="true" />
+                    <Image src="/anaplan/icon.png" alt="" width={72} height={72} className="relative mx-auto rounded-2xl ring-4 ring-white/25" />
+                    <h2 className="relative mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">Stop clicking through blueprints.</h2>
+                    <p className="relative mx-auto mt-4 max-w-xl text-red-50">
+                        Free on the Chrome Web Store (Chrome, Edge and other Chromium browsers) and Firefox Add-ons (Firefox 140+).
                     </p>
-                    <div className="mt-8 flex flex-wrap justify-center gap-3">
-                        <StoreButton store="chrome" tone="light" />
-                        <StoreButton store="firefox" tone="light" />
+                    <div className="relative mt-8 flex flex-wrap justify-center gap-3">
+                        <StoreButton store="chrome" />
+                        <StoreButton store="firefox" tone="dark" />
                     </div>
-                    <p className="mt-6 text-sm text-red-100">
+                    <p className="relative mt-6 text-sm text-red-50">
                         Saves you time?{" "}
                         <a href={sponsorUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-white underline underline-offset-2">♥ Sponsor the project on GitHub</a>
                     </p>
-                    <p className="mt-2 text-sm text-red-100">
+                    <p className="relative mt-2 text-sm text-red-50">
                         Questions or feedback?{" "}
                         <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit" className="font-medium text-white underline underline-offset-2">contact@umang.dev</a>
                         {" · "}
