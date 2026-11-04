@@ -9,9 +9,9 @@ import { guides } from "@/components/anaplan/Article";
 
 const pageTitle = "Anaplan Toolkit — Free Anaplan Helper Tool for Model Builders (Chrome & Firefox)";
 const pageDesc =
-    "Free Chrome and Firefox extension for Anaplan model builders. Find action, import, export and process IDs for the Anaplan API, trace module lineage and formula impact, search every formula, lint against the Planual, document the model, bulk delete modules and line items, monitor model locks and review workspace storage. Reads only your Anaplan session; no data leaves your browser.";
+    "Free Chrome and Firefox extension for Anaplan model builders. Find action, import, export and process IDs for the Anaplan API, trace module lineage and formula impact, search every formula, lint against the Planual, document the model, run actions from a CSV, bulk create and delete modules and line items, monitor model locks and review workspace storage. Reads only your Anaplan session; no data leaves your browser.";
 const pageKeywords =
-    "Anaplan tool, Anaplan Chrome extension, Anaplan Firefox add-on, Anaplan API, Anaplan Integration API action IDs, Anaplan process ID, Anaplan import export ID, Anaplan model documentation, Anaplan model audit, Anaplan formula editor, Anaplan Planual, Anaplan lineage, Anaplan dependency, Anaplan unused line items, Anaplan bulk delete, Anaplan lock monitor, Anaplan model busy, Anaplan workspace storage, Anaplan revision tags, Anaplan model builder tools, Anaplan Blueprint, Anaplan impact analysis, Anaplan formula search, Anaplan lint, Anaplan Planual checker, Anaplan model documentation generator";
+    "Anaplan tool, Anaplan Chrome extension, Anaplan Firefox add-on, Anaplan API, Anaplan Integration API action IDs, Anaplan process ID, Anaplan import export ID, Anaplan model documentation, Anaplan model audit, Anaplan formula editor, Anaplan Planual, Anaplan lineage, Anaplan dependency, Anaplan unused line items, Anaplan bulk delete, Anaplan lock monitor, Anaplan model busy, Anaplan workspace storage, Anaplan revision tags, Anaplan model builder tools, Anaplan Blueprint, Anaplan impact analysis, Anaplan formula search, Anaplan run actions CSV, Anaplan bulk create modules, Anaplan lint, Anaplan Planual checker, Anaplan model documentation generator";
 
 const chromeStoreUrl = "https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj";
 const firefoxStoreUrl = "https://addons.mozilla.org/en-US/firefox/addon/anaplan-toolkit/";
@@ -26,6 +26,9 @@ const whatsNew = [
     { title: "Search every formula", body: "Find a line item by words, an \"exact phrase\" or a /regular expression/ across every formula in the model." },
     { title: "Model documentation", body: "From Summary, write the model's lists, modules, line items and formulas as a Markdown file, or copy a compact version to paste into an AI assistant. Nothing is sent anywhere." },
     { title: "Used by, Depends on", body: "Hover a line item in the formula editor to see what uses it and what it depends on; hover a module for the modules it feeds and is fed by." },
+    { title: "Run actions from a CSV", body: "Run processes, imports, exports and other actions one after another, on the open model or on others without opening them. Every row is validated first, nothing starts until you type the count, and each action's own result is shown." },
+    { title: "Create modules and line items", body: "Create modules with the lists they apply to, and line items with a formula and a format, from a CSV, or add line items to modules that exist. Checked against the model first." },
+    { title: "A fresh look", body: "A new logo and a refreshed side panel: clearer tabs, softer cards, and a Summary that opens straight onto your model." },
 ];
 
 const reportGroups = [
@@ -41,6 +44,7 @@ const reportGroups = [
             { name: "Actions & File IDs", desc: "Internal IDs for Processes, Imports, Exports and Files — search by name or ID and copy one with a click." },
             { name: "Action Usages", desc: "Where every Action is wired up across Apps, Pages and widgets." },
             { name: "Process Steps", desc: "The actions each process runs, in order, with each import's source and target — plus a Copy API call button." },
+            { name: "Run Actions", desc: "Runs processes, imports, exports and other actions from a CSV, in order, on this model or others without opening them. Validated first; changes the model only after you type the count." },
         ],
     },
     {
@@ -65,7 +69,8 @@ const reportGroups = [
             { name: "Modules", desc: "Every module with its dimensions, time scale, time range, line item and saved view counts, and the App pages that use it." },
             { name: "Line Items", desc: "Every line item with its format, applies-to, time scale and formula. Search matches formulas too." },
             { name: "Lists & Properties", desc: "Every list with its parent and item count, and every property with its format and formula." },
-            { name: "Delete Line Items & Delete Modules", desc: "Upload a CSV (the Line Items or Modules export works as is), review what Anaplan will accept, then delete in an order that avoids refusals. The only views that change your model." },
+            { name: "Create Modules & Create Items", desc: "Create modules (with their lists and subsets) and line items (with a formula and a format) from a CSV, or add line items to modules that exist. Checked against the model first." },
+            { name: "Delete Line Items & Delete Modules", desc: "Upload a CSV (the Line Items or Modules export works as is), review what Anaplan will accept, then delete in an order that avoids refusals." },
         ],
     },
     {
@@ -92,6 +97,8 @@ const reportGroups = [
     },
 ];
 
+const reportCount = reportGroups.reduce((n, g) => n + g.items.length, 0);
+
 // Roadmap lanes: what the Toolkit already covers, versus what Anaplan's own
 // interfaces make possible. A direction, not a commitment.
 type RoadmapStatus = "shipped" | "next" | "exploring" | "not";
@@ -105,12 +112,12 @@ const roadmapStatus: Record<RoadmapStatus, { label: string; badge: string }> = {
 
 const roadmap: { status: RoadmapStatus; title: string; body: string }[] = [
     { status: "shipped", title: "Read the model's structure", body: "Modules, line items, lists, properties, dimensions, formulas and where each is used — as searchable, exportable reports." },
-    { status: "shipped", title: "Delete structure, safely", body: "Delete Line Items and Delete Modules: checked against the live model first, ordered from the formulas, with a run log." },
+    { status: "shipped", title: "Create and delete structure, safely", body: "Create Modules, Create Items, Delete Line Items and Delete Modules: checked against the live model first, ordered so Anaplan accepts them, with a run log." },
+    { status: "shipped", title: "Run actions from a CSV", body: "Processes, imports, exports and other actions, in order, on this model or others without opening them, each validated before anything starts." },
     { status: "shipped", title: "Model status and workspaces", body: "Lock Monitor, workspace storage and model lists — read-only." },
     { status: "shipped", title: "Impact, Planual lint and documentation", body: "Formula impact in both directions, Planual findings in reports, the formula editor and Blueprint grid, and the model written out as Markdown." },
     { status: "shipped", title: "Revisions and process steps", body: "Revision tags and where they were applied, plus the ordered actions behind every process." },
-    { status: "next", title: "Bulk create from CSV", body: "The counterpart to bulk delete: upload modules, line items or lists and review them against the model before anything is created." },
-    { status: "next", title: "Bulk edit formulas and formats", body: "Change formula, format, style or summary on many line items at once, with a before / after diff and the same type-the-count confirmation." },
+        { status: "next", title: "Bulk edit formulas and formats", body: "Change formula, format, style or summary on many line items at once, with a before / after diff and the same type-the-count confirmation." },
     { status: "next", title: "Bulk rename with references", body: "Rename modules and line items from a CSV, listing every formula, page and view that mentions the old name." },
     { status: "exploring", title: "Import, export and process definitions", body: "Read how imports, exports and processes are defined, not only where they are used. Editing them is a later question." },
     { status: "exploring", title: "Sync and revision discovery", body: "Show which models sync from or to this one and the revision pairs between them. Discovery only; it would not run a sync." },
@@ -121,11 +128,11 @@ const roadmap: { status: RoadmapStatus; title: string; body: string }[] = [
 ];
 
 const faqs = [
-    { q: "What is the best free Anaplan helper tool for model builders?", a: "Anaplan Toolkit is a free Chrome and Firefox extension that adds a side panel to the model you have open. It finds action, import, export and process IDs for the Anaplan API, traces where line items and modules are used, searches every formula, lints against the Planual, documents the whole model, bulk deletes modules and line items, and monitors model locks. It is independent of Anaplan, Inc. and runs entirely in your browser." },
+    { q: "What is the best free Anaplan helper tool for model builders?", a: "Anaplan Toolkit is a free Chrome and Firefox extension that adds a side panel to the model you have open. It finds action, import, export and process IDs for the Anaplan API, traces where line items and modules are used, searches every formula, lints against the Planual, documents the whole model, runs actions from a CSV, bulk creates and deletes modules and line items, and monitors model locks. It is independent of Anaplan, Inc. and runs entirely in your browser." },
     { q: "How do I find an Anaplan action, import, export or process ID for the API?", a: "Open the model, open the Toolkit side panel and choose Actions & File IDs. Every process, import, export and file is listed with its internal ID, searchable by name, with a one-click copy. Process Steps adds a Copy API call button that builds an Anaplan Integration API v2 curl command for you to run with your own token." },
     { q: "Is there an Anaplan tool to document or audit a whole model?", a: "Yes. Get all data loads every report for the open model and Download all as CSV gives you modules, line items, lists, formulas, saved views, page usage and more in one .zip. Summary can also write the model's documentation as a Markdown file, or copy a compact version to paste into an AI assistant; the extension sends nothing anywhere." },
     { q: "How can I see where a line item or module is used in Anaplan?", a: "Impact lists which formulas use each line item and which it uses, directly and downstream. Linked Pages shows which Apps and Pages use each module, Line Items on Pages shows where each line item appears on a page, and the formula editor shows Used by and Depends on when you hover a reference. Formulas searches every formula by word, phrase or regular expression." },
-    { q: "Can I bulk delete Anaplan line items or modules?", a: "Yes. Delete Line Items and Delete Modules read a CSV, check every row against the live model, order the deletes so Anaplan accepts them, and ask you to type the count before anything changes. They are the only views that write to your model." },
+    { q: "Can I bulk delete Anaplan line items or modules?", a: "Yes. Delete Line Items and Delete Modules read a CSV, check every row against the live model, order the deletes so Anaplan accepts them, and ask you to type the count before anything changes. Create Modules, Create Items and Run Actions work the same way; those five are the only views that write to your model." },
     { q: "Does Anaplan Toolkit check the Planual?", a: "It underlines per-line-item Planual rules in the formula editor with the rule number, adds badges in the Blueprint grid, and the Lint report lists findings across the model with each rule linked to its Planual page. Checks target the Classic engine and approximate the rules, so treat findings as prompts to look, not verdicts." },
     { q: "How do I know whether an Anaplan model is busy or locked?", a: "Lock Monitor checks the model at an interval you choose, from every second to every minute for up to 12 hours, and records whether it is available, updating, busy, locked or offline, with what is running when busy." },
     { q: "Is it safe? Does it send my Anaplan data anywhere?", a: "The extension only talks to Anaplan, over the session you are already signed in with. It has no analytics, no telemetry and never asks for a password or token. Results stay in your browser's session storage." },
@@ -167,7 +174,7 @@ const steps = [
 const privacy = [
     { title: "Talks only to Anaplan", body: "Every network call goes to Anaplan, over the session you're already signed into. No other server is ever contacted, and no password or token is ever asked for." },
     { title: "No analytics or telemetry", body: "No tracking, crash reporting or advertising SDKs. Firefox listing declares data collection: none." },
-    { title: "Reports only read", body: "Every report reads model metadata and changes nothing. Only Delete Line Items and Delete Modules write, and only after you check a CSV and type the number to delete." },
+    { title: "Reports only read", body: "Every report reads model metadata and changes nothing. Only Run Actions, Create Modules, Create Items, Delete Line Items and Delete Modules write, and only after you check a CSV and type the number to delete." },
     { title: "Session-only cache", body: "Results live in browser session storage, keyed per model, and expire after 6 hours or when the browser closes." },
 ];
 
@@ -179,9 +186,11 @@ const shortcuts = [
 ];
 
 const shots = [
-    { src: "/anaplan/actions-ids.png", alt: "Actions & File IDs report", caption: "Actions & File IDs" },
-    { src: "/anaplan/pages-filters.png", alt: "Page Filters & Conditional Formatting report", caption: "Filters & Conditional Formatting" },
-    { src: "/anaplan/saved-views-list.png", alt: "All Saved Views report", caption: "All Saved Views" },
+    { src: "/anaplan/summary.png", alt: "Summary: the model's name, IDs, size and structure counts", caption: "Summary" },
+    { src: "/anaplan/02-modules.png", alt: "Modules report with dimensions, time scale and the App pages that read each module", caption: "Modules" },
+    { src: "/anaplan/03-line_items.png", alt: "Line Items report with formats, applies-to and formulas", caption: "Line Items and formulas" },
+    { src: "/anaplan/04-impact.png", alt: "Impact: what uses each line item and what it depends on", caption: "Impact" },
+    { src: "/anaplan/05-lint.png", alt: "Lint: findings against the Planual, each with its rule number", caption: "Planual lint" },
 ];
 
 
@@ -206,7 +215,7 @@ const stores: Record<Store, { url: string; logo: string; eyebrow: string; name: 
 
 const marquee = [
     "Action IDs", "Process steps", "Impact analysis", "Planual lint", "Formula search", "Model docs as Markdown", "Lock Monitor",
-    "Saved views", "Linked pages", "Bulk delete", "Revision tags", "Workspace storage", "CSV export",
+    "Saved views", "Linked pages", "Run actions", "Bulk create & delete", "Revision tags", "Workspace storage", "CSV export",
 ];
 
 const Dot = () => <span className="h-1.5 w-1.5 flex-none rounded-full bg-red-500" />;
@@ -241,6 +250,99 @@ const StoreButton = ({ store, tone = "light" }: { store: Store; tone?: "light" |
                 <span className="text-base font-semibold tracking-tight">{s.name}</span>
             </span>
         </a>
+    );
+};
+
+const heroSlides = [
+    { src: "/anaplan/panel-summary.png", alt: "Summary: the model's name, IDs, size and structure counts", caption: "Summary", problem: "How big is this model, and what is in it?", solves: "Model name, IDs, size and structure counts on one screen, with every report one click away, instead of opening settings, Model Management and the blueprint to piece it together." },
+    { src: "/anaplan/panel-modules.png", alt: "Modules report with dimensions, time scale and the App pages that read each module", caption: "Modules", problem: "Which modules feed an App page, and which feed nothing?", solves: "Every module with its dimensions, time scale and the pages that read it. The Not on a page tab lists modules no page uses, so you can see what is safe to question." },
+    { src: "/anaplan/panel-line_items.png", alt: "Line Items report with formats, applies-to and formulas", caption: "Line Items", problem: "Where is that formula, and what else looks like it?", solves: "Every line item's format, applies-to and formula in one searchable, sortable table, so you can find a pattern across the model without opening module after module." },
+    { src: "/anaplan/panel-impact.png", alt: "Impact: what uses each line item and what it depends on", caption: "Impact", problem: "What breaks if I change this line item?", solves: "For every line item, which formulas use it and which it uses, directly and all the way down, with the modules and App pages reached. Line items nothing uses show up too." },
+    { src: "/anaplan/panel-lint.png", alt: "Lint: findings against the Planual, each with its rule number", caption: "Planual lint", problem: "Does this model follow the Planual?", solves: "Findings against Anaplan's Planual, each with the rule's own number linked to its page. They are prompts to look, not verdicts, and the same checks mark the formula editor and Blueprint view." },
+];
+
+const HeroCarousel = () => {
+    const [i, setI] = useState(0);
+    const [hover, setHover] = useState(false);
+    const [stopped, setStopped] = useState(false);
+    const [reduced, setReduced] = useState(false);
+    const n = heroSlides.length;
+
+    React.useEffect(() => {
+        setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    }, []);
+
+    React.useEffect(() => {
+        if (hover || stopped) return;
+        const t = setTimeout(() => setI((x) => (x + 1) % n), 4500);
+        return () => clearTimeout(t);
+    }, [i, hover, stopped, n]);
+
+    const go = (d: number) => setI((x) => (x + d + n) % n);
+
+    return (
+        <div
+            className="relative mx-auto w-full max-w-md lg:mr-0"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Anaplan Toolkit side panel screenshots"
+        >
+            <div
+                className="relative overflow-hidden rounded-2xl border border-white/10 bg-white shadow-[0_40px_120px_-20px_rgba(244,63,94,0.35)]"
+                style={{ aspectRatio: "1408 / 1948" }}
+                onPointerEnter={(e) => e.pointerType === "mouse" && setHover(true)}
+                onPointerLeave={() => setHover(false)}
+            >
+                {heroSlides.map((s, k) => (
+                    <div
+                        key={s.src}
+                        className={`absolute inset-0 ${reduced ? "" : "transition-opacity duration-500"} ${k === i ? "opacity-100" : "pointer-events-none opacity-0"}`}
+                        role="group"
+                        aria-roledescription="slide"
+                        aria-label={`${k + 1} of ${n}: ${s.caption}`}
+                        aria-hidden={k !== i}
+                    >
+                        <Image src={s.src} alt={s.alt} width={1408} height={1948} priority={k === 0} sizes="(min-width: 1024px) 28rem, 90vw" className="h-full w-full object-cover object-top" />
+                    </div>
+                ))}
+            </div>
+            <div className="mt-4 flex items-center justify-between gap-3">
+                <div className="relative min-w-0">
+                    <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-red-400">{heroSlides[i].caption}</span>
+                        <span className="group">
+                            <button
+                                type="button"
+                                aria-label={`How ${heroSlides[i].caption} helps`}
+                                aria-describedby="hero-hint"
+                                className="flex h-4 w-4 items-center justify-center rounded-full border border-white/25 text-[10px] font-semibold leading-none text-gray-300 transition hover:border-red-400 hover:text-white focus:outline-none focus-visible:border-red-400 focus-visible:text-white"
+                            >
+                                ?
+                            </button>
+                            <span
+                                id="hero-hint"
+                                role="tooltip"
+                                className="pointer-events-none absolute bottom-full left-0 z-10 mb-2 w-[min(18rem,calc(100vw-2rem))] rounded-xl border border-white/15 bg-[#1a1a22] p-3 text-xs leading-relaxed text-gray-200 opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
+                            >
+                                <b className="mb-1 block text-white">How it helps</b>
+                                {heroSlides[i].solves}
+                            </span>
+                        </span>
+                    </div>
+                    <div className="mt-1 text-sm font-semibold leading-snug text-white" aria-live="polite">{heroSlides[i].problem}</div>
+                </div>
+                <div className="flex flex-none items-center gap-2">
+                    <button type="button" onClick={() => setStopped((v) => !v)} aria-label={stopped ? "Play slideshow" : "Pause slideshow"} aria-pressed={stopped} className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-[11px] text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">{stopped ? "▶" : "❚❚"}</button>
+                    <button type="button" onClick={() => go(-1)} aria-label="Previous screenshot" className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">←</button>
+                    <div className="flex items-center gap-1.5">
+                        {heroSlides.map((s, k) => (
+                            <button key={s.src} type="button" onClick={() => setI(k)} aria-label={`Show ${s.caption}`} title={s.problem} aria-current={k === i} className={`h-1.5 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 ${k === i ? "w-5 bg-red-500" : "w-1.5 bg-white/25 hover:bg-white/50"}`} />
+                        ))}
+                    </div>
+                    <button type="button" onClick={() => go(1)} aria-label="Next screenshot" className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">→</button>
+                </div>
+            </div>
+        </div>
     );
 };
 
@@ -315,40 +417,7 @@ const AnaplanToolkit = () => {
                         </p>
                     </div>
 
-                    <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-                        <div className="pointer-events-none absolute -right-6 -top-6 hidden w-64 rotate-3 overflow-hidden rounded-2xl border border-white/10 opacity-40 sm:block" aria-hidden="true">
-                            <Image src="/anaplan/summary-panel.png" alt="" width={1408} height={1948} priority />
-                        </div>
-                        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#111118]/95 shadow-[0_40px_120px_-20px_rgba(244,63,94,0.35)] backdrop-blur">
-                            <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
-                                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-                                <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-                                <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-                                <span className="ml-3 text-[11px] text-gray-400">Anaplan Toolkit · one click each</span>
-                            </div>
-                            <div className="space-y-3 p-4 sm:p-5">
-                                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-400">Questions Anaplan can&apos;t answer on one screen</p>
-                                {[
-                                    { q: "What breaks if I change Gross Revenue?", a: "14 formulas · 6 modules · 3 App pages", src: "Impact" },
-                                    { q: "What's the ID of my “Load Actuals” import?", a: "112000000087", src: "Actions & File IDs", copy: true },
-                                    { q: "Can I start my import, or is the model busy?", a: "Busy for 41s · a process is running", src: "Lock Monitor", warn: true },
-                                    { q: "Which App pages read this saved view?", a: "Sales Board · P&L Overview", src: "Saved Views in Screens" },
-                                ].map((r) => (
-                                    <div key={r.q} className="rounded-xl border border-white/10 bg-white/[0.04] p-3.5">
-                                        <div className="flex items-start justify-between gap-3">
-                                            <div className="text-sm font-medium text-white">{r.q}</div>
-                                            <span className="flex-none rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-gray-300">{r.src}</span>
-                                        </div>
-                                        <div className={`mt-2 flex items-center gap-2 font-mono text-[13px] ${r.warn ? "text-amber-300" : "text-green-300"}`}>
-                                            <span aria-hidden="true">→</span>
-                                            <span>{r.a}</span>
-                                            {r.copy && <span className="rounded bg-red-500/20 px-1.5 py-0.5 font-sans text-[10px] text-red-300">copy</span>}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                    <HeroCarousel />
                 </div>
             </section>
 
@@ -364,7 +433,7 @@ const AnaplanToolkit = () => {
             {/* Stats */}
             <section className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-16 text-center sm:px-6 md:grid-cols-4">
                 {[
-                    ["22", "reports on model structure, usage and status, one panel"],
+                    [String(reportCount), "reports on model structure, usage and status, one panel"],
                     ["1 click", "to export every report as CSVs in one .zip"],
                     ["0", "passwords, tokens or third-party servers involved"],
                     ["$0", "free to use, no sign-up"],
@@ -427,6 +496,13 @@ const AnaplanToolkit = () => {
                             <div>- Sales &amp; Revenue</div>
                         </div>
                     </div>
+                    {/* Run, create, look */}
+                    {[6, 7, 8].map((n) => (
+                        <div key={n} className={`${card} p-7 lg:col-span-2`}>
+                            <h3 className="text-xl font-semibold text-white">{whatsNew[n].title}</h3>
+                            <p className="mt-2 text-sm leading-relaxed text-gray-300">{whatsNew[n].body}</p>
+                        </div>
+                    ))}
                     {/* Used by */}
                     <div className={`${card} p-7 lg:col-span-6`}>
                         <div className="grid items-center gap-6 md:grid-cols-[1fr_auto]">
@@ -435,7 +511,7 @@ const AnaplanToolkit = () => {
                                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-300">{whatsNew[5].body}</p>
                             </div>
                             <a href="#reports" className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 hover:bg-gray-200">
-                                Browse all 22 reports →
+                                Browse all {reportCount} reports →
                             </a>
                         </div>
                     </div>
@@ -490,9 +566,9 @@ const AnaplanToolkit = () => {
                         The panel follows the model in front of you. Switch tabs or models and it switches with you, keeping each model&apos;s results under its own key.
                     </p>
                 </div>
-                <div className="mt-10 grid gap-5 md:grid-cols-3">
-                    {shots.map((s) => (
-                        <figure key={s.src} className="group">
+                <div className="mt-10 grid gap-5 md:grid-cols-6">
+                    {shots.map((s, i) => (
+                        <figure key={s.src} className={`group ${i < 2 ? "md:col-span-3" : "md:col-span-2"}`}>
                             <div className="overflow-hidden rounded-2xl border border-white/10 bg-gray-800 transition duration-300 group-hover:-translate-y-1 group-hover:border-red-500/40">
                                 <Image src={s.src} alt={s.alt} width={1280} height={800} />
                             </div>
