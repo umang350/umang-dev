@@ -7,6 +7,8 @@ export const links = {
     instagram: "https://instagram.com/thisumang",
     youtube: "https://youtube.com/@GetSaged",
     linkedin: "https://www.linkedin.com/in/thisumang/",
+    luma: "https://luma.com/user/thisumang",
+    substack: "https://thisumang.substack.com/",
     guide: "https://topmate.io/thisumang", // TODO: confirm the Topmate product URL
 }
 
@@ -19,8 +21,9 @@ export const copy = {
         firstName: "Umang",
         lastName: "Chauhan",
         heading: "Umang Chauhan, product manager in Tokyo",
-        based: "Based in Tokyo",
-        open: "Open to product roles and collaborations",
+        based: "Currently in Tokyo",
+        cities: { tokyo: "Tokyo", newYork: "New York", delhi: "Delhi" },
+        open: "Building, filming, always up for a chat",
         aboutTitle: "About me",
         intro: "Hi, I'm Umang. By day I help one of the world's biggest retailers plan what goes on its shelves. By night I build the tools I wish existed, and film the whole thing.",
         journey: [
@@ -48,8 +51,9 @@ export const copy = {
         firstName: "ウマング",
         lastName: "チャウハン",
         heading: "ウマング・チャウハン、東京のプロダクトマネージャー",
-        based: "東京在住",
-        open: "プロダクト職・コラボのご相談受付中",
+        based: "現在は東京にいます",
+        cities: { tokyo: "東京", newYork: "ニューヨーク", delhi: "デリー" },
+        open: "つくって、撮って、気軽に話そう",
         aboutTitle: "私について",
         intro: "こんにちは、ウマングです。昼は世界有数の小売企業で、店頭に何を並べるかを計画するプロダクトを作っています。夜は自分が欲しかったツールを作り、その過程をまるごと発信しています。",
         journey: [
@@ -77,7 +81,7 @@ export const copy = {
 
 export type Project = {
     title: string
-    icon: "extension" | "chart" | "people" | "book" | "play"
+    icon: "extension" | "network" | "book" | "play" | "linkedin"
     tag: string
     outcome: string
     href?: string
@@ -101,21 +105,11 @@ export const featured: Project[] = [
         ja: { tag: "Chrome・Firefox拡張機能 · 無料", outcome: "開いているAnaplanモデルについて22種類のレポートを表示するサイドパネル。アクションID、数式、保存ビュー、ページフィルターなどを検索・エクスポートできます。", metricLabel: "Chromeウェブストアでの評価" },
     },
     {
-        title: "Inventory risk system",
-        icon: "chart",
-        tag: "Product · US, Canada & Europe",
-        outcome: "Anomaly-driven inventory risk detection for a global retailer's digital supply chain.",
-        href: "/about",
-        cta: "Read more",
-        metric: { value: "5% → 2%", label: "out-of-stock rate, $30M+ recovered" },
-        ja: { tag: "プロダクト · 米国・カナダ・欧州", outcome: "グローバル小売企業のデジタルサプライチェーン向けに、異常を検知して在庫リスクを知らせるシステム。", metricLabel: "欠品率（3,000万ドル超の売上を回復）" },
-    },
-    {
         title: "Network Lab",
-        icon: "people",
+        icon: "network",
         tag: "Community · Tokyo & New York",
         outcome: "A community I co-founded, with in-person meetups in Tokyo and New York.",
-        href: links.linkedin,
+        href: links.luma,
         cta: "See the latest meetup",
         ja: { tag: "コミュニティ · 東京・ニューヨーク", outcome: "共同創業したコミュニティ。東京とニューヨークで対面のミートアップを開催しています。" },
     },
@@ -130,6 +124,15 @@ export const more: Project[] = [
         href: links.guide,
         cta: "Get the guide",
         ja: { tag: "ガイド", outcome: "AI時代のプロダクトマネジメントの実践ガイド。" },
+    },
+    {
+        title: "LinkedIn",
+        icon: "linkedin",
+        tag: "Social",
+        outcome: "Connect with me on LinkedIn.",
+        href: links.linkedin,
+        cta: "Connect",
+        ja: { tag: "SNS", outcome: "LinkedInでつながりましょう。" },
     },
     {
         title: "Get Saged",
@@ -147,8 +150,8 @@ export type WorkPill = { name: string; href: string; size: "lg" | "md" | "sm"; t
 // The work collage: names only, each one a link. Order sets the layout, size and tone set the look.
 export const work: WorkPill[] = [
     { name: "Anaplan Toolkit", href: "/anaplan", size: "lg", tone: "blue" },
-    { name: "Network Lab", href: links.linkedin, size: "md", tone: "cream" },
-    { name: "Inventory risk system", href: "/about", size: "md", tone: "outline" },
+    { name: "Network Lab", href: links.luma, size: "md", tone: "cream" },
+    { name: "Substack", href: links.substack, size: "md", tone: "outline" },
     { name: "AI PM Guide", href: links.guide, size: "lg", tone: "amber" },
     { name: "Get Saged", href: "https://youtube.com/GetSaged", size: "md", tone: "outline" },
     { name: "TV VibeHack", href: "https://github.com/umang350/tv-vibehack", size: "sm", tone: "outline" },
@@ -165,17 +168,17 @@ export const instagram = {
     // Most viewed first; all of them run in the reels carousel, and `hero` ones also float in the hero.
     // Add each reel's own URL as `href` when you have it.
     reels: [
-        { thumb: "/home/reel-cool-stories-27.jpg", views: "1.3M", title: "Cool stories start at 27", hero: true },
-        { thumb: "/home/reel-ai-tools-daily.jpg", views: "1.2M", title: "AI tools I use daily" },
-        { thumb: "/home/reel-first-principles.jpg", views: "906K", title: "First principles", hero: true },
-        { thumb: "/home/reel-three-networking.jpg", views: "298K", title: "Three networking tips", hero: true },
-        { thumb: "/home/reel-small-talk-hacks.jpg", views: "121K", title: "Small talk hacks" },
-        { thumb: "/home/reel-mumbai-vs-new-york.jpg", views: "110K", title: "Mumbai vs New York expenses" },
-        { thumb: "/home/reel-harvard.jpg", views: "31K", title: "This guy studied at Harvard" },
-        { thumb: "/home/reel-never-have-i-ever-ai.jpg", views: "22.5K", title: "Never have I ever: AI edition" },
-        { thumb: "/home/reel-fluent-japanese.jpg", views: "12.3K", title: "Fluent Japanese, obviously chopsticks" },
-        { thumb: "/home/reel-10x-salary.jpg", views: "8.7K", title: "10x salary in 4 years" },
-        { thumb: "/home/reel-camera-roll.jpg", views: "6.7K", title: "POV: you open my camera roll" },
+        { thumb: "/home/reel-cool-stories-27.jpg", views: "1.3M", title: "Cool stories start at 27", href: "https://www.instagram.com/reel/DS3hrOHEwm9/", hero: true },
+        { thumb: "/home/reel-ai-tools-daily.jpg", views: "1.2M", title: "AI tools I use daily", href: "https://www.instagram.com/reel/DOUH3FDEVnZ/" },
+        { thumb: "/home/reel-first-principles.jpg", views: "906K", title: "First principles", href: "https://www.instagram.com/reel/DNdYQmKNQqS/", hero: true },
+        { thumb: "/home/reel-three-networking.jpg", views: "298K", title: "Three networking tips", href: "https://www.instagram.com/reel/DLsR8gsOgq6/", hero: true },
+        { thumb: "/home/reel-small-talk-hacks.jpg", views: "121K", title: "Small talk hacks", href: "https://www.instagram.com/reel/DL6puEOOEGx/" },
+        { thumb: "/home/reel-mumbai-vs-new-york.jpg", views: "110K", title: "Mumbai vs New York expenses", href: "https://www.instagram.com/reel/DL2Ndc-Jubs/" },
+        { thumb: "/home/reel-harvard.jpg", views: "31K", title: "This guy studied at Harvard", href: "https://www.instagram.com/reel/DLg5uOhO9HC/" },
+        { thumb: "/home/reel-never-have-i-ever-ai.jpg", views: "22.5K", title: "Never have I ever: AI edition", href: "https://www.instagram.com/reel/DMDPPJSuZR4/" },
+        { thumb: "/home/reel-fluent-japanese.jpg", views: "12.3K", title: "Fluent Japanese, obviously chopsticks", href: "https://www.instagram.com/reel/DL9wzRktomR/" },
+        { thumb: "/home/reel-10x-salary.jpg", views: "8.7K", title: "10x salary in 4 years", href: "https://www.instagram.com/reel/DL1EtnquNja/" },
+        { thumb: "/home/reel-camera-roll.jpg", views: "6.7K", title: "POV: you open my camera roll", href: "https://www.instagram.com/reel/DMG6bC0tHjA/" },
     ] as Reel[],
 }
 
