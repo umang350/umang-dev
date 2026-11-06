@@ -95,6 +95,9 @@ export default function Journey({ children }: { children: React.ReactNode }) {
     let endEl: HTMLElement | null = null;
     let len = 0, target = 0, x = 0, rot = 0, raf = 0, ready = false;
     let pose = "";
+    // Without a gutter to walk in, he ducks out of sight wherever any part of him would cover a section:
+    // from when his feet reach its top until his head has cleared its bottom. Bands are in route y.
+    let hidden: { top: number; bottom: number }[] = [];
 
     const build = () => {
       const hostRect = host.getBoundingClientRect();
@@ -114,29 +117,41 @@ export default function Journey({ children }: { children: React.ReactNode }) {
         return { top, bottom: top + el.offsetHeight };
       };
 
-      // Lanes: the middle of the gutters when there is room, otherwise just inside the cards' padding.
+      // Lanes: the middle of the gutters when there is room. Otherwise the thin page margin, where only the line
+      // fits: the figure is wider than that, so he slips behind each card and reappears in the gap below it.
       const gutter = (document.documentElement.clientWidth - W) / 2;
-      const inset = W < 640 ? 15 : 24;
-      const [laneL, laneR] = gutter >= 90 ? [-Math.min(gutter / 2, 80), W + Math.min(gutter / 2, 80)] : [inset, W - inset];
+      const roomy = gutter >= 90;
+      const margin = Math.max(gutter / 2, 0);
+      const [laneL, laneR] = roomy ? [-Math.min(gutter / 2, 80), W + Math.min(gutter / 2, 80)] : [-margin, W + margin];
       const small = W < 640;
 
-      const s = { x: W - (small ? 60 : 150), y: rel(start.el).bottom };
+      // He starts just under the status row: in the right gutter when there is one. Without one there is no
+      // clear spot beside the text, so he stays out of sight until he has dropped clear of it.
+      // In the gutter he stands a little way down, so he is clear of the big surname at the hero's bottom.
+      const s = { x: roomy ? laneR : W - 60, y: rel(start.el).bottom + (roomy ? 56 : 0) };
       const e = { x: W - (small ? 70 : 170), y: rel(end.el).top };
 
       // Assemble the route and remember where each straight run starts and stops, as y and as distance along it.
       let d = `M${s.x} ${s.y}`;
       let prev = s;
-      const runs: { a: { x: number; y: number }; b: { x: number; y: number } }[] = [];
+      const runs: { a: { x: number; y: number }; b: { x: number; y: number }; bottom: number }[] = [];
+      // He hangs below his feet's point on the route, so in the gutters he drops a body's height below a card
+      // before swooping across, keeping his head clear of whatever sits at the bottom of the card.
+      const tall = (who.firstElementChild as HTMLElement | null)?.offsetHeight ?? 80;
       const swoop = (p: { x: number; y: number }, q: { x: number; y: number }) => {
         const h = Math.max(q.y - p.y, 1);
         return ` C${p.x} ${p.y + h * 0.62} ${q.x} ${q.y - h * 0.62} ${q.x} ${q.y}`;
       };
       mids.forEach((m, i) => {
         const r = rel(m.el);
-        const lane = i % 2 === 0 ? laneL : laneR;
-        const a = { x: lane, y: r.top }, b = { x: lane, y: r.bottom };
+        // With gutters he starts in the right one, so the first leg drops straight down it instead of
+        // cutting back across the status row.
+        const lane = (i + (roomy ? 1 : 0)) % 2 === 0 ? laneL : laneR;
+        const nextTop = i + 1 < mids.length ? rel(mids[i + 1].el).top : e.y;
+        const drop = roomy ? Math.max(0, Math.min(tall + 6, nextTop - r.bottom - 36)) : 0;
+        const a = { x: lane, y: r.top }, b = { x: lane, y: r.bottom + drop };
         d += swoop(prev, a) + ` L${b.x} ${b.y}`;
-        runs.push({ a, b });
+        runs.push({ a, b, bottom: r.bottom });
         prev = b;
       });
       d += swoop(prev, e);
@@ -165,8 +180,13 @@ export default function Journey({ children }: { children: React.ReactNode }) {
       // Knots tie a scroll anchor height to a distance. Each swoop starts PAD early and finishes PAD late,
       // which spreads its sideways travel over more scroll.
       knots = [{ y: s.y, len: 0 }];
+      hidden = roomy ? [] : [{ top: -Infinity, bottom: s.y }];
       runs.forEach((run, i) => {
         const lA = lengthTo(i, false), lB = lengthTo(i, true);
+        // A card's empty padding is fair to overlap, so only its content area counts.
+        const cs = getComputedStyle(mids[i].el);
+        // Full-bleed strips reach into the gutters too, so he slips behind those on every layout.
+        if (!roomy || mids[i].el.offsetWidth > W + 1) hidden.push({ top: run.a.y + parseFloat(cs.paddingTop), bottom: run.bottom - parseFloat(cs.paddingBottom) });
         const pad = Math.min(PAD, (run.b.y - run.a.y) / 2);
         knots.push({ y: run.a.y + pad, len: lA + pad });
         knots.push({ y: run.b.y - pad, len: lB - pad });
@@ -230,7 +250,15 @@ export default function Journey({ children }: { children: React.ReactNode }) {
       const dx = instant ? 0 : p.x - x;
       x = p.x;
       who.style.transform = `translate3d(${p.x}px, ${p.y}px, 0)`;
-      who.style.opacity = "1";
+      // Fade out just after his feet pass a section's top, back in once his head is clear of its bottom.
+      let seen = 1;
+      const tall = who.firstElementChild ? (who.firstElementChild as HTMLElement).offsetHeight + 8 : 90;
+      for (const h of hidden) {
+        const a = Math.max(0, Math.min(1, (p.y - h.top + 36) / 16));
+        const b = Math.max(0, Math.min(1, (h.bottom + tall - p.y) / 16));
+        seen = Math.min(seen, 1 - Math.min(a, b));
+      }
+      who.style.opacity = String(seen);
       tr.style.strokeDashoffset = String(total - len);
       // Lean into the swing: the umbrella leads and his feet trail behind.
       const want = Math.max(-30, Math.min(30, dx * 1.4));

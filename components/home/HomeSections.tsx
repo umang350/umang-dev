@@ -13,7 +13,7 @@ type Copy = typeof copy.en;
 const displayFont = (ja: boolean) => (ja ? "font-display-ja" : "font-display uppercase");
 
 // Sections sit well apart, leaving room for the journey route (see Journey) to swoop from one to the next.
-const gap = "mt-20 sm:mt-28";
+const gap = "mt-28 sm:mt-36";
 
 const Panel = ({ id, label, ja, children }: { id?: string; label: string; ja: boolean; children: React.ReactNode }) => (
   <section id={id} data-journey data-reveal className={`${panel} relative ${gap} scroll-mt-24 p-8 sm:p-12`}>

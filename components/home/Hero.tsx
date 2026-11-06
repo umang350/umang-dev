@@ -233,7 +233,7 @@ const StatusRow = ({ t }: { t: typeof copy.en }) => (
 );
 
 // As you scroll away, the full-bleed clip settles into a rounded card like the sections below it.
-// It shrinks toward its bottom edge, so the mini-me standing there (see Journey) stays put.
+// It shrinks toward its bottom edge, so it pulls away from the top of the page, not from the status row below it.
 const useSettleIntoCard = () => {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -267,8 +267,8 @@ function Hero() {
   const [firstSize, lastSize] = ja ? ["text-[18vw]", "text-[16vw]"] : ["text-[22vw]", "text-[19vw]"];
 
   return (
-    <section className="-mt-5 w-full text-left">
-      <div ref={stage} data-journey="start" className="relative ml-[calc(50%-50vw)] h-[620px] w-screen origin-bottom overflow-hidden bg-[#1450f0] [transform:translateZ(0)] text-cream lg:h-[min(860px,100vh)] lg:min-h-[660px]">
+    <section data-journey="start" className="-mt-5 w-full text-left">
+      <div ref={stage} className="relative ml-[calc(50%-50vw)] h-[620px] w-screen origin-bottom overflow-hidden bg-[#1450f0] [transform:translateZ(0)] text-cream lg:h-[min(860px,100vh)] lg:min-h-[660px]">
         <Image src="/home/paris-v2-poster.jpg" alt="Umang Chauhan in front of the Eiffel Tower" fill priority sizes="100vw" className="object-cover object-[60%_50%] lg:object-center" />
         <BackgroundVideo className="absolute inset-0 h-full w-full object-cover object-[60%_50%] lg:object-center" />
         {/* Deepens the sky behind the name so the cream type stays readable */}
