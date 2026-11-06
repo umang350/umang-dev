@@ -16,7 +16,7 @@ import React, { useEffect, useRef } from "react";
 const AMBER = "#f5b041";
 const PAD = 150; // how much scroll, either side of a gap, the swoop borrows from the straight runs
 
-const MiniMe = () => (
+export const MiniMe = () => (
   <svg viewBox="0 0 60 100" className="h-full w-full overflow-visible" aria-hidden="true">
     {/* shadow, shown only while standing */}
     <ellipse className="mm-shadow" cx="30" cy="99" rx="13" ry="2.4" fill="rgba(0,0,0,0.35)" />

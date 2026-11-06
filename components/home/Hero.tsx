@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import Acrobat from "./Acrobat";
 import { copy, featured, instagram, links, more, Project } from "@/data/content/home";
 
 // Each project gets a mark you can recognise at a glance: the brand's own glyph where there is one.
@@ -281,7 +282,7 @@ function Hero() {
         <div className="relative mx-auto h-full max-w-[1600px]">
           <h1 className="sr-only">{t.heading}</h1>
           <p aria-hidden="true" className={`absolute left-5 top-20 z-20 cursor-default select-none [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 ${firstSize} ${nameFont}`}><RaisedLetters text={t.firstName} /></p>
-          <p aria-hidden="true" className={`absolute bottom-5 right-5 z-20 cursor-default select-none [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 ${lastSize} ${nameFont}`}><RaisedLetters text={t.lastName} /></p>
+          <p aria-hidden="true" className={`absolute bottom-5 right-5 z-20 cursor-default select-none [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 ${lastSize} ${nameFont}`}><RaisedLetters text={t.lastName} /><Acrobat className="bottom-full left-[0.08em] -mb-[0.04em] h-[68px] w-[41px] lg:h-[96px] lg:w-[58px]" /></p>
 
           {/* The one clear action: a frosted-glass pill, so it reads as a button without out-shouting the name and the photo. */}
           <a href={links.calendly} target="_blank" rel="noreferrer" style={{ transform: "rotate(-2deg)" }}
