@@ -103,6 +103,142 @@ a {
   }
 }
 
+/* Homepage journey: the mini-me who floats down the route (see components/home/Journey.tsx) */
+.journey-route { z-index: 0; }
+.journey-traveller { will-change: transform; transition: opacity .4s ease; }
+.mm-canopy, .mm-wave, .mm-leg, .mm-shadow, .mm-bubble { transition: transform .45s cubic-bezier(.3,1.4,.5,1), opacity .3s ease; }
+.mm-canopy { transform-origin: 30px 23px; }
+.mm-wave { transform-origin: 23.5px 66px; }
+.mm-leg-l { transform-origin: 26.5px 80px; }
+.mm-leg-r { transform-origin: 33.5px 80px; }
+.mm-shadow { opacity: 0; transform-origin: 30px 99px; }
+.mm-bubble { opacity: 0; transform: translate(-50%, 6px) scale(.6); transform-origin: 50% 100%; }
+/* Standing on the edge of the video: umbrella furled, a small idle bounce */
+[data-pose="stand"] .mm-canopy { transform: scale(.16, 1.05); }
+[data-pose="stand"] .mm-shadow { opacity: 1; }
+[data-pose="stand"] .mm-sway { animation: mm-idle 2.4s ease-in-out infinite; }
+/* Floating: umbrella open, a slow sway, legs kicking while he moves */
+[data-pose="float"] .mm-sway { animation: mm-sway 3.2s ease-in-out infinite; }
+[data-pose="float"][data-moving="1"] .mm-leg-l { animation: mm-kick .5s ease-in-out infinite alternate; }
+[data-pose="float"][data-moving="1"] .mm-leg-r { animation: mm-kick .5s ease-in-out -.25s infinite alternate; }
+/* Landed on the contact card: umbrella closes, he waves */
+[data-pose="land"] .mm-canopy { transform: scale(.16, 1.05); }
+[data-pose="land"] .mm-shadow { opacity: 1; }
+[data-pose="land"] .mm-wave { animation: mm-wave 1.1s ease-in-out .35s infinite; }
+[data-pose="land"] .mm-bubble { opacity: 1; transform: translate(-50%, 0) scale(1); }
+@keyframes mm-idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes mm-sway { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+@keyframes mm-kick { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+@keyframes mm-wave { 0%, 100% { transform: rotate(-150deg); } 50% { transform: rotate(-115deg); } }
+
+/* Homepage hero: the mini-me's routine on top of the surname (components/home/Acrobat.tsx). One 12s loop:
+   bob, crouch, backflip, cartwheels along the letters, wave, float up on the umbrella and drift back, hop. */
+.acro { --run: 75%; transition: opacity .35s ease, transform .45s cubic-bezier(.3,1.4,.5,1); }
+@media (min-width: 1024px) { .acro { --run: 480%; } }
+.acro[data-on="0"] { opacity: 0; transform: translateY(-40px) scale(.7); }
+.acro[data-on="0"] * { animation-play-state: paused !important; }
+.acro-x { animation: acro-x 12s cubic-bezier(.45,0,.55,1) infinite; }
+.acro-y { transform-origin: 50% 100%; animation: acro-y 12s ease-in-out infinite; }
+.acro-r { transform-origin: 50% 58%; animation: acro-r 12s cubic-bezier(.5,0,.4,1) infinite; }
+.acro .mm-shadow { display: none; }
+/* A white sticker edge, like the cards floating over the clip, so the navy hoodie reads against the real one */
+.acro-r { filter: drop-shadow(1.2px 0 0 #fff) drop-shadow(-1.2px 0 0 #fff) drop-shadow(0 1.2px 0 #fff) drop-shadow(0 -1.2px 0 #fff) drop-shadow(0 6px 10px rgba(0,10,60,.35)); }
+.acro .mm-canopy { transform-origin: 30px 23px; animation: acro-canopy 12s ease-in-out infinite; }
+.acro .mm-wave { transform-origin: 23.5px 66px; animation: acro-wave 12s ease-in-out infinite; }
+.acro .mm-leg-l { transform-origin: 26.5px 80px; animation: acro-leg 12s ease-in-out infinite; }
+.acro .mm-leg-r { transform-origin: 33.5px 80px; animation: acro-leg 12s ease-in-out infinite reverse; }
+@keyframes acro-x {
+  0%, 25% { transform: translateX(0); }
+  45%, 62% { transform: translateX(var(--run)); }
+  80%, 100% { transform: translateX(0); }
+}
+@keyframes acro-y {
+  0%, 8% { transform: translateY(0); }
+  4% { transform: translateY(-4%); }
+  10.5% { transform: translateY(0) scale(1.08, .8); }
+  16% { transform: translateY(-175%) scale(.95, 1.05); }
+  21.5% { transform: translateY(0) scale(1.1, .82); }
+  24% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-45%); }
+  35% { transform: translateY(0); }
+  40% { transform: translateY(-45%); }
+  45% { transform: translateY(0) scale(1.08, .86); }
+  47%, 58% { transform: translateY(0) scale(1); }
+  61% { transform: translateY(0) scale(1.06, .84); }
+  65% { transform: translateY(-80%); }
+  72% { transform: translateY(-200%); }
+  80% { transform: translateY(0) scale(1.06, .88); }
+  83%, 90% { transform: translateY(0) scale(1); }
+  92.5% { transform: translateY(-28%); }
+  95%, 100% { transform: translateY(0); }
+}
+@keyframes acro-r {
+  0%, 11% { transform: rotate(0deg); }
+  21%, 25% { transform: rotate(-360deg); }
+  45%, 63% { transform: rotate(360deg); }
+  68% { transform: rotate(368deg); }
+  73% { transform: rotate(352deg); }
+  78%, 100% { transform: rotate(360deg); }
+}
+@keyframes acro-canopy {
+  0%, 60% { transform: scale(.16, 1.05); }
+  63%, 78% { transform: scale(1); }
+  82%, 100% { transform: scale(.16, 1.05); }
+}
+@keyframes acro-wave {
+  0%, 46%, 59%, 100% { transform: rotate(0deg); }
+  48.5%, 53%, 57% { transform: rotate(-150deg); }
+  51%, 55% { transform: rotate(-112deg); }
+}
+@keyframes acro-leg {
+  0%, 24%, 46%, 100% { transform: rotate(0deg); }
+  28%, 42% { transform: rotate(32deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .acro *, .acro .mm-canopy { animation: none !important; }
+  .acro .mm-canopy { transform: scale(.16, 1.05); }
+}
+
+/* Route markers light up as he passes them */
+.jr-dot .jr-core { fill: #141414; stroke: rgba(245,176,65,.55); stroke-width: 2; transition: fill .3s ease, stroke .3s ease; }
+.jr-dot.is-passed .jr-core { fill: #f5b041; stroke: #f5b041; }
+.jr-dot .jr-ping { fill: none; stroke: #f5b041; stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.jr-dot.is-passed .jr-ping { animation: jr-ping .9s ease-out 1; }
+@keyframes jr-ping { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(3.2); } }
+.jr-pad .jr-core { fill: rgba(245,176,65,.18); stroke-dasharray: 3 4; }
+/* The card gives a little under his feet */
+.journey-thud { animation: journey-thud .55s cubic-bezier(.3,1.6,.5,1); }
+@keyframes journey-thud { 0% { transform: translateY(0); } 30% { transform: translateY(5px) scaleY(.992); } 100% { transform: translateY(0); } }
+
+/* Sections rise into place as they scroll in; only applied by script, so without it nothing is hidden */
+[data-reveal] { transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+.reveal-pending { opacity: 0; transform: translateY(56px) scale(.97); }
+.reveal-pending .rise { clip-path: inset(0 0 100% 0); }
+.reveal-done .rise { animation: rise .95s cubic-bezier(.2,.7,.2,1) .12s both; }
+@keyframes rise {
+  from { clip-path: inset(0 0 100% 0); transform: translateY(.45em); }
+  to { clip-path: inset(-.3em -.3em -.3em -.3em); transform: none; }
+}
+/* Work pills are tossed onto the card one after another and land at their tilt */
+.reveal-pending .toss { opacity: 0; }
+.reveal-done .toss { animation: toss .85s cubic-bezier(.2,1.35,.4,1) both; animation-delay: calc(var(--i, 0) * 65ms + .2s); }
+@keyframes toss {
+  from { opacity: 0; transform: translateY(-80px) rotate(var(--spin, -12deg)) scale(.85); }
+  to { opacity: 1; transform: none; }
+}
+/* "Let's talk" pops in letter by letter */
+.pop { display: inline-block; }
+.reveal-pending .pop { opacity: 0; }
+.reveal-done .pop { animation: pop .7s cubic-bezier(.2,1.5,.4,1) both; animation-delay: calc(var(--i, 0) * 45ms + .2s); }
+@keyframes pop {
+  from { opacity: 0; transform: translateY(.55em) rotate(8deg); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-route, .journey-traveller { display: none; }
+}
+
 /* Anaplan Toolkit landing page */
 @keyframes tk-marquee {
   from { transform: translateX(0); }
