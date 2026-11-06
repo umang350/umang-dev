@@ -3,6 +3,7 @@ import Hero from '../components/home/Hero'
 import Page from '../components/utility/Page'
 import { routes } from "@/data/global"
 import HomeSections from '@/components/home/HomeSections';
+import Journey from '@/components/home/Journey';
 import { getSubstackPosts, Post } from '@/lib/substack';
 
 const PageName = "Home";
@@ -11,8 +12,10 @@ const Home: NextPage<{ posts: Post[] }> = ({ posts }) => {
   return (
     <>
     <Page currentPage={PageName} overlayNav meta={{ desc: routes.find(i => i.title === PageName).description }}>
-      <Hero />
-      <HomeSections posts={posts} />
+      <Journey>
+        <Hero />
+        <HomeSections posts={posts} />
+      </Journey>
     </Page></>
   )
 }
