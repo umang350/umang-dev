@@ -2,7 +2,8 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
 import ToolkitShell from "@/components/anaplan/ToolkitShell";
-import { guides } from "@/components/anaplan/Article";
+import { HeroArt } from "@/components/anaplan/Viz";
+import { guides } from "@/data/anaplan/guides";
 
 // Standalone landing page for the Anaplan Toolkit extension. Deliberately
 // does not use the site's Page/Navbar/Footer so it can stand on its own.
@@ -743,21 +744,30 @@ const AnaplanToolkit = () => {
             </section>
 
             {/* Guides */}
-            <section id="guides" className="mx-auto max-w-4xl scroll-mt-20 px-4 pb-24 sm:px-6">
+            <section id="guides" className="mx-auto max-w-6xl scroll-mt-20 px-4 pb-24 sm:px-6">
                 <Eyebrow>Guides</Eyebrow>
                 <Heading>How to improve an Anaplan model</Heading>
                 <p className="mt-4 text-gray-300">
                     Practical routines for builders and CoE leads: measure the model, fix structure, retire unused line items, keep formulas readable and check model health every month.
                 </p>
-                <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                    {guides.map((g) => (
-                        <Link key={g.slug} href={`/anaplan/guides/${g.slug}`} className={`${card} p-6 transition hover:border-red-500/40 hover:bg-white/[0.06]`}>
-                            <p className="font-semibold text-white">{g.title}</p>
-                            <p className="mt-2 text-sm leading-relaxed text-gray-300">{g.desc}</p>
-                            <p className="mt-4 text-sm font-medium text-red-400">Read the guide →</p>
+                <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {guides.slice(0, 6).map((g) => (
+                        <Link key={g.slug} href={`/anaplan/guides/${g.slug}`} className={`${card} group flex flex-col overflow-hidden transition hover:border-red-500/40 hover:bg-white/[0.06]`}>
+                            <HeroArt kind={g.hero} label="" className="h-32" />
+                            <div className="flex flex-1 flex-col p-5">
+                                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-red-400">{g.category}</p>
+                                <p className="mt-2 font-semibold text-white">{g.title}</p>
+                                <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-300">{g.desc}</p>
+                                <p className="mt-4 text-sm font-medium text-red-400">Read the guide →</p>
+                            </div>
                         </Link>
                     ))}
                 </div>
+                <p className="mt-6">
+                    <Link href="/anaplan/guides" className="text-sm font-medium text-red-400 underline underline-offset-2 hover:text-red-300">
+                        All {guides.length} Anaplan guides →
+                    </Link>
+                </p>
             </section>
 
             {/* Get it */}

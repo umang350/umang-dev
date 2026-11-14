@@ -1,25 +1,12 @@
 import Link from "next/link";
 import React from "react";
 import ToolkitShell from "@/components/anaplan/ToolkitShell";
+import { HeroArt } from "@/components/anaplan/Viz";
+import { guides } from "@/data/anaplan/guides";
 
 // Layout and text helpers shared by the articles under /anaplan/guides.
 
-export const guides = [
-    {
-        slug: "improve-anaplan-model-and-usage",
-        title: "How to improve an Anaplan model and how your team uses it",
-        seoTitle: "Improve an Anaplan Model & How Teams Use It | Anaplan Toolkit",
-        keywords: "improve Anaplan model, Anaplan model health check, Anaplan best practices, Anaplan Planual, Anaplan model audit, Anaplan unused line items, Anaplan CoE",
-        desc: "A practical routine for builders and CoE leads: find structural problems, retire what nobody uses, keep formulas readable and make model health a monthly habit.",
-    },
-    {
-        slug: "reduce-anaplan-model-size",
-        title: "How to reduce the size of an Anaplan model",
-        seoTitle: "Reduce Anaplan Model Size: A Practical Guide | Anaplan Toolkit",
-        keywords: "reduce Anaplan model size, Anaplan model size, Anaplan workspace storage, Anaplan cell count, Anaplan sparsity, delete Anaplan line items, Anaplan optimization",
-        desc: "Where Anaplan model size comes from, how to find the modules, dimensions and line items that cost the most, and how to remove them safely.",
-    },
-];
+export { guides };
 
 export const H2 = ({ children }: { children: React.ReactNode }) => (
     <h2 className="mt-12 text-2xl font-semibold tracking-tight text-gray-900">{children}</h2>
@@ -66,8 +53,12 @@ const ogImage = "https://umang.dev/anaplan/summary.png";
 
 const Article = ({ slug, title, desc, kicker, published, readMinutes, children }: Props) => {
     const path = `/anaplan/guides/${slug}`;
-    const others = guides.filter((g) => g.slug !== slug);
     const guide = guides.find((g) => g.slug === slug);
+    // Same category first, then the rest, four at most.
+    const others = guides
+        .filter((g) => g.slug !== slug)
+        .sort((a, b) => Number(b.category === guide?.category) - Number(a.category === guide?.category))
+        .slice(0, 4);
     const url = `https://umang.dev${path}`;
     const jsonLd = [
         {
@@ -101,12 +92,17 @@ const Article = ({ slug, title, desc, kicker, published, readMinutes, children }
                     <span className="mx-2">/</span>
                     <Link href="/anaplan#guides" className="hover:text-gray-800">Guides</Link>
                 </nav>
-                <p className="mt-8 text-sm font-semibold uppercase tracking-wider text-red-600">{kicker}</p>
+                <p className="mt-8 text-sm font-semibold uppercase tracking-wider text-red-600">{kicker}{guide ? ` · ${guide.category}` : ""}</p>
                 <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
                 <p className="mt-3 text-sm text-gray-500">
                     By Umang Chauhan · {new Date(published).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })} · {readMinutes} min read
                 </p>
                 <p className="mt-6 text-lg leading-relaxed text-gray-700">{desc}</p>
+                {guide && (
+                    <div className="mt-8 overflow-hidden rounded-2xl border border-gray-200">
+                        <HeroArt kind={guide.hero} label={`Illustration for ${title}`} className="h-48 sm:h-64" />
+                    </div>
+                )}
 
                 {children}
 
@@ -131,6 +127,7 @@ const Article = ({ slug, title, desc, kicker, published, readMinutes, children }
                             </li>
                         ))}
                     </ul>
+                    <Link href="/anaplan/guides" className="mt-4 inline-block text-sm font-medium text-gray-700 underline underline-offset-2 hover:text-gray-900">All Anaplan guides →</Link>
                 </section>
             </article>
         </ToolkitShell>
