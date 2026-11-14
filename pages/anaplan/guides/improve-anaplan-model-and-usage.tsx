@@ -102,6 +102,20 @@ const AnaplanImproveModel = () => (
             to decide where a human should look, not to approve or reject a change.
         </Callout>
 
+        <H2>Improve Anaplan model performance: the short list</H2>
+        <P>
+            If your question is &ldquo;how do I make my Anaplan model faster&rdquo;, these are the changes
+            that most often pay off. Check each against your own model before acting.
+        </P>
+        <UL>
+            <li><strong>Find the slow line items first.</strong> Use the <em>Calculation Effort</em> column in Blueprint and Anaplan&apos;s model analysis tools to see which line items cost the most. Optimising a line item that calculates quickly gains little.</li>
+            <li><strong>Follow DISCO.</strong> Keep Data, Inputs, System, Calculations and Outputs in separate modules, so each module has one purpose and heavy logic is not buried in large, dense data modules.</li>
+            <li><strong>Manage dimensionality and sparsity.</strong> Build at the lowest grain you need. Do not combine large lists in one module unless required, and where most cells are blank, split the module. Use subsets and line item subsets (LISS) to narrow a calculation to what matters.</li>
+            <li><strong>Use a data hub.</strong> Centralise imports and cleansing in one hub model so planning models stay lean and integration logic is not repeated.</li>
+            <li><strong>Simplify formulas.</strong> Review deeply nested IFs, long SUM and LOOKUP chains and repeated expressions. Prefer Boolean flags and mapping modules to complicated conditions. The Formulas and Lint views show where to look.</li>
+            <li><strong>Remove what nothing uses.</strong> Unused line items and modules still calculate and take memory (see section 3).</li>
+        </UL>
+
         <H2>5. Understand how the model is used</H2>
         <P>
             A model that is structurally clean can still be badly used. Look at the front end too:

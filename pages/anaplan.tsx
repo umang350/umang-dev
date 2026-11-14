@@ -11,7 +11,7 @@ const pageTitle = "Anaplan Toolkit — Free Anaplan Helper Tool for Model Builde
 const pageDesc =
     "Free Chrome and Firefox extension for Anaplan model builders. Find action, import, export and process IDs for the Anaplan API, trace module lineage and formula impact, search every formula, lint against the Planual, document the model, run actions from a CSV, bulk create and delete modules and line items, monitor model locks and review workspace storage. Reads only your Anaplan session; no data leaves your browser.";
 const pageKeywords =
-    "Anaplan tool, Anaplan Chrome extension, Anaplan Firefox add-on, Anaplan API, Anaplan Integration API action IDs, Anaplan process ID, Anaplan import export ID, Anaplan model documentation, Anaplan model audit, Anaplan formula editor, Anaplan Planual, Anaplan lineage, Anaplan dependency, Anaplan unused line items, Anaplan bulk delete, Anaplan lock monitor, Anaplan model busy, Anaplan workspace storage, Anaplan revision tags, Anaplan model builder tools, Anaplan Blueprint, Anaplan impact analysis, Anaplan formula search, Anaplan run actions CSV, Anaplan bulk create modules, Anaplan lint, Anaplan Planual checker, Anaplan model documentation generator";
+    "Anaplan tool, Anaplan Chrome extension, Anaplan Firefox add-on, Anaplan API, Anaplan Integration API action IDs, Anaplan process ID, Anaplan import export ID, Anaplan model documentation, Anaplan model audit, Anaplan formula editor, Anaplan Planual, Anaplan lineage, Anaplan dependency, Anaplan unused line items, Anaplan bulk delete, Anaplan lock monitor, Anaplan model busy, Anaplan workspace storage, Anaplan revision tags, Anaplan model builder tools, Anaplan Blueprint, Anaplan impact analysis, Anaplan formula search, Anaplan run actions CSV, Anaplan bulk create modules, Anaplan lint, Anaplan Planual checker, Anaplan model documentation generator, how to improve Anaplan model, improve Anaplan model performance, Anaplan model best practices, Anaplan model health check, reduce Anaplan model size";
 
 const chromeStoreUrl = "https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj";
 const firefoxStoreUrl = "https://addons.mozilla.org/en-US/firefox/addon/anaplan-toolkit/";
@@ -135,6 +135,7 @@ const faqs = [
     { q: "Can I bulk delete Anaplan line items or modules?", a: "Yes. Delete Line Items and Delete Modules read a CSV, check every row against the live model, order the deletes so Anaplan accepts them, and ask you to type the count before anything changes. Create Modules, Create Items and Run Actions work the same way; those five are the only views that write to your model." },
     { q: "Does Anaplan Toolkit check the Planual?", a: "It underlines per-line-item Planual rules in the formula editor with the rule number, adds badges in the Blueprint grid, and the Lint report lists findings across the model with each rule linked to its Planual page. Checks target the Classic engine and approximate the rules, so treat findings as prompts to look, not verdicts." },
     { q: "How do I know whether an Anaplan model is busy or locked?", a: "Lock Monitor checks the model at an interval you choose, from every second to every minute for up to 12 hours, and records whether it is available, updating, busy, locked or offline, with what is running when busy." },
+    { q: "How do I improve an Anaplan model?", a: "Work in this order: measure the model first (module, line item and list counts, dimensions, size), fix structure such as oversized modules and dimensions that are not needed, retire line items nothing uses, make formulas readable and run the Planual checks, then repeat the health check monthly. Anaplan Toolkit's Summary, Modules, Impact, Lint and Formulas reports give you the evidence for each step. The step-by-step routine is in the guide How to improve an Anaplan model and how your team uses it, and a size-focused version is in How to reduce the size of an Anaplan model." },
     { q: "Is it safe? Does it send my Anaplan data anywhere?", a: "The extension only talks to Anaplan, over the session you are already signed in with. It has no analytics, no telemetry and never asks for a password or token. Results stay in your browser's session storage." },
     { q: "Which browsers does Anaplan Toolkit support, and is it free?", a: "It is free for Chrome, Edge and other Chromium browsers from the Chrome Web Store, and for Firefox 140 and later from Firefox Add-ons. It is an independent tool and not affiliated with Anaplan, Inc." },
 ];
@@ -744,7 +745,10 @@ const AnaplanToolkit = () => {
             {/* Guides */}
             <section id="guides" className="mx-auto max-w-4xl scroll-mt-20 px-4 pb-24 sm:px-6">
                 <Eyebrow>Guides</Eyebrow>
-                <Heading>Better Anaplan models</Heading>
+                <Heading>How to improve an Anaplan model</Heading>
+                <p className="mt-4 text-gray-300">
+                    Practical routines for builders and CoE leads: measure the model, fix structure, retire unused line items, keep formulas readable and check model health every month.
+                </p>
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
                     {guides.map((g) => (
                         <Link key={g.slug} href={`/anaplan/guides/${g.slug}`} className={`${card} p-6 transition hover:border-red-500/40 hover:bg-white/[0.06]`}>
