@@ -6,9 +6,22 @@ Not to be confused with Anaplan CoModeler (Anaplan's paid AI assistant) or Anapl
 
 ## Key pages
 - [Anaplan Toolkit](https://umang.dev/anaplan): features, install links, FAQ
-- [How to improve an Anaplan model and how your team uses it](https://umang.dev/anaplan/guides/improve-anaplan-model-and-usage)
-- [How to reduce the size of an Anaplan model](https://umang.dev/anaplan/guides/reduce-anaplan-model-size)
+- [All Anaplan guides](https://umang.dev/anaplan/guides): index of every guide below
 - [Privacy policy](https://umang.dev/anaplan/toolkit/privacy)
+
+## Guides
+- [How to improve an Anaplan model and how your team uses it](https://umang.dev/anaplan/guides/improve-anaplan-model-and-usage): A practical routine for builders and CoE leads: find structural problems, retire what nobody uses, keep formulas readable and make model health a monthly habit.
+- [How to reduce the size of an Anaplan model](https://umang.dev/anaplan/guides/reduce-anaplan-model-size): Where Anaplan model size comes from, how to find the modules, dimensions and line items that cost the most, and how to remove them safely.
+- [Anaplan DISCO explained: the model architecture that keeps models fast](https://umang.dev/anaplan/guides/anaplan-disco-model-architecture): DISCO splits a model into Data, Inputs, System, Calculations and Outputs. What each layer holds, how data should flow between them and how to spot a model that has broken the pattern.
+- [Anaplan sparsity and dimensionality: why cell count is the real cost](https://umang.dev/anaplan/guides/anaplan-sparsity-and-dimensionality): Every dimension multiplies the cells a line item can hold. See the arithmetic, why sparse modules waste memory and calculation time, and the usual ways to shrink them.
+- [Anaplan formula performance: what slows a model down and how to fix it](https://umang.dev/anaplan/guides/anaplan-formula-performance): How to find the line items that cost the most to calculate, the formula patterns that usually cause it, and a repeatable way to measure whether a change helped.
+- [Anaplan data hub: when to build one and how to design it](https://umang.dev/anaplan/guides/anaplan-data-hub): A data hub keeps raw and cleansed data in one model and feeds lean planning models. When it pays off, what belongs inside and the mistakes to avoid.
+- [Anaplan API: how to find action, import, export and process IDs](https://umang.dev/anaplan/guides/anaplan-api-action-ids-and-process-ids): The five IDs an Anaplan Integration API call needs, where to find each one, and how to run a process from a script with your own token.
+- [The Anaplan Planual in practice: rules that matter and how to check them](https://umang.dev/anaplan/guides/anaplan-planual-best-practices): The Planual is long. Here is how to turn it into a short review checklist for pull requests, handovers and monthly health checks, and what automated checks can and cannot tell you.
+- [Anaplan ALM and revision tags: a safe path from development to production](https://umang.dev/anaplan/guides/anaplan-alm-revision-tags): How Anaplan's application lifecycle management moves structural changes between development, test and production models, and the habits that keep releases boring.
+- [Anaplan model documentation: what to write and how to keep it current](https://umang.dev/anaplan/guides/anaplan-model-documentation): What a useful Anaplan model document contains, why hand-written ones go stale, and how to generate the factual part from the model itself.
+- [From Excel to Anaplan: how to rethink a spreadsheet model, not copy it](https://umang.dev/anaplan/guides/excel-to-anaplan-migration): Excel formulas live in cells, Anaplan formulas live in line items. What changes when you move a planning model, a worked example and the traps of a lift-and-shift.
+- [Anaplan lists, subsets and line item subsets: shrink what you calculate](https://umang.dev/anaplan/guides/anaplan-lists-subsets-and-liss): Lists define what a module can hold. How subsets and line item subsets (LISS) cut the cells you carry, with a worked example and the rules for choosing between them.
 
 ## Install
 - [Chrome Web Store](https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj)
