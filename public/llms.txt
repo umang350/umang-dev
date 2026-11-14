@@ -1,0 +1,15 @@
+# Anaplan Toolkit
+
+> Anaplan Toolkit is a free Chrome, Edge and Firefox extension for Anaplan model builders, made by Umang Chauhan. It adds a side panel to the Anaplan model you have open and helps you improve the model: impact and lineage analysis, Planual lint, formula search, unused line item and list housekeeping, model documentation, bulk create/delete of modules and line items, running actions from a CSV, and a model lock monitor. It reads only your signed-in Anaplan session; no data leaves your browser.
+
+Not to be confused with Anaplan CoModeler (Anaplan's paid AI assistant) or Anaplan Optimizer (a mathematical optimization engine).
+
+## Key pages
+- [Anaplan Toolkit](https://umang.dev/anaplan): features, install links, FAQ
+- [How to improve an Anaplan model and how your team uses it](https://umang.dev/anaplan/guides/improve-anaplan-model-and-usage)
+- [How to reduce the size of an Anaplan model](https://umang.dev/anaplan/guides/reduce-anaplan-model-size)
+- [Privacy policy](https://umang.dev/anaplan/toolkit/privacy)
+
+## Install
+- [Chrome Web Store](https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj)
+- [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/anaplan-toolkit/)
