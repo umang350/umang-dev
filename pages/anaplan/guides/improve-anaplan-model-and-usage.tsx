@@ -1,7 +1,20 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { ImproveJa } from "@/components/anaplan/legacy.ja";
+import { guidesJa } from "@/data/anaplan/guides.ja";
 import Article, { Callout, Code, H2, H3, OL, P, UL } from "@/components/anaplan/Article";
 
-const AnaplanImproveModel = () => (
+const AnaplanImproveModel = () => {
+    const ja = useRouter().locale === "ja";
+    if (ja) {
+        const t = guidesJa["improve-anaplan-model-and-usage"];
+        return (
+            <Article slug="improve-anaplan-model-and-usage" kicker="Guide" title={t.title} desc={t.desc} published="2026-10-25" readMinutes={9}>
+                <ImproveJa />
+            </Article>
+        );
+    }
+    return (
     <Article
         slug="improve-anaplan-model-and-usage"
         kicker="Guide"
@@ -165,6 +178,7 @@ const AnaplanImproveModel = () => (
             to start.
         </P>
     </Article>
-);
+    );
+};
 
 export default AnaplanImproveModel;

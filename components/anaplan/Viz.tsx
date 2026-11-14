@@ -159,10 +159,13 @@ export const LineChart = ({
     series,
     xLabels,
     yLabel,
+    aria,
 }: {
     series: { name: string; color: string; points: number[] }[];
     xLabels: string[];
     yLabel?: string;
+    // Replaces the English screen-reader summary (used by the Japanese guides).
+    aria?: string;
 }) => {
     const W = 560, H = 220, L = 40, B = 28, T = 12, R = 12;
     const max = Math.max(...series.flatMap((s) => s.points));
@@ -170,7 +173,7 @@ export const LineChart = ({
     const y = (v: number) => T + (1 - v / max) * (H - T - B);
     return (
         <div>
-            <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={`${yLabel ?? "Chart"}: ${series.map((s) => s.name).join(" versus ")}`}>
+            <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={aria ?? `${yLabel ?? "Chart"}: ${series.map((s) => s.name).join(" versus ")}`}>
                 {[0, 0.25, 0.5, 0.75, 1].map((t) => (
                     <g key={t}>
                         <line x1={L} x2={W - R} y1={y(max * t)} y2={y(max * t)} stroke="#e5e7eb" strokeWidth="1" />
@@ -219,12 +222,12 @@ export const Flow = ({ steps, highlight }: { steps: { title: string; sub?: strin
 
 // Sources on the left feed one hub; the hub feeds a column of models on the
 // right. Three clear columns, so nothing overlaps at any width.
-export const HubSpoke = ({ centre, spokes, inbound = [] }: { centre: string; spokes: string[]; inbound?: string[] }) => {
+export const HubSpoke = ({ centre, spokes, inbound = [], aria, sourcesLabel = "SOURCES", modelsLabel = "PLANNING MODELS" }: { centre: string; spokes: string[]; inbound?: string[]; aria?: string; sourcesLabel?: string; modelsLabel?: string }) => {
     const H = Math.max(260, Math.max(spokes.length, inbound.length) * 56 + 40);
     const cy = H / 2, hubX = 300, hubR = 50;
     const rows = (n: number) => Array.from({ length: n }, (_, i) => cy + (i - (n - 1) / 2) * 56);
     return (
-        <svg viewBox={`0 0 600 ${H}`} className="w-full" role="img" aria-label={`${inbound.join(", ")} feed ${centre}, which feeds ${spokes.join(", ")}`}>
+        <svg viewBox={`0 0 600 ${H}`} className="w-full" role="img" aria-label={aria ?? `${inbound.join(", ")} feed ${centre}, which feeds ${spokes.join(", ")}`}>
             <defs>
                 <marker id="hub-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
                     <path d="M0 0 L8 4 L0 8 z" fill="#9ca3af" />
@@ -233,8 +236,8 @@ export const HubSpoke = ({ centre, spokes, inbound = [] }: { centre: string; spo
                     <path d="M0 0 L8 4 L0 8 z" fill="#f87171" />
                 </marker>
             </defs>
-            {inbound.length > 0 && <text x="55" y="16" textAnchor="middle" fontSize="10" fontWeight="600" fill="#6b7280">SOURCES</text>}
-            <text x="545" y="16" textAnchor="middle" fontSize="10" fontWeight="600" fill="#6b7280">PLANNING MODELS</text>
+            {inbound.length > 0 && <text x="55" y="16" textAnchor="middle" fontSize="10" fontWeight="600" fill="#6b7280">{sourcesLabel}</text>}
+            <text x="545" y="16" textAnchor="middle" fontSize="10" fontWeight="600" fill="#6b7280">{modelsLabel}</text>
             {rows(inbound.length).map((y, i) => (
                 <g key={inbound[i]}>
                     <rect x="5" y={y - 16} width="100" height="32" rx="10" fill="#f3f4f6" />
@@ -256,9 +259,9 @@ export const HubSpoke = ({ centre, spokes, inbound = [] }: { centre: string; spo
 };
 
 // A small grid of cells, filled or empty, to show dense versus sparse.
-export const CellGrid = ({ label, cols = 12, rows = 6, every }: { label: string; cols?: number; rows?: number; every: number }) => (
+export const CellGrid = ({ label, cols = 12, rows = 6, every, aria }: { label: string; cols?: number; rows?: number; every: number; aria?: string }) => (
     <div>
-        <svg viewBox={`0 0 ${cols * 16} ${rows * 16}`} className="w-full" role="img" aria-label={`${label}: one in ${every} cells holds data`}>
+        <svg viewBox={`0 0 ${cols * 16} ${rows * 16}`} className="w-full" role="img" aria-label={aria ?? `${label}: one in ${every} cells holds data`}>
             {Array.from({ length: cols * rows }).map((_, i) => {
                 const filled = every === 1 || (i * 7 + Math.floor(i / cols)) % every === 0;
                 return <rect key={i} x={(i % cols) * 16 + 1} y={Math.floor(i / cols) * 16 + 1} width="14" height="14" rx="3" fill={filled ? "#dc2626" : "#f3f4f6"} />;

@@ -1,224 +1,44 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import ToolkitShell from "@/components/anaplan/ToolkitShell";
 import { HeroArt } from "@/components/anaplan/Viz";
 import { guides } from "@/data/anaplan/guides";
+import { guidesJa } from "@/data/anaplan/guides.ja";
+import { landing, RoadmapStatus } from "@/data/anaplan/landing";
 
 // Standalone landing page for the Anaplan Toolkit extension. Deliberately
 // does not use the site's Page/Navbar/Footer so it can stand on its own.
+// Every string lives in data/anaplan/landing.ts, in English and Japanese;
+// /ja/anaplan renders the Japanese one.
 
-const pageTitle = "Anaplan Toolkit — Free Anaplan Helper Tool for Model Builders (Chrome & Firefox)";
-const pageDesc =
-    "Free Chrome and Firefox extension for Anaplan model builders. Find action, import, export and process IDs for the Anaplan API, trace module lineage and formula impact, search every formula, lint against the Planual, document the model, run actions from a CSV, bulk create and delete modules and line items, monitor model locks and review workspace storage. Reads only your Anaplan session; no data leaves your browser.";
-const pageKeywords =
-    "Anaplan tool, Anaplan Chrome extension, Anaplan Firefox add-on, Anaplan API, Anaplan Integration API action IDs, Anaplan process ID, Anaplan import export ID, Anaplan model documentation, Anaplan model audit, Anaplan formula editor, Anaplan Planual, Anaplan lineage, Anaplan dependency, Anaplan unused line items, Anaplan bulk delete, Anaplan lock monitor, Anaplan model busy, Anaplan workspace storage, Anaplan revision tags, Anaplan model builder tools, Anaplan Blueprint, Anaplan impact analysis, Anaplan formula search, Anaplan run actions CSV, Anaplan bulk create modules, Anaplan lint, Anaplan Planual checker, Anaplan model documentation generator, how to improve Anaplan model, improve Anaplan model performance, Anaplan model best practices, Anaplan model health check, reduce Anaplan model size";
+const useT = () => {
+    const { locale } = useRouter();
+    return landing[locale === "ja" ? "ja" : "en"];
+};
 
 const chromeStoreUrl = "https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj";
 const firefoxStoreUrl = "https://addons.mozilla.org/en-US/firefox/addon/anaplan-toolkit/";
+const firefoxStoreUrlJa = "https://addons.mozilla.org/ja/firefox/addon/anaplan-toolkit/";
 
 const version = "2.12";
 const sponsorUrl = "https://github.com/sponsors/umang350";
 
-const whatsNew = [
-    { title: "Impact analysis", body: "For every line item, which formulas use it and which it uses, directly and all the way down, with the modules and App pages that reach. A Modules tab shows which modules feed which." },
-    { title: "Planual lint", body: "Checks the model against Anaplan's Planual. Every finding shows the rule's own number, linked to its page, plus a Housekeeping tab for unused line items and lists." },
-    { title: "Planual where you build", body: "The part of a formula that breaks a rule is underlined in the editor with its rule number, and Blueprint view shows a badge after each line item. Hide a rule, or switch either off in Settings." },
-    { title: "Search every formula", body: "Find a line item by words, an \"exact phrase\" or a /regular expression/ across every formula in the model." },
-    { title: "Model documentation", body: "From Summary, write the model's lists, modules, line items and formulas as a Markdown file, or copy a compact version to paste into an AI assistant. Nothing is sent anywhere." },
-    { title: "Used by, Depends on", body: "Hover a line item in the formula editor to see what uses it and what it depends on; hover a module for the modules it feeds and is fed by." },
-    { title: "Run actions from a CSV", body: "Run processes, imports, exports and other actions one after another, on the open model or on others without opening them. Every row is validated first, nothing starts until you type the count, and each action's own result is shown." },
-    { title: "Create modules and line items", body: "Create modules with the lists they apply to, and line items with a formula and a format, from a CSV, or add line items to modules that exist. Checked against the model first." },
-    { title: "A fresh look", body: "A new logo and a refreshed side panel: clearer tabs, softer cards, and a Summary that opens straight onto your model." },
-];
-
-const reportGroups = [
-    {
-        group: "Summary",
-        items: [
-            { name: "Model Summary", desc: "Model name, IDs, size, structure counts and which reports are loaded. Get all data, download every report as CSVs in one .zip, or write the model\u2019s documentation as Markdown." },
-        ],
-    },
-    {
-        group: "Actions",
-        items: [
-            { name: "Actions & File IDs", desc: "Internal IDs for Processes, Imports, Exports and Files — search by name or ID and copy one with a click." },
-            { name: "Action Usages", desc: "Where every Action is wired up across Apps, Pages and widgets." },
-            { name: "Process Steps", desc: "The actions each process runs, in order, with each import's source and target — plus a Copy API call button." },
-            { name: "Run Actions", desc: "Runs processes, imports, exports and other actions from a CSV, in order, on this model or others without opening them. Validated first; changes the model only after you type the count." },
-        ],
-    },
-    {
-        group: "Pages",
-        items: [
-            { name: "Linked Pages", desc: "Which Apps and Pages consume each module, so you can trace lineage from backend to frontend." },
-            { name: "Filters & Conditional Formatting", desc: "Line Items used as page filters or formatting rules, shown beside their conditions and colours — rules on hidden line items are tagged Hidden on grid." },
-            { name: "Line Items on Pages", desc: "Every line item shown on the App pages you pick, and where: rows, columns, page selector, filter, formatting, sort or hidden. By page or by line item." },
-        ],
-    },
-    {
-        group: "Saved Views",
-        items: [
-            { name: "All Saved Views", desc: "Every Saved View in the model, grouped by module." },
-            { name: "Saved Views in Screens", desc: "Which Saved View each App Page widget reads from." },
-            { name: "Saved Views in Actions", desc: "Imports whose source is a Saved View." },
-        ],
-    },
-    {
-        group: "Structure",
-        items: [
-            { name: "Modules", desc: "Every module with its dimensions, time scale, time range, line item and saved view counts, and the App pages that use it." },
-            { name: "Line Items", desc: "Every line item with its format, applies-to, time scale and formula. Search matches formulas too." },
-            { name: "Lists & Properties", desc: "Every list with its parent and item count, and every property with its format and formula." },
-            { name: "Create Modules & Create Items", desc: "Create modules (with their lists and subsets) and line items (with a formula and a format) from a CSV, or add line items to modules that exist. Checked against the model first." },
-            { name: "Delete Line Items & Delete Modules", desc: "Upload a CSV (the Line Items or Modules export works as is), review what Anaplan will accept, then delete in an order that avoids refusals." },
-        ],
-    },
-    {
-        group: "Analysis",
-        items: [
-            { name: "Impact", desc: "Which formulas use each line item and which it uses, directly and downstream, with the modules and App pages reached." },
-            { name: "Lint", desc: "Findings against Anaplan's Planual, each with its rule number, plus housekeeping checks for unused line items and lists." },
-            { name: "Formulas", desc: "Search every formula by words, an exact phrase or a regular expression." },
-        ],
-    },
-    {
-        group: "Revisions & Lock",
-        items: [
-            { name: "Revision Tags", desc: "Who created each revision tag, when and where, and every model it was applied to." },
-            { name: "Lock Monitor", desc: "Checks at an interval you choose whether the model is available, busy, locked or offline, with a timeline, reply times and every check." },
-        ],
-    },
-    {
-        group: "Workspace",
-        items: [
-            { name: "Workspace Models & Storage", desc: "Active, archived and deleted models with sizes, under an in-use vs allowance meter." },
-            { name: "All Workspaces", desc: "Storage for every workspace you can access, and every active model across them." },
-        ],
-    },
-];
-
-const reportCount = reportGroups.reduce((n, g) => n + g.items.length, 0);
-
-// Roadmap lanes: what the Toolkit already covers, versus what Anaplan's own
-// interfaces make possible. A direction, not a commitment.
-type RoadmapStatus = "shipped" | "next" | "exploring" | "not";
-
-const roadmapStatus: Record<RoadmapStatus, { label: string; badge: string }> = {
-    shipped: { label: "Shipped", badge: "bg-green-500/15 text-green-300" },
-        next: { label: "Planned", badge: "bg-amber-500/15 text-amber-300" },
-    exploring: { label: "Exploring", badge: "bg-white/10 text-gray-300" },
-    not: { label: "Not planned", badge: "bg-red-500/15 text-red-300" },
+const roadmapBadge: Record<RoadmapStatus, string> = {
+    shipped: "bg-green-500/15 text-green-300",
+    next: "bg-amber-500/15 text-amber-300",
+    exploring: "bg-white/10 text-gray-300",
+    not: "bg-red-500/15 text-red-300",
 };
 
-const roadmap: { status: RoadmapStatus; title: string; body: string }[] = [
-    { status: "shipped", title: "Read the model's structure", body: "Modules, line items, lists, properties, dimensions, formulas and where each is used — as searchable, exportable reports." },
-    { status: "shipped", title: "Create and delete structure, safely", body: "Create Modules, Create Items, Delete Line Items and Delete Modules: checked against the live model first, ordered so Anaplan accepts them, with a run log." },
-    { status: "shipped", title: "Run actions from a CSV", body: "Processes, imports, exports and other actions, in order, on this model or others without opening them, each validated before anything starts." },
-    { status: "shipped", title: "Model status and workspaces", body: "Lock Monitor, workspace storage and model lists — read-only." },
-    { status: "shipped", title: "Impact, Planual lint and documentation", body: "Formula impact in both directions, Planual findings in reports, the formula editor and Blueprint grid, and the model written out as Markdown." },
-    { status: "shipped", title: "Revisions and process steps", body: "Revision tags and where they were applied, plus the ordered actions behind every process." },
-        { status: "next", title: "Bulk edit formulas and formats", body: "Change formula, format, style or summary on many line items at once, with a before / after diff and the same type-the-count confirmation." },
-    { status: "next", title: "Bulk rename with references", body: "Rename modules and line items from a CSV, listing every formula, page and view that mentions the old name." },
-    { status: "exploring", title: "Import, export and process definitions", body: "Read how imports, exports and processes are defined, not only where they are used. Editing them is a later question." },
-    { status: "exploring", title: "Sync and revision discovery", body: "Show which models sync from or to this one and the revision pairs between them. Discovery only; it would not run a sync." },
-    { status: "exploring", title: "Move and reorder", body: "Reorder line items, lists and modules from a CSV. Anaplan applies these changes strictly in order, so the check step matters most here." },
-    { status: "not", title: "Creating a model from scratch", body: "Anaplan offers copy and delete, not create. The Toolkit will not try to work around that." },
-    { status: "not", title: "Page, board and card authoring", body: "The biggest gap in tooling around Anaplan today. Reports on pages stay; building them is out of scope." },
-    { status: "not", title: "Versions, calendar and subsets", body: "These sit outside Anaplan's own public API, so they will not be built." },
-];
-
-const faqs = [
-    { q: "What is the best free Anaplan helper tool for model builders?", a: "Anaplan Toolkit is a free Chrome and Firefox extension that adds a side panel to the model you have open. It finds action, import, export and process IDs for the Anaplan API, traces where line items and modules are used, searches every formula, lints against the Planual, documents the whole model, runs actions from a CSV, bulk creates and deletes modules and line items, and monitors model locks. It is independent of Anaplan, Inc. and runs entirely in your browser." },
-    { q: "How do I find an Anaplan action, import, export or process ID for the API?", a: "Open the model, open the Toolkit side panel and choose Actions & File IDs. Every process, import, export and file is listed with its internal ID, searchable by name, with a one-click copy. Process Steps adds a Copy API call button that builds an Anaplan Integration API v2 curl command for you to run with your own token." },
-    { q: "Is there an Anaplan tool to document or audit a whole model?", a: "Yes. Get all data loads every report for the open model and Download all as CSV gives you modules, line items, lists, formulas, saved views, page usage and more in one .zip. Summary can also write the model's documentation as a Markdown file, or copy a compact version to paste into an AI assistant; the extension sends nothing anywhere." },
-    { q: "How can I see where a line item or module is used in Anaplan?", a: "Impact lists which formulas use each line item and which it uses, directly and downstream. Linked Pages shows which Apps and Pages use each module, Line Items on Pages shows where each line item appears on a page, and the formula editor shows Used by and Depends on when you hover a reference. Formulas searches every formula by word, phrase or regular expression." },
-    { q: "Can I bulk delete Anaplan line items or modules?", a: "Yes. Delete Line Items and Delete Modules read a CSV, check every row against the live model, order the deletes so Anaplan accepts them, and ask you to type the count before anything changes. Create Modules, Create Items and Run Actions work the same way; those five are the only views that write to your model." },
-    { q: "Does Anaplan Toolkit check the Planual?", a: "It underlines per-line-item Planual rules in the formula editor with the rule number, adds badges in the Blueprint grid, and the Lint report lists findings across the model with each rule linked to its Planual page. Checks target the Classic engine and approximate the rules, so treat findings as prompts to look, not verdicts." },
-    { q: "How do I know whether an Anaplan model is busy or locked?", a: "Lock Monitor checks the model at an interval you choose, from every second to every minute for up to 12 hours, and records whether it is available, updating, busy, locked or offline, with what is running when busy." },
-    { q: "How do I improve an Anaplan model?", a: "Work in this order: measure the model first (module, line item and list counts, dimensions, size), fix structure such as oversized modules and dimensions that are not needed, retire line items nothing uses, make formulas readable and run the Planual checks, then repeat the health check monthly. Anaplan Toolkit's Summary, Modules, Impact, Lint and Formulas reports give you the evidence for each step. The step-by-step routine is in the guide How to improve an Anaplan model and how your team uses it, and a size-focused version is in How to reduce the size of an Anaplan model." },
-    { q: "Is it safe? Does it send my Anaplan data anywhere?", a: "The extension only talks to Anaplan, over the session you are already signed in with. It has no analytics, no telemetry and never asks for a password or token. Results stay in your browser's session storage." },
-    { q: "Which browsers does Anaplan Toolkit support, and is it free?", a: "It is free for Chrome, Edge and other Chromium browsers from the Chrome Web Store, and for Firefox 140 and later from Firefox Add-ons. It is an independent tool and not affiliated with Anaplan, Inc." },
-];
-
-const jsonLd = [
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        name: "Anaplan Toolkit",
-        alternateName: "Anaplan Toolkit browser extension",
-        applicationCategory: "DeveloperApplication",
-        applicationSubCategory: "Browser extension",
-        operatingSystem: "Chrome, Edge, Firefox",
-        softwareVersion: version,
-        url: "https://umang.dev/anaplan",
-        image: "https://umang.dev/anaplan/summary.png",
-        description: pageDesc,
-        downloadUrl: [chromeStoreUrl, firefoxStoreUrl],
-        installUrl: chromeStoreUrl,
-        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        author: { "@type": "Person", name: "Umang Chauhan", url: "https://umang.dev" },
-        featureList: reportGroups.flatMap((g) => g.items.map((i) => i.name)),
-    },
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-    },
-];
-
-const steps = [
-    { title: "Open a model", body: "Sign in to Anaplan as usual and open any model. The toolkit uses your existing session — no extra login." },
-    { title: "Open the side panel", body: "Click the toolbar icon. A panel opens next to the model, starting on the Model Summary." },
-    { title: "Get the data", body: "Pick a report and hit Get data — or Get all data from the Summary. Results are cached per model, searchable, sortable and export to CSV in one click." },
-];
-
-const privacy = [
-    { title: "Talks only to Anaplan", body: "Every network call goes to Anaplan, over the session you're already signed into. No other server is ever contacted, and no password or token is ever asked for." },
-    { title: "No analytics or telemetry", body: "No tracking, crash reporting or advertising SDKs. Firefox listing declares data collection: none." },
-    { title: "Reports only read", body: "Every report reads model metadata and changes nothing. Only Run Actions, Create Modules, Create Items, Delete Line Items and Delete Modules write, and only after you check a CSV and type the number to delete." },
-    { title: "Session-only cache", body: "Results live in browser session storage, keyed per model, and expire after 6 hours or when the browser closes." },
-];
-
-const shortcuts = [
-    { keys: "⌘⌥I", where: "Actions tab", opens: "Actions & File IDs" },
-    { keys: "⌘⌥O", where: "Actions tab", opens: "Action Usages" },
-    { keys: "⌘⌥I", where: "Modules tab", opens: "Linked Pages" },
-    { keys: "⌘⌥O", where: "Modules tab", opens: "Filters & Conditional Formatting" },
-];
-
-const shots = [
-    { src: "/anaplan/summary.png", alt: "Summary: the model's name, IDs, size and structure counts", caption: "Summary" },
-    { src: "/anaplan/02-modules.png", alt: "Modules report with dimensions, time scale and the App pages that read each module", caption: "Modules" },
-    { src: "/anaplan/03-line_items.png", alt: "Line Items report with formats, applies-to and formulas", caption: "Line Items and formulas" },
-    { src: "/anaplan/04-impact.png", alt: "Impact: what uses each line item and what it depends on", caption: "Impact" },
-    { src: "/anaplan/05-lint.png", alt: "Lint: findings against the Planual, each with its rule number", caption: "Planual lint" },
-];
-
+const shotSrc = ["/anaplan/summary.png", "/anaplan/02-modules.png", "/anaplan/03-line_items.png", "/anaplan/04-impact.png", "/anaplan/05-lint.png"];
+const heroSrc = ["/anaplan/panel-summary.png", "/anaplan/panel-modules.png", "/anaplan/panel-line_items.png", "/anaplan/panel-impact.png", "/anaplan/panel-lint.png"];
+const lockTone = ["bg-green-500/15 text-green-300", "bg-blue-500/15 text-blue-300", "bg-amber-500/15 text-amber-300", "bg-red-500/15 text-red-300", "bg-gray-500/20 text-gray-300"];
 
 type Store = "chrome" | "firefox";
 
-const stores: Record<Store, { url: string; logo: string; eyebrow: string; name: string; label: string }> = {
-    chrome: {
-        url: chromeStoreUrl,
-        logo: "/anaplan/badges/chrome.svg",
-        eyebrow: "Available in the",
-        name: "Chrome Web Store",
-        label: "Add Anaplan Toolkit to Chrome from the Chrome Web Store",
-    },
-    firefox: {
-        url: firefoxStoreUrl,
-        logo: "/anaplan/badges/firefox.svg",
-        eyebrow: "Get the add-on for",
-        name: "Firefox",
-        label: "Add Anaplan Toolkit to Firefox from Firefox Add-ons",
-    },
-};
-
-const marquee = [
-    "Action IDs", "Process steps", "Impact analysis", "Planual lint", "Formula search", "Model docs as Markdown", "Lock Monitor",
-    "Saved views", "Linked pages", "Run actions", "Bulk create & delete", "Revision tags", "Workspace storage", "CSV export",
-];
+const storeLogo: Record<Store, string> = { chrome: "/anaplan/badges/chrome.svg", firefox: "/anaplan/badges/firefox.svg" };
 
 const Dot = () => <span className="h-1.5 w-1.5 flex-none rounded-full bg-red-500" />;
 
@@ -233,20 +53,23 @@ const Heading = ({ children }: { children: React.ReactNode }) => (
 const card = "rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm";
 
 const StoreButton = ({ store, tone = "light" }: { store: Store; tone?: "light" | "dark" }) => {
-    const s = stores[store];
+    const t = useT();
+    const { locale } = useRouter();
+    const s = t.stores[store];
+    const url = store === "chrome" ? chromeStoreUrl : locale === "ja" ? firefoxStoreUrlJa : firefoxStoreUrl;
     const toneClass =
         tone === "light"
             ? "bg-white text-gray-900 hover:bg-gray-100 ring-white/40"
             : "bg-gray-900 text-white hover:bg-gray-800 ring-white/10";
     return (
         <a
-            href={s.url}
+            href={url}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={s.label}
             className={`group inline-flex h-14 min-w-[13rem] items-center gap-3 rounded-2xl px-4 shadow-lg ring-1 transition hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 ${toneClass}`}
         >
-            <Image src={s.logo} alt="" width={32} height={32} unoptimized className="h-8 w-8 flex-none" />
+            <Image src={storeLogo[store]} alt="" width={32} height={32} unoptimized className="h-8 w-8 flex-none" />
             <span className="flex flex-col text-left leading-tight">
                 <span className={`text-[11px] font-medium ${tone === "light" ? "text-gray-500" : "text-gray-300"}`}>{s.eyebrow}</span>
                 <span className="text-base font-semibold tracking-tight">{s.name}</span>
@@ -255,15 +78,10 @@ const StoreButton = ({ store, tone = "light" }: { store: Store; tone?: "light" |
     );
 };
 
-const heroSlides = [
-    { src: "/anaplan/panel-summary.png", alt: "Summary: the model's name, IDs, size and structure counts", caption: "Summary", problem: "How big is this model, and what is in it?", solves: "Model name, IDs, size and structure counts on one screen, with every report one click away, instead of opening settings, Model Management and the blueprint to piece it together." },
-    { src: "/anaplan/panel-modules.png", alt: "Modules report with dimensions, time scale and the App pages that read each module", caption: "Modules", problem: "Which modules feed an App page, and which feed nothing?", solves: "Every module with its dimensions, time scale and the pages that read it. The Not on a page tab lists modules no page uses, so you can see what is safe to question." },
-    { src: "/anaplan/panel-line_items.png", alt: "Line Items report with formats, applies-to and formulas", caption: "Line Items", problem: "Where is that formula, and what else looks like it?", solves: "Every line item's format, applies-to and formula in one searchable, sortable table, so you can find a pattern across the model without opening module after module." },
-    { src: "/anaplan/panel-impact.png", alt: "Impact: what uses each line item and what it depends on", caption: "Impact", problem: "What breaks if I change this line item?", solves: "For every line item, which formulas use it and which it uses, directly and all the way down, with the modules and App pages reached. Line items nothing uses show up too." },
-    { src: "/anaplan/panel-lint.png", alt: "Lint: findings against the Planual, each with its rule number", caption: "Planual lint", problem: "Does this model follow the Planual?", solves: "Findings against Anaplan's Planual, each with the rule's own number linked to its page. They are prompts to look, not verdicts, and the same checks mark the formula editor and Blueprint view." },
-];
-
 const HeroCarousel = () => {
+    const t = useT();
+    const u = t.ui;
+    const heroSlides = t.heroSlides.map((s, k) => ({ ...s, src: heroSrc[k] }));
     const [i, setI] = useState(0);
     const [hover, setHover] = useState(false);
     const [stopped, setStopped] = useState(false);
@@ -287,7 +105,7 @@ const HeroCarousel = () => {
             className="relative mx-auto w-full max-w-md lg:mr-0"
             role="region"
             aria-roledescription="carousel"
-            aria-label="Anaplan Toolkit side panel screenshots"
+            aria-label={u.carouselLabel}
         >
             <div
                 className="relative overflow-hidden rounded-2xl border border-white/10 bg-white shadow-[0_40px_120px_-20px_rgba(244,63,94,0.35)]"
@@ -301,7 +119,7 @@ const HeroCarousel = () => {
                         className={`absolute inset-0 ${reduced ? "" : "transition-opacity duration-500"} ${k === i ? "opacity-100" : "pointer-events-none opacity-0"}`}
                         role="group"
                         aria-roledescription="slide"
-                        aria-label={`${k + 1} of ${n}: ${s.caption}`}
+                        aria-label={u.slideOf(k + 1, n, s.caption)}
                         aria-hidden={k !== i}
                     >
                         <Image src={s.src} alt={s.alt} width={1408} height={1948} priority={k === 0} sizes="(min-width: 1024px) 28rem, 90vw" className="h-full w-full object-cover object-top" />
@@ -315,7 +133,7 @@ const HeroCarousel = () => {
                         <span className="group">
                             <button
                                 type="button"
-                                aria-label={`How ${heroSlides[i].caption} helps`}
+                                aria-label={u.howHelpsAria(heroSlides[i].caption)}
                                 aria-describedby="hero-hint"
                                 className="flex h-4 w-4 items-center justify-center rounded-full border border-white/25 text-[10px] font-semibold leading-none text-gray-300 transition hover:border-red-400 hover:text-white focus:outline-none focus-visible:border-red-400 focus-visible:text-white"
                             >
@@ -326,7 +144,7 @@ const HeroCarousel = () => {
                                 role="tooltip"
                                 className="pointer-events-none absolute bottom-full left-0 z-10 mb-2 w-[min(18rem,calc(100vw-2rem))] rounded-xl border border-white/15 bg-[#1a1a22] p-3 text-xs leading-relaxed text-gray-200 opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
                             >
-                                <b className="mb-1 block text-white">How it helps</b>
+                                <b className="mb-1 block text-white">{u.howItHelps}</b>
                                 {heroSlides[i].solves}
                             </span>
                         </span>
@@ -334,14 +152,14 @@ const HeroCarousel = () => {
                     <div className="mt-1 text-sm font-semibold leading-snug text-white" aria-live="polite">{heroSlides[i].problem}</div>
                 </div>
                 <div className="flex flex-none items-center gap-2">
-                    <button type="button" onClick={() => setStopped((v) => !v)} aria-label={stopped ? "Play slideshow" : "Pause slideshow"} aria-pressed={stopped} className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-[11px] text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">{stopped ? "▶" : "❚❚"}</button>
-                    <button type="button" onClick={() => go(-1)} aria-label="Previous screenshot" className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">←</button>
+                    <button type="button" onClick={() => setStopped((v) => !v)} aria-label={stopped ? u.play : u.pause} aria-pressed={stopped} className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-[11px] text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">{stopped ? "▶" : "❚❚"}</button>
+                    <button type="button" onClick={() => go(-1)} aria-label={u.prev} className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">←</button>
                     <div className="flex items-center gap-1.5">
                         {heroSlides.map((s, k) => (
-                            <button key={s.src} type="button" onClick={() => setI(k)} aria-label={`Show ${s.caption}`} title={s.problem} aria-current={k === i} className={`h-1.5 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 ${k === i ? "w-5 bg-red-500" : "w-1.5 bg-white/25 hover:bg-white/50"}`} />
+                            <button key={s.src} type="button" onClick={() => setI(k)} aria-label={u.show(s.caption)} title={s.problem} aria-current={k === i} className={`h-1.5 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 ${k === i ? "w-5 bg-red-500" : "w-1.5 bg-white/25 hover:bg-white/50"}`} />
                         ))}
                     </div>
-                    <button type="button" onClick={() => go(1)} aria-label="Next screenshot" className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">→</button>
+                    <button type="button" onClick={() => go(1)} aria-label={u.next} className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-gray-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">→</button>
                 </div>
             </div>
         </div>
@@ -350,19 +168,54 @@ const HeroCarousel = () => {
 
 const AnaplanToolkit = () => {
     const [tab, setTab] = useState(0);
-
+    const { locale } = useRouter();
+    const ja = locale === "ja";
+    const t = useT();
+    const u = t.ui;
+    const { whatsNew, reportGroups, roadmap, faqs, steps, privacy, shortcuts, marquee } = t;
+    const shots = t.shots.map((s, k) => ({ ...s, src: shotSrc[k] }));
+    const reportCount = reportGroups.reduce((n, g) => n + g.items.length, 0);
     const group = reportGroups[tab];
+    const home = ja ? "https://umang.dev/ja/anaplan" : "https://umang.dev/anaplan";
+
+    const jsonLd = [
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Anaplan Toolkit",
+            alternateName: "Anaplan Toolkit browser extension",
+            applicationCategory: "DeveloperApplication",
+            applicationSubCategory: "Browser extension",
+            operatingSystem: "Chrome, Edge, Firefox",
+            softwareVersion: version,
+            url: home,
+            inLanguage: ja ? "ja" : "en",
+            image: "https://umang.dev/anaplan/summary.png",
+            description: t.pageDesc,
+            downloadUrl: [chromeStoreUrl, firefoxStoreUrl],
+            installUrl: chromeStoreUrl,
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            author: { "@type": "Person", name: "Umang Chauhan", url: "https://umang.dev" },
+            featureList: reportGroups.flatMap((g) => g.items.map((i) => i.name)),
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            inLanguage: ja ? "ja" : "en",
+            mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+        },
+    ];
 
     return (
         <ToolkitShell
-            title={pageTitle}
-            desc={pageDesc}
+            title={t.pageTitle}
+            desc={t.pageDesc}
             path="/anaplan"
             ogImage="https://umang.dev/anaplan/summary.png"
-            ogTitle="Anaplan Toolkit — free Anaplan model analyzer & API helper"
+            ogTitle={t.ogTitle}
             onLanding
             dark
-            keywords={pageKeywords}
+            keywords={t.pageKeywords}
             jsonLd={jsonLd}
         >
             {/* Hero */}
@@ -385,24 +238,18 @@ const AnaplanToolkit = () => {
                     <div>
                         <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-gray-200">
                             <Dot />
-                            Free Chrome &amp; Firefox extension for Anaplan · v{version}
+                            {u.badge} · v{version}
                         </span>
                         <h1 className="mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl">
-                            The side panel Anaplan{" "}
-                            <span className="bg-gradient-to-r from-red-400 via-red-500 to-orange-400 bg-clip-text text-transparent">is missing.</span>
+                            {ja ? "Anaplanに足りなかった" : "The side panel Anaplan"}{" "}
+                            <span className={`bg-gradient-to-r from-red-400 via-red-500 to-orange-400 bg-clip-text text-transparent ${ja ? "inline-block" : ""}`}>{ja ? "サイドパネル。" : "is missing."}</span>
                         </h1>
                         <p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-300">
-                            Stop digging through blueprints, tabs and exports to answer simple questions about your model. Open the panel beside any
-                            model and get the answer in one click.
+                            {u.heroLead}
                         </p>
 
                         <ul className="mt-6 grid gap-x-6 gap-y-2.5 text-[15px] text-gray-200 sm:grid-cols-2">
-                            {[
-                                ["Find IDs", "action, import, export and process IDs for the API"],
-                                ["Trace impact", "what uses a line item, and what it depends on"],
-                                ["Lint & document", "Planual checks and the model as Markdown"],
-                                ["Watch locks", "know when the model is busy, locked or free"],
-                            ].map(([t, b]) => (
+                            {u.heroPoints.map(([t, b]) => (
                                 <li key={t} className="flex gap-2.5">
                                     <span className="mt-2"><Dot /></span>
                                     <span><b className="font-semibold text-white">{t}</b> <span className="text-gray-400">· {b}</span></span>
@@ -415,7 +262,7 @@ const AnaplanToolkit = () => {
                             <StoreButton store="firefox" tone="dark" />
                         </div>
                         <p className="mt-4 text-sm text-gray-400">
-                            Free · Reports are read-only · No data leaves your browser · Independent of Anaplan, Inc.
+                            {u.heroNote}
                         </p>
                     </div>
 
@@ -434,12 +281,7 @@ const AnaplanToolkit = () => {
 
             {/* Stats */}
             <section className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-16 text-center sm:px-6 md:grid-cols-4">
-                {[
-                    [String(reportCount), "reports on model structure, usage and status, one panel"],
-                    ["1 click", "to export every report as CSVs in one .zip"],
-                    ["0", "passwords, tokens or third-party servers involved"],
-                    ["$0", "free to use, no sign-up"],
-                ].map(([n, l]) => (
+                {u.stats(reportCount).map(([n, l]) => (
                     <div key={l}>
                         <div className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl">{n}</div>
                         <div className="mx-auto mt-2 max-w-[13rem] text-sm leading-snug text-gray-400">{l}</div>
@@ -450,8 +292,8 @@ const AnaplanToolkit = () => {
             {/* Bento: what's new */}
             <section id="features" className="mx-auto max-w-6xl scroll-mt-20 px-4 pb-24 sm:px-6">
                 <div className="max-w-2xl">
-                    <Eyebrow>New in {version}</Eyebrow>
-                    <Heading>Built for the questions you actually ask</Heading>
+                    <Eyebrow>{u.newIn(version)}</Eyebrow>
+                    <Heading>{u.featuresHeading}</Heading>
                 </div>
                 <div className="mt-12 grid gap-4 lg:grid-cols-6">
                     {/* Impact */}
@@ -513,7 +355,7 @@ const AnaplanToolkit = () => {
                                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-300">{whatsNew[5].body}</p>
                             </div>
                             <a href="#reports" className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 hover:bg-gray-200">
-                                Browse all {reportCount} reports →
+                                {u.browseAll(reportCount)}
                             </a>
                         </div>
                     </div>
@@ -524,10 +366,10 @@ const AnaplanToolkit = () => {
             <section id="reports" className="scroll-mt-20 border-t border-white/10 bg-white/[0.02] py-24">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6">
                     <div className="max-w-2xl">
-                        <Eyebrow>Reports</Eyebrow>
-                        <Heading>Answers Anaplan doesn&apos;t put on one screen</Heading>
+                        <Eyebrow>{u.reportsEyebrow}</Eyebrow>
+                        <Heading>{u.reportsHeading}</Heading>
                         <p className="mt-4 text-gray-300">
-                            Each report is gathered on demand from the model in your active tab, cached for that model, searchable and exportable to CSV.
+                            {u.reportsLead}
                         </p>
                     </div>
                     <div className="mt-10 flex flex-wrap gap-2" role="tablist">
@@ -552,7 +394,7 @@ const AnaplanToolkit = () => {
                         ))}
                     </div>
                     <ul className="mt-10 grid gap-x-8 gap-y-3 text-sm text-gray-300 sm:grid-cols-2 lg:grid-cols-3">
-                        {["Fuzzy search across every column", "Sort by any column header", "One-click CSV export, in your sort order", "Cached per model — switch freely", "Live progress while large models load", "Fast on tables with thousands of rows"].map((t) => (
+                        {u.reportPerks.map((t) => (
                             <li key={t} className="flex items-center gap-2.5"><Dot />{t}</li>
                         ))}
                     </ul>
@@ -562,10 +404,10 @@ const AnaplanToolkit = () => {
             {/* Gallery */}
             <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
                 <div className="max-w-2xl">
-                    <Eyebrow>In the panel</Eyebrow>
-                    <Heading>Lives right beside your model</Heading>
+                    <Eyebrow>{u.galleryEyebrow}</Eyebrow>
+                    <Heading>{u.galleryHeading}</Heading>
                     <p className="mt-4 text-gray-300">
-                        The panel follows the model in front of you. Switch tabs or models and it switches with you, keeping each model&apos;s results under its own key.
+                        {u.galleryLead}
                     </p>
                 </div>
                 <div className="mt-10 grid gap-5 md:grid-cols-6">
@@ -584,18 +426,13 @@ const AnaplanToolkit = () => {
             <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
                 <div className="grid gap-4 lg:grid-cols-2">
                     <div className={`${card} p-8 sm:p-10`}>
-                        <Eyebrow>Formula editor</Eyebrow>
-                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">Navigate formulas like code</h2>
+                        <Eyebrow>{u.fxEyebrow}</Eyebrow>
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">{u.fxHeading}</h2>
                         <p className="mt-3 text-sm leading-relaxed text-gray-300">
-                            Work through a dependency chain without hunting through tabs. Everything reads Anaplan&apos;s in-page model data; no server is contacted and nothing is changed.
+                            {u.fxLead}
                         </p>
                         <ul className="mt-6 space-y-4">
-                            {[
-                                ["Jump to a reference", "Cmd/Ctrl+click opens a module, line item, list or subset; Shift opens a new tab."],
-                                ["Readable hover cards", "Format, applies to, time scale and a formula with THEN/ELSE on their own lines, plus used by and depends on."],
-                                ["Function help", "Hover ITEM(, [LOOKUP: …], IF and more for the category, description and a help link."],
-                                ["Spot slips early", "Markers for unbalanced brackets, unterminated quotes and a Module.'x' that doesn't exist."],
-                            ].map(([t, b]) => (
+                            {u.fxPoints.map(([t, b]) => (
                                 <li key={t} className="flex gap-3">
                                     <span className="mt-1.5"><Dot /></span>
                                     <div>
@@ -607,20 +444,20 @@ const AnaplanToolkit = () => {
                         </ul>
                     </div>
                     <div className={`${card} flex flex-col p-8 sm:p-10`}>
-                        <Eyebrow>Lock Monitor</Eyebrow>
-                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">Know when the model is free</h2>
+                        <Eyebrow>{u.lockEyebrow}</Eyebrow>
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">{u.lockHeading}</h2>
                         <p className="mt-3 text-sm leading-relaxed text-gray-300">
-                            Before a big import or a deployment, find out whether anything else is running. It asks Anaplan for the model&apos;s status at an interval you choose, from every second to every minute for up to 12 hours, and records every answer.
+                            {u.lockLead}
                         </p>
                         <div className="mt-6 flex flex-wrap gap-2 text-xs">
-                            {[["Available", "bg-green-500/15 text-green-300"], ["Updating", "bg-blue-500/15 text-blue-300"], ["Busy", "bg-amber-500/15 text-amber-300"], ["Locked", "bg-red-500/15 text-red-300"], ["Offline", "bg-gray-500/20 text-gray-300"]].map(([t, c]) => (
-                                <span key={t} className={`rounded-full px-3 py-1 font-medium ${c}`}>{t}</span>
+                            {u.lockStates.map((t, k) => (
+                                <span key={t} className={`rounded-full px-3 py-1 font-medium ${lockTone[k]}`}>{t}</span>
                             ))}
                         </div>
                         <div className="relative mt-6 flex-1 overflow-hidden rounded-2xl border border-white/10" style={{ minHeight: 220, maxHeight: 340 }}>
                             <Image
                                 src="/anaplan/lock-monitor.png"
-                                alt="Lock Monitor checks: the model available for 100% of 12 checks a second apart, median reply 208 ms, with each check listed"
+                                alt={u.lockAlt}
                                 width={1404}
                                 height={1936}
                                 className="w-full"
@@ -634,8 +471,8 @@ const AnaplanToolkit = () => {
             {/* How it works */}
             <section id="how" className="scroll-mt-20 border-t border-white/10 bg-white/[0.02] py-24">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                    <Eyebrow>How it works</Eyebrow>
-                    <Heading>Three steps, no setup</Heading>
+                    <Eyebrow>{u.howEyebrow}</Eyebrow>
+                    <Heading>{u.howHeading}</Heading>
                     <ol className="mt-12 grid gap-4 md:grid-cols-3">
                         {steps.map((s, i) => (
                             <li key={s.title} className={`${card} relative p-7`}>
@@ -647,18 +484,22 @@ const AnaplanToolkit = () => {
                     </ol>
                     <div className={`${card} mt-4 overflow-hidden`}>
                         <div className="border-b border-white/10 px-6 py-4">
-                            <h3 className="font-semibold text-white">Keyboard shortcuts</h3>
+                            <h3 className="font-semibold text-white">{u.kbTitle}</h3>
                             <p className="mt-1 text-sm text-gray-400">
-                                Inside the Anaplan modelling UI. <kbd className="font-mono">⌘⌥</kbd> on macOS, <kbd className="font-mono">Ctrl+Alt</kbd> on Windows and Linux.
+                                {ja ? (
+                                    <>Anaplanのモデリング画面で使えます。macOSでは <kbd className="font-mono">⌘⌥</kbd>、WindowsとLinuxでは <kbd className="font-mono">Ctrl+Alt</kbd> です。</>
+                                ) : (
+                                    <>Inside the Anaplan modelling UI. <kbd className="font-mono">⌘⌥</kbd> on macOS, <kbd className="font-mono">Ctrl+Alt</kbd> on Windows and Linux.</>
+                                )}
                             </p>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-left text-sm">
                                 <thead className="text-gray-500">
                                     <tr>
-                                        <th className="px-6 py-3 font-medium">Shortcut</th>
-                                        <th className="px-6 py-3 font-medium">In Anaplan&apos;s</th>
-                                        <th className="px-6 py-3 font-medium">Opens</th>
+                                        <th className="px-6 py-3 font-medium">{u.kbCols[0]}</th>
+                                        <th className="px-6 py-3 font-medium">{u.kbCols[1]}</th>
+                                        <th className="px-6 py-3 font-medium">{u.kbCols[2]}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
@@ -679,8 +520,8 @@ const AnaplanToolkit = () => {
             {/* Privacy */}
             <section id="privacy" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-24 sm:px-6">
                 <div className="max-w-2xl">
-                    <Eyebrow>Privacy</Eyebrow>
-                    <Heading>Your model data stays yours</Heading>
+                    <Eyebrow>{u.privacyEyebrow}</Eyebrow>
+                    <Heading>{u.privacyHeading}</Heading>
                 </div>
                 <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     {privacy.map((p) => (
@@ -695,8 +536,12 @@ const AnaplanToolkit = () => {
                     ))}
                 </div>
                 <p className="mt-8 text-sm text-gray-400">
-                    Permissions: access to <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs text-gray-200">https://*.anaplan.com/*</code>, the side panel, and local storage, plus notifications only if you turn on the Lock Monitor&apos;s <em>Notify me</em>. Read the full{" "}
-                    <Link href="/anaplan/toolkit/privacy" className="font-medium text-red-400 underline underline-offset-2 hover:text-red-300">privacy policy</Link>.
+                    {ja ? (
+                        <>権限：<code className="rounded bg-white/10 px-1.5 py-0.5 text-xs text-gray-200">https://*.anaplan.com/*</code> へのアクセス、サイドパネル、ローカルストレージ。通知は、Lock Monitorの <em>Notify me</em> をオンにした場合にだけ求められます。詳しくは<Link href="/anaplan/toolkit/privacy" className="font-medium text-red-400 underline underline-offset-2 hover:text-red-300">プライバシーポリシー</Link>をご覧ください。</>
+                    ) : (
+                        <>Permissions: access to <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs text-gray-200">https://*.anaplan.com/*</code>, the side panel, and local storage, plus notifications only if you turn on the Lock Monitor&apos;s <em>Notify me</em>. Read the full{" "}
+                    <Link href="/anaplan/toolkit/privacy" className="font-medium text-red-400 underline underline-offset-2 hover:text-red-300">privacy policy</Link>.</>
+                    )}
                 </p>
             </section>
 
@@ -704,15 +549,15 @@ const AnaplanToolkit = () => {
             <section id="roadmap" className="scroll-mt-20 border-t border-white/10 bg-white/[0.02] py-24">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6">
                     <div className="max-w-2xl">
-                        <Eyebrow>Roadmap</Eyebrow>
-                        <Heading>Where the Toolkit is heading</Heading>
-                        <p className="mt-4 text-gray-300">A direction, not a promise: order and scope can change.</p>
+                        <Eyebrow>{u.roadmapEyebrow}</Eyebrow>
+                        <Heading>{u.roadmapHeading}</Heading>
+                        <p className="mt-4 text-gray-300">{u.roadmapLead}</p>
                     </div>
                     <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {roadmap.map((r) => (
                             <div key={r.title} className={`${card} p-5 ${r.status === "not" ? "opacity-70" : ""}`}>
-                                <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${roadmapStatus[r.status].badge}`}>
-                                    {roadmapStatus[r.status].label}
+                                <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${roadmapBadge[r.status]}`}>
+                                    {t.roadmapLabels[r.status]}
                                 </span>
                                 <h3 className="mt-3 font-semibold text-white">{r.title}</h3>
                                 <p className="mt-1 text-sm leading-relaxed text-gray-400">{r.body}</p>
@@ -720,8 +565,8 @@ const AnaplanToolkit = () => {
                         ))}
                     </div>
                     <p className="mt-8 text-sm text-gray-400">
-                        Want something moved up, or something missing?{" "}
-                        <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit%20roadmap" className="font-medium text-red-400 underline underline-offset-2 hover:text-red-300">Tell me</a>.
+                        {u.roadmapAsk}{" "}
+                        <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit%20roadmap" className="font-medium text-red-400 underline underline-offset-2 hover:text-red-300">{u.roadmapTell}</a>{ja ? "" : "."}
                     </p>
                 </div>
             </section>
@@ -729,7 +574,7 @@ const AnaplanToolkit = () => {
             {/* FAQ */}
             <section id="faq" className="mx-auto max-w-4xl scroll-mt-20 px-4 py-24 sm:px-6">
                 <Eyebrow>FAQ</Eyebrow>
-                <Heading>Anaplan questions, answered</Heading>
+                <Heading>{u.faqHeading}</Heading>
                 <div className="mt-10 divide-y divide-white/10 rounded-3xl border border-white/10 bg-white/[0.03]">
                     {faqs.map((f) => (
                         <details key={f.q} className="group p-5 sm:px-7">
@@ -745,27 +590,27 @@ const AnaplanToolkit = () => {
 
             {/* Guides */}
             <section id="guides" className="mx-auto max-w-6xl scroll-mt-20 px-4 pb-24 sm:px-6">
-                <Eyebrow>Guides</Eyebrow>
-                <Heading>How to improve an Anaplan model</Heading>
+                <Eyebrow>{u.guidesEyebrow}</Eyebrow>
+                <Heading>{u.guidesHeading}</Heading>
                 <p className="mt-4 text-gray-300">
-                    Practical routines for builders and CoE leads: measure the model, fix structure, retire unused line items, keep formulas readable and check model health every month.
+                    {u.guidesLead}
                 </p>
                 <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {guides.slice(0, 6).map((g) => (
                         <Link key={g.slug} href={`/anaplan/guides/${g.slug}`} className={`${card} group flex flex-col overflow-hidden transition hover:border-red-500/40 hover:bg-white/[0.06]`}>
                             <HeroArt kind={g.hero} label="" className="h-32" />
                             <div className="flex flex-1 flex-col p-5">
-                                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-red-400">{g.category}</p>
-                                <p className="mt-2 font-semibold text-white">{g.title}</p>
-                                <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-300">{g.desc}</p>
-                                <p className="mt-4 text-sm font-medium text-red-400">Read the guide →</p>
+                                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-red-400">{ja ? guidesJa[g.slug].category : g.category}</p>
+                                <p className="mt-2 font-semibold text-white">{ja ? guidesJa[g.slug].title : g.title}</p>
+                                <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-300">{ja ? guidesJa[g.slug].desc : g.desc}</p>
+                                <p className="mt-4 text-sm font-medium text-red-400">{u.readGuide}</p>
                             </div>
                         </Link>
                     ))}
                 </div>
                 <p className="mt-6">
                     <Link href="/anaplan/guides" className="text-sm font-medium text-red-400 underline underline-offset-2 hover:text-red-300">
-                        All {guides.length} Anaplan guides →
+                        {u.allGuides(guides.length)}
                     </Link>
                 </p>
             </section>
@@ -776,23 +621,23 @@ const AnaplanToolkit = () => {
                     <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/15 blur-3xl" aria-hidden="true" />
                     <div className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-black/20 blur-3xl" aria-hidden="true" />
                     <Image src="/anaplan/icon.png" alt="" width={72} height={72} className="relative mx-auto rounded-2xl ring-4 ring-white/25" />
-                    <h2 className="relative mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">Stop clicking through blueprints.</h2>
+                    <h2 className="relative mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">{u.getHeading}</h2>
                     <p className="relative mx-auto mt-4 max-w-xl text-red-50">
-                        Free on the Chrome Web Store (Chrome, Edge and other Chromium browsers) and Firefox Add-ons (Firefox 140+).
+                        {u.getLead}
                     </p>
                     <div className="relative mt-8 flex flex-wrap justify-center gap-3">
                         <StoreButton store="chrome" />
                         <StoreButton store="firefox" tone="dark" />
                     </div>
                     <p className="relative mt-6 text-sm text-red-50">
-                        Saves you time?{" "}
-                        <a href={sponsorUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-white underline underline-offset-2">♥ Sponsor the project on GitHub</a>
+                        {u.sponsorQ}{" "}
+                        <a href={sponsorUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-white underline underline-offset-2">{u.sponsorLink}</a>
                     </p>
                     <p className="relative mt-2 text-sm text-red-50">
-                        Questions or feedback?{" "}
+                        {u.feedbackQ}{" "}
                         <a href="mailto:contact@umang.dev?subject=Anaplan%20Toolkit" className="font-medium text-white underline underline-offset-2">contact@umang.dev</a>
                         {" · "}
-                        <Link href="/anaplan/toolkit/privacy" className="font-medium text-white underline underline-offset-2">Privacy policy</Link>
+                        <Link href="/anaplan/toolkit/privacy" className="font-medium text-white underline underline-offset-2">{u.privacyPolicy}</Link>
                     </p>
                 </div>
             </section>

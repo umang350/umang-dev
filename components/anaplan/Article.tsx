@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import ToolkitShell from "@/components/anaplan/ToolkitShell";
 import { HeroArt } from "@/components/anaplan/Viz";
 import { guides } from "@/data/anaplan/guides";
+import { guidesJa } from "@/data/anaplan/guides.ja";
 
 // Layout and text helpers shared by the articles under /anaplan/guides.
 
@@ -52,14 +54,21 @@ type Props = {
 const ogImage = "https://umang.dev/anaplan/summary.png";
 
 const Article = ({ slug, title, desc, kicker, published, readMinutes, children }: Props) => {
+    const ja = useRouter().locale === "ja";
     const path = `/anaplan/guides/${slug}`;
     const guide = guides.find((g) => g.slug === slug);
+    // Under /ja the caller passes the Japanese title and description; the
+    // SEO title, keywords and category come from guides.ja.ts here.
+    const jaMeta = ja ? guidesJa[slug] : undefined;
+    const category = jaMeta?.category ?? guide?.category;
     // Same category first, then the rest, four at most.
     const others = guides
         .filter((g) => g.slug !== slug)
         .sort((a, b) => Number(b.category === guide?.category) - Number(a.category === guide?.category))
-        .slice(0, 4);
-    const url = `https://umang.dev${path}`;
+        .slice(0, 4)
+        .map((g) => ({ slug: g.slug, title: (ja && guidesJa[g.slug]?.title) || g.title }));
+    const base = ja ? "https://umang.dev/ja" : "https://umang.dev";
+    const url = `${base}${path}`;
     const jsonLd = [
         {
             "@context": "https://schema.org",
@@ -70,7 +79,7 @@ const Article = ({ slug, title, desc, kicker, published, readMinutes, children }
             dateModified: published,
             mainEntityOfPage: url,
             image: ogImage,
-            inLanguage: "en",
+            inLanguage: ja ? "ja" : "en",
             author: { "@type": "Person", name: "Umang Chauhan", url: "https://umang.dev" },
             publisher: { "@type": "Person", name: "Umang Chauhan", url: "https://umang.dev" },
         },
@@ -78,48 +87,50 @@ const Article = ({ slug, title, desc, kicker, published, readMinutes, children }
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Anaplan Toolkit", item: "https://umang.dev/anaplan" },
-                { "@type": "ListItem", position: 2, name: "Guides", item: "https://umang.dev/anaplan#guides" },
+                { "@type": "ListItem", position: 1, name: "Anaplan Toolkit", item: `${base}/anaplan` },
+                { "@type": "ListItem", position: 2, name: ja ? "ガイド" : "Guides", item: `${base}/anaplan/guides` },
                 { "@type": "ListItem", position: 3, name: title, item: url },
             ],
         },
     ];
     return (
-        <ToolkitShell title={guide?.seoTitle ?? `${title} | Anaplan Toolkit`} ogTitle={title} desc={desc} path={path} ogImage={ogImage} ogType="article" keywords={guide?.keywords} jsonLd={jsonLd}>
+        <ToolkitShell title={jaMeta?.seoTitle ?? guide?.seoTitle ?? `${title} | Anaplan Toolkit`} ogTitle={title} desc={desc} path={path} ogImage={ogImage} ogType="article" keywords={jaMeta?.keywords ?? guide?.keywords} jsonLd={jsonLd}>
             <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-20">
-                <nav className="text-sm text-gray-500" aria-label="Breadcrumb">
+                <nav className="text-sm text-gray-500" aria-label={ja ? "パンくずリスト" : "Breadcrumb"}>
                     <Link href="/anaplan" className="hover:text-gray-800">Anaplan Toolkit</Link>
                     <span className="mx-2">/</span>
-                    <Link href="/anaplan#guides" className="hover:text-gray-800">Guides</Link>
+                    <Link href="/anaplan/guides" className="hover:text-gray-800">{ja ? "ガイド" : "Guides"}</Link>
                 </nav>
-                <p className="mt-8 text-sm font-semibold uppercase tracking-wider text-red-600">{kicker}{guide ? ` · ${guide.category}` : ""}</p>
+                <p className="mt-8 text-sm font-semibold uppercase tracking-wider text-red-600">{ja ? "ガイド" : kicker}{category ? ` · ${category}` : ""}</p>
                 <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
                 <p className="mt-3 text-sm text-gray-500">
-                    By Umang Chauhan · {new Date(published).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })} · {readMinutes} min read
+                    {ja
+                        ? `著者：Umang Chauhan · ${new Date(published).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })} · 約${readMinutes}分で読めます`
+                        : `By Umang Chauhan · ${new Date(published).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })} · ${readMinutes} min read`}
                 </p>
                 <p className="mt-6 text-lg leading-relaxed text-gray-700">{desc}</p>
                 {guide && (
                     <div className="mt-8 overflow-hidden rounded-2xl border border-gray-200">
-                        <HeroArt kind={guide.hero} label={`Illustration for ${title}`} className="h-48 sm:h-64" />
+                        <HeroArt kind={guide.hero} label={ja ? `${title}のイラスト` : `Illustration for ${title}`} className="h-48 sm:h-64" />
                     </div>
                 )}
 
                 {children}
 
                 <section className="mt-16 rounded-2xl border border-gray-200 p-6">
-                    <p className="font-semibold">Do this audit in minutes, not days</p>
+                    <p className="font-semibold">{ja ? "この確認作業を、数日ではなく数分で" : "Do this audit in minutes, not days"}</p>
                     <p className="mt-2 text-sm leading-relaxed text-gray-600">
-                        Anaplan Toolkit is a free Chrome and Firefox extension that reads the structure of the model you
-                        have open: modules, line items, lists, formulas, usage and storage. It talks only to Anaplan and
-                        sends nothing anywhere else.
+                        {ja
+                            ? "Anaplan Toolkit は、開いているモデルの構造（モジュール、ラインアイテム、リスト、数式、利用状況、容量）を読み取る無料のChrome・Firefox拡張機能です。通信先はAnaplanだけで、ほかのどこにも送信しません。"
+                            : "Anaplan Toolkit is a free Chrome and Firefox extension that reads the structure of the model you have open: modules, line items, lists, formulas, usage and storage. It talks only to Anaplan and sends nothing anywhere else."}
                     </p>
                     <Link href="/anaplan#get" className="mt-4 inline-block rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700">
-                        Get Anaplan Toolkit
+                        {ja ? "Anaplan Toolkit を入手" : "Get Anaplan Toolkit"}
                     </Link>
                 </section>
 
                 <section className="mt-12">
-                    <p className="text-sm font-semibold uppercase tracking-wider text-gray-500">More guides</p>
+                    <p className="text-sm font-semibold uppercase tracking-wider text-gray-500">{ja ? "ほかのガイド" : "More guides"}</p>
                     <ul className="mt-3 space-y-2">
                         {others.map((g) => (
                             <li key={g.slug}>
@@ -127,7 +138,7 @@ const Article = ({ slug, title, desc, kicker, published, readMinutes, children }
                             </li>
                         ))}
                     </ul>
-                    <Link href="/anaplan/guides" className="mt-4 inline-block text-sm font-medium text-gray-700 underline underline-offset-2 hover:text-gray-900">All Anaplan guides →</Link>
+                    <Link href="/anaplan/guides" className="mt-4 inline-block text-sm font-medium text-gray-700 underline underline-offset-2 hover:text-gray-900">{ja ? "Anaplanガイド一覧 →" : "All Anaplan guides →"}</Link>
                 </section>
             </article>
         </ToolkitShell>

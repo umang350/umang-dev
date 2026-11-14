@@ -1,7 +1,20 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { ReduceJa } from "@/components/anaplan/legacy.ja";
+import { guidesJa } from "@/data/anaplan/guides.ja";
 import Article, { Callout, H2, H3, OL, P, UL } from "@/components/anaplan/Article";
 
-const AnaplanReduceSize = () => (
+const AnaplanReduceSize = () => {
+    const ja = useRouter().locale === "ja";
+    if (ja) {
+        const t = guidesJa["reduce-anaplan-model-size"];
+        return (
+            <Article slug="reduce-anaplan-model-size" kicker="Guide" title={t.title} desc={t.desc} published="2026-10-25" readMinutes={9}>
+                <ReduceJa />
+            </Article>
+        );
+    }
+    return (
     <Article
         slug="reduce-anaplan-model-size"
         kicker="Guide"
@@ -131,6 +144,7 @@ const AnaplanReduceSize = () => (
             <Link href="/anaplan/guides/improve-anaplan-model-and-usage" className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700">How to improve an Anaplan model and how your team uses it</Link>.
         </P>
     </Article>
-);
+    );
+};
 
 export default AnaplanReduceSize;
