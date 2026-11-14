@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
 // Header, footer and head tags shared by every page under /anaplan. These
@@ -23,26 +24,44 @@ type Props = {
     ogType?: "website" | "article";
     // Dark chrome for the landing page.
     dark?: boolean;
+    // False when the page has no Japanese version (the guide articles): under
+    // /ja it then names the English URL as canonical and lists no alternates.
+    translated?: boolean;
     children: React.ReactNode;
 };
 
-const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, keywords, jsonLd, noindex = false, ogType = "website", dark = false, children }: Props) => {
+// Japanese has no spaces to break lines at: break headings between phrases
+// where the browser can (auto-phrase), and loosen the tight Latin leading.
+const jaType = "[&_h1]:[word-break:auto-phrase] [&_h2]:[word-break:auto-phrase] [&_h3]:[word-break:auto-phrase] [&_h1]:!leading-[1.2] [&_h2]:!leading-[1.25]";
+
+const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, keywords, jsonLd, noindex = false, ogType = "website", dark = false, translated = true, children }: Props) => {
     const base = onLanding ? "" : "/anaplan";
+    const ja = useRouter().locale === "ja";
+    const enUrl = `https://umang.dev${path}`;
+    const jaUrl = `https://umang.dev/ja${path}`;
+    const pageUrl = ja && translated ? jaUrl : enUrl;
+    const nav = ja
+        ? { reports: "レポート", how: "使い方", roadmap: "ロードマップ", guides: "ガイド", faq: "FAQ", privacy: "プライバシー", sponsor: "♥ 支援する", get: "入手する", policy: "プライバシーポリシー", sponsorFoot: "支援する", disclaimer: "Anaplan Toolkit は独立したツールであり、Anaplan, Inc. との提携、同社による承認や後援を受けたものではありません。" }
+        : { reports: "Reports", how: "How it works", roadmap: "Roadmap", guides: "Guides", faq: "FAQ", privacy: "Privacy", sponsor: "♥ Sponsor", get: "Get it", policy: "Privacy policy", sponsorFoot: "Sponsor", disclaimer: "Anaplan Toolkit is an independent tool and is not affiliated with, endorsed by, or sponsored by Anaplan, Inc." };
     return (
-        <div className={`min-h-screen w-full antialiased ${dark ? "bg-[#09090d] text-gray-100" : "bg-white text-gray-900"}`}>
+        <div className={`min-h-screen w-full antialiased ${ja ? jaType : ""} ${dark ? "bg-[#09090d] text-gray-100" : "bg-white text-gray-900"}`}>
             <Head>
                 <title>{title}</title>
                 <meta name="description" content={desc} />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" type="image/png" href="/anaplan/icon.png" />
-                <link rel="canonical" href={`https://umang.dev${path}`} />
+                <link rel="canonical" href={pageUrl} />
+                {translated && <link rel="alternate" hrefLang="en" href={enUrl} />}
+                {translated && <link rel="alternate" hrefLang="ja" href={jaUrl} />}
+                {translated && <link rel="alternate" hrefLang="x-default" href={enUrl} />}
                 {keywords && <meta name="keywords" content={keywords} />}
                 <meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1"} />
                 <meta name="author" content="Umang Chauhan" />
                 <meta property="og:site_name" content="Anaplan Toolkit" />
-                <meta property="og:locale" content="en_US" />
+                <meta property="og:locale" content={ja && translated ? "ja_JP" : "en_US"} />
+                {translated && <meta property="og:locale:alternate" content={ja ? "en_US" : "ja_JP"} />}
                 <meta property="og:type" content={ogType} />
-                <meta property="og:url" content={`https://umang.dev${path}`} />
+                <meta property="og:url" content={pageUrl} />
                 <meta property="og:title" content={ogTitle ?? title} />
                 <meta property="og:description" content={desc} />
                 {ogImage && <meta property="og:image" content={ogImage} />}
@@ -63,17 +82,24 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
                         <span className="text-[15px] font-semibold tracking-tight">Anaplan Toolkit</span>
                     </Link>
                     <nav className={`hidden items-center gap-7 text-sm md:flex ${dark ? "text-gray-400 [&_a:hover]:text-white" : "text-gray-600"}`}>
-                        <Link href={`${base}#reports`} className="hover:text-gray-900">Reports</Link>
-                        <Link href={`${base}#how`} className="hover:text-gray-900">How it works</Link>
-                        <Link href={`${base}#roadmap`} className="hover:text-gray-900">Roadmap</Link>
-                        <Link href={`${base}#guides`} className="hover:text-gray-900">Guides</Link>
-                        <Link href={`${base}#faq`} className="hover:text-gray-900">FAQ</Link>
-                        <Link href={`${base}#privacy`} className="hover:text-gray-900">Privacy</Link>
-                        <a href="https://github.com/sponsors/umang350" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">♥ Sponsor</a>
+                        <Link href={`${base}#reports`} className="hover:text-gray-900">{nav.reports}</Link>
+                        <Link href={`${base}#how`} className="hover:text-gray-900">{nav.how}</Link>
+                        <Link href={`${base}#roadmap`} className="hover:text-gray-900">{nav.roadmap}</Link>
+                        <Link href={`${base}#guides`} className="hover:text-gray-900">{nav.guides}</Link>
+                        <Link href={`${base}#faq`} className="hover:text-gray-900">{nav.faq}</Link>
+                        <Link href={`${base}#privacy`} className="hover:text-gray-900">{nav.privacy}</Link>
+                        <a href="https://github.com/sponsors/umang350" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">{nav.sponsor}</a>
                     </nav>
-                    <Link href={`${base}#get`} className={`rounded-lg px-3.5 py-2 text-sm font-medium ${dark ? "bg-white text-gray-900 hover:bg-gray-200" : "bg-gray-900 text-white hover:bg-gray-700"}`}>
-                        Get it
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        {(translated || ja) && (
+                            <Link href={path} locale={ja ? "en" : "ja"} hrefLang={ja ? "en" : "ja"} lang={ja ? "en" : "ja"} className={`text-sm font-medium ${dark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-gray-900"}`}>
+                                {ja ? "English" : "日本語"}
+                            </Link>
+                        )}
+                        <Link href={`${base}#get`} className={`rounded-lg px-3.5 py-2 text-sm font-medium ${dark ? "bg-white text-gray-900 hover:bg-gray-200" : "bg-gray-900 text-white hover:bg-gray-700"}`}>
+                            {nav.get}
+                        </Link>
+                    </div>
                 </div>
             </header>
 
@@ -84,12 +110,12 @@ const ToolkitShell = ({ title, ogTitle, desc, path, ogImage, onLanding = false, 
                     <p>
                         © 2026 Umang Chauhan · <a href="https://umang.dev" className="hover:text-gray-800">umang.dev</a>
                         {" · "}
-                        <Link href="/anaplan/toolkit/privacy" className="hover:text-gray-800">Privacy policy</Link>
+                        <Link href="/anaplan/toolkit/privacy" className="hover:text-gray-800">{nav.policy}</Link>
                         {" · "}
-                        <a href="https://github.com/sponsors/umang350" target="_blank" rel="noopener noreferrer" className="hover:text-gray-800">Sponsor</a>
+                        <a href="https://github.com/sponsors/umang350" target="_blank" rel="noopener noreferrer" className="hover:text-gray-800">{nav.sponsorFoot}</a>
                     </p>
                     <p className="max-w-xl md:text-right">
-                        Anaplan Toolkit is an independent tool and is not affiliated with, endorsed by, or sponsored by Anaplan, Inc.
+                        {nav.disclaimer}
                     </p>
                 </div>
             </footer>

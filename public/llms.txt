@@ -8,6 +8,7 @@ Not to be confused with Anaplan CoModeler (Anaplan's paid AI assistant) or Anapl
 - [Anaplan Toolkit](https://umang.dev/anaplan): features, install links, FAQ
 - [All Anaplan guides](https://umang.dev/anaplan/guides): index of every guide below
 - [Privacy policy](https://umang.dev/anaplan/toolkit/privacy)
+- [Anaplan Toolkit (日本語)](https://umang.dev/ja/anaplan): the same page in Japanese
 
 ## Guides
 - [How to improve an Anaplan model and how your team uses it](https://umang.dev/anaplan/guides/improve-anaplan-model-and-usage): A practical routine for builders and CoE leads: find structural problems, retire what nobody uses, keep formulas readable and make model health a monthly habit.
@@ -22,6 +23,20 @@ Not to be confused with Anaplan CoModeler (Anaplan's paid AI assistant) or Anapl
 - [Anaplan model documentation: what to write and how to keep it current](https://umang.dev/anaplan/guides/anaplan-model-documentation): What a useful Anaplan model document contains, why hand-written ones go stale, and how to generate the factual part from the model itself.
 - [From Excel to Anaplan: how to rethink a spreadsheet model, not copy it](https://umang.dev/anaplan/guides/excel-to-anaplan-migration): Excel formulas live in cells, Anaplan formulas live in line items. What changes when you move a planning model, a worked example and the traps of a lift-and-shift.
 - [Anaplan lists, subsets and line item subsets: shrink what you calculate](https://umang.dev/anaplan/guides/anaplan-lists-subsets-and-liss): Lists define what a module can hold. How subsets and line item subsets (LISS) cut the cells you carry, with a worked example and the rules for choosing between them.
+
+## Guides in Japanese (日本語)
+- [Anaplanモデルの改善方法と、チームでの使われ方の見直し](https://umang.dev/ja/anaplan/guides/improve-anaplan-model-and-usage)
+- [Anaplanモデルのサイズを小さくする方法](https://umang.dev/ja/anaplan/guides/reduce-anaplan-model-size)
+- [AnaplanのDISCOとは：モデルを速く保つアーキテクチャ](https://umang.dev/ja/anaplan/guides/anaplan-disco-model-architecture)
+- [Anaplanのスパース性とディメンション：本当のコストはセル数](https://umang.dev/ja/anaplan/guides/anaplan-sparsity-and-dimensionality)
+- [Anaplanの数式パフォーマンス：モデルを遅くする原因と直し方](https://umang.dev/ja/anaplan/guides/anaplan-formula-performance)
+- [Anaplanのデータハブ：作るべきタイミングと設計の考え方](https://umang.dev/ja/anaplan/guides/anaplan-data-hub)
+- [Anaplan API：アクション、インポート、エクスポート、プロセスのIDを調べる方法](https://umang.dev/ja/anaplan/guides/anaplan-api-action-ids-and-process-ids)
+- [実践のAnaplan Planual：重要なルールと確認の仕方](https://umang.dev/ja/anaplan/guides/anaplan-planual-best-practices)
+- [AnaplanのALMとリビジョンタグ：開発から本番への安全な道筋](https://umang.dev/ja/anaplan/guides/anaplan-alm-revision-tags)
+- [Anaplanのモデルドキュメント：何を書き、どう最新に保つか](https://umang.dev/ja/anaplan/guides/anaplan-model-documentation)
+- [ExcelからAnaplanへ：スプレッドシートをコピーせず、考え直す](https://umang.dev/ja/anaplan/guides/excel-to-anaplan-migration)
+- [Anaplanのリスト、サブセット、ラインアイテムサブセット：計算対象を絞る](https://umang.dev/ja/anaplan/guides/anaplan-lists-subsets-and-liss)
 
 ## Install
 - [Chrome Web Store](https://chromewebstore.google.com/detail/anaplan-toolkit/kbbgidpmmiechmccmmjpjkidihojdgnj)
