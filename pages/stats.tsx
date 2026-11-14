@@ -9,7 +9,7 @@ const PageName = "Statistics";
 
 const About = () => {
     return (
-        <Page currentPage={PageName} meta={{
+        <Page noindex currentPage={PageName} meta={{
             desc: "Deep dive into statistics"
         }}>
             <YoutubeSubCount />

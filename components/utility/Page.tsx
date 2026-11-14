@@ -6,7 +6,7 @@ import React from "react";
 import Script from "next/script";
 import { useRouter } from "next/router";
 
-function Page({ currentPage, meta: { title, desc }, overlayNav = false, children }: PageProps) {
+function Page({ currentPage, meta: { title, desc }, overlayNav = false, noindex = false, children }: PageProps) {
   const pageTitle = `${currentPage === "Home"
     ? "Umang Chauhan - Products, Strategy, Creator."
     : `${currentPage} - UMANG.dev`
@@ -51,10 +51,16 @@ function Page({ currentPage, meta: { title, desc }, overlayNav = false, children
         <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="canonical" href={pageUrl} />
-        <link rel="alternate" href={enUrl} hrefLang="x-default" />
-        <link rel="alternate" href={enUrl} hrefLang="en" />
-        <link rel="alternate" href={jaUrl} hrefLang="ja" />
+        {noindex ? (
+          <meta name="robots" content="noindex, follow" />
+        ) : (
+          <>
+            <link rel="canonical" href={pageUrl} />
+            <link rel="alternate" href={enUrl} hrefLang="x-default" />
+            <link rel="alternate" href={enUrl} hrefLang="en" />
+            <link rel="alternate" href={jaUrl} hrefLang="ja" />
+          </>
+        )}
 
 
         <meta name="title" content={pageTitle} />
@@ -144,6 +150,7 @@ export default Page;
 type PageProps = {
   currentPage: string;
   overlayNav?: boolean;
+  noindex?: boolean;
   meta: {
     title?: string;
     desc: string;
