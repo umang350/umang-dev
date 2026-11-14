@@ -15,7 +15,7 @@ export default function YoutubeLink() {
   const { data, error, isLoading } = useSWR<any>('/api/youtube_video_stat?id=' + videoId, fetcher);
 
   return (
-    <Page currentPage={'Youtube ' + videoId} meta={{
+    <Page noindex currentPage={'Youtube ' + videoId} meta={{
       title: videoId,
       desc: videoId
     }}>

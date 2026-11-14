@@ -19,6 +19,12 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      // Duplicate of the homepage; keep it out of the index.
+      {
+        source: '/beta',
+        destination: '/',
+        permanent: true,
+      },
       // The Anaplan Toolkit store listings link to the old privacy policy URL.
       {
         source: '/privacy/anaplan-toolkit',

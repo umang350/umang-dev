@@ -12,7 +12,7 @@ function Page404() {
   }, []);
 
   return (
-    <Page currentPage={"Page Not 404"} meta={{
+    <Page noindex currentPage={"Page Not 404"} meta={{
       title: "Page Not 404",
       desc: "Page Not 404"
     }}>

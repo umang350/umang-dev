@@ -1,18 +1,8 @@
-import Page from '@/components/utility/Page'
-import { routes } from "@/data/global"
-import Page404 from './404';
+import type { GetServerSideProps } from 'next'
 
-const PageName = "Creations";
-const Creations = () => {
-    return (
-        // <Page currentPage={PageName} meta={{
-        //     desc: routes.find(i => i.title === PageName).description
-        // }}>
-        // </Page>
-        
-        <Page404/>
-    )
+// This page was retired. Return a real 404 (not a 200 "soft 404").
+export const getServerSideProps: GetServerSideProps = async () => ({ notFound: true })
 
+export default function Creations() {
+  return null
 }
-
-export default Creations
