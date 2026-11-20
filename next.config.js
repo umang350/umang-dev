@@ -19,6 +19,12 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      // Old/guessed URL that Google still requests; send it to the homepage.
+      {
+        source: '/index',
+        destination: '/',
+        permanent: true,
+      },
       // Duplicate of the homepage; keep it out of the index.
       {
         source: '/beta',
