@@ -12,9 +12,12 @@ type Copy = typeof copy.en;
 // Anton has no Japanese glyphs, so Japanese headings use Dela Gothic One, an equally heavy display face.
 const displayFont = (ja: boolean) => (ja ? "font-display-ja" : "font-display uppercase");
 
+// Sections sit well apart, leaving room for the journey route (see Journey) to swoop from one to the next.
+const gap = "mt-28 sm:mt-36";
+
 const Panel = ({ id, label, ja, children }: { id?: string; label: string; ja: boolean; children: React.ReactNode }) => (
-  <section id={id} className={`${panel} mt-6 scroll-mt-24 p-8 sm:p-12`}>
-    <h2 className={`${displayFont(ja)} text-[clamp(40px,6vw,72px)] leading-[0.95]`}>{label}</h2>
+  <section id={id} data-journey data-reveal className={`${panel} relative ${gap} scroll-mt-24 p-8 sm:p-12`}>
+    <h2 className={`rise ${displayFont(ja)} text-[clamp(40px,6vw,72px)] leading-[0.95]`}>{label}</h2>
     <div className="mt-8">{children}</div>
   </section>
 );
@@ -112,7 +115,7 @@ const WorkCollage = () => (
       );
       const style = { transform: `rotate(${tilts[i % tilts.length]})` };
       return (
-        <li key={item.name}>
+        <li key={item.name} className="toss" style={{ ["--i" as string]: i, ["--spin" as string]: `${i % 2 ? 14 : -14}deg` }}>
           {item.href.startsWith("/")
             ? <Link href={item.href} className={className} style={style}>{content}</Link>
             : <a href={item.href} target="_blank" rel="noreferrer" className={className} style={style}>{content}</a>}
@@ -137,11 +140,11 @@ const ReelTile = ({ reel, hidden = false }: { reel: Reel; hidden?: boolean }) =>
 // Every reel runs past in an endless strip (the list is doubled so the loop is seamless).
 // It pauses on hover; with reduced motion it stops and scrolls by hand instead.
 const ReelsCarousel = ({ t, ja }: { t: Copy; ja: boolean }) => (
-  <section className="relative ml-[calc(50%-50vw)] mt-12 w-screen text-left text-black dark:text-white">
+  <section data-journey data-reveal className={`relative ml-[calc(50%-50vw)] ${gap} w-screen text-left text-black dark:text-white`}>
     <div className="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5">
       <div>
         <Eyebrow icon="instagram">{t.onInstagram} · {instagram.handle}</Eyebrow>
-        <h2 className={`mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.totalViews}</h2>
+        <h2 className={`rise mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.totalViews}</h2>
         <div className="mt-4 flex flex-wrap gap-2">
           {t.pillars.map((pillar) => (
             <span key={pillar} className="rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-600 dark:border-white/15 dark:text-white/80">{pillar}</span>
@@ -177,11 +180,11 @@ const VideoTile = ({ v, t, hidden = false }: { v: typeof youtube.videos[number];
 
 // Same endless strip as the reels: the list is doubled for a seamless loop, and it pauses on hover.
 const YoutubeSection = ({ t, ja }: { t: Copy; ja: boolean }) => (
-  <section className="relative ml-[calc(50%-50vw)] mt-12 w-screen text-left text-black dark:text-white">
+  <section data-journey data-reveal className={`relative ml-[calc(50%-50vw)] ${gap} w-screen text-left text-black dark:text-white`}>
     <div className="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5">
       <div>
         <Eyebrow icon="youtube">{t.onYoutube} · {youtube.handle}</Eyebrow>
-        <h2 className={`mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.youtubeTitle}</h2>
+        <h2 className={`rise mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.youtubeTitle}</h2>
         <div className="mt-4 flex flex-wrap gap-2">
           <span className="rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-600 dark:border-white/15 dark:text-white/80">{t.youtubeViews}</span>
         </div>
@@ -219,11 +222,11 @@ const PostCard = ({ p, ja, hidden = false }: { p: Post; ja: boolean; hidden?: bo
 
 // The same endless strip as the reels and videos, with a card per post.
 const SubstackSection = ({ posts, t, ja }: { posts: Post[]; t: Copy; ja: boolean }) => (
-  <section className="relative ml-[calc(50%-50vw)] mt-12 w-screen text-left text-black dark:text-white">
+  <section data-journey data-reveal className={`relative ml-[calc(50%-50vw)] ${gap} w-screen text-left text-black dark:text-white`}>
     <div className="mx-auto flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5">
       <div>
         <Eyebrow icon="substack">{t.onSubstack} · Umang Raw Enough</Eyebrow>
-        <h2 className={`mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.substackTitle}</h2>
+        <h2 className={`rise mt-3 ${displayFont(ja)} text-[clamp(40px,7vw,88px)] leading-[0.95]`}>{t.substackTitle}</h2>
       </div>
       <a href={links.substack} target="_blank" rel="noreferrer" className="rounded-full bg-[#ff6719] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90">
         {t.readPosts}
@@ -317,9 +320,13 @@ function HomeSections({ posts = [] }: { posts?: Post[] }) {
         </Panel>
       )}
 
-      <section className="mt-6 overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0a2aa8] via-[#1450f0] to-[#3d8bff] p-8 text-cream sm:p-12">
+      <section data-journey="end" data-reveal className={`relative ${gap} overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0a2aa8] via-[#1450f0] to-[#3d8bff] p-8 text-cream sm:p-12`}>
         <p className="font-display text-sm uppercase tracking-wide">· {t.contact}</p>
-        <h2 className={`mt-4 ${displayFont(ja)} text-[clamp(56px,11vw,150px)] leading-[0.9]`}>{t.letsTalk}</h2>
+        <h2 aria-label={t.letsTalk} className={`mt-4 ${displayFont(ja)} text-[clamp(56px,11vw,150px)] leading-[0.9]`}>
+          {Array.from(t.letsTalk).map((ch, i) => (
+            <span key={i} aria-hidden="true" className="pop" style={{ ["--i" as string]: i }}>{ch === " " ? "\u00a0" : ch}</span>
+          ))}
+        </h2>
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <a href={`mailto:${links.email}`} className="text-xl font-semibold underline decoration-cream/40 underline-offset-8 hover:decoration-cream">{links.email}</a>
           <span className="flex-1" />

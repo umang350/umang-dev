@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import Acrobat from "./Acrobat";
 import { copy, featured, instagram, links, more, Project } from "@/data/content/home";
 
 // Each project gets a mark you can recognise at a glance: the brand's own glyph where there is one.
@@ -232,7 +233,30 @@ const StatusRow = ({ t }: { t: typeof copy.en }) => (
   </div>
 );
 
+// As you scroll away, the full-bleed clip settles into a rounded card like the sections below it.
+// It shrinks toward its bottom edge, so it pulls away from the top of the page, not from the status row below it.
+const useSettleIntoCard = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const paint = () => {
+      raf = 0;
+      const p = Math.min(1, Math.max(0, window.scrollY / (el.offsetHeight * 0.85)));
+      el.style.transform = p ? `scale(${1 - 0.06 * p})` : "";
+      el.style.borderRadius = p ? `${Math.round(32 * p)}px` : "";
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(paint); };
+    paint();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); cancelAnimationFrame(raf); };
+  }, []);
+  return ref;
+};
+
 function Hero() {
+  const stage = useSettleIntoCard();
   const projects = [...featured, ...more];
   const byTitle = (t: string) => projects.find((p) => p.title === t) as Project;
   const anaplan = byTitle("Anaplan Toolkit");
@@ -244,8 +268,8 @@ function Hero() {
   const [firstSize, lastSize] = ja ? ["text-[18vw]", "text-[16vw]"] : ["text-[22vw]", "text-[19vw]"];
 
   return (
-    <section className="-mt-5 w-full text-left">
-      <div className="relative ml-[calc(50%-50vw)] h-[620px] w-screen overflow-hidden bg-[#1450f0] text-cream lg:h-[min(860px,100vh)] lg:min-h-[660px]">
+    <section data-journey="start" className="-mt-5 w-full text-left">
+      <div ref={stage} className="relative ml-[calc(50%-50vw)] h-[620px] w-screen origin-bottom overflow-hidden bg-[#1450f0] [transform:translateZ(0)] text-cream lg:h-[min(860px,100vh)] lg:min-h-[660px]">
         <Image src="/home/paris-v2-poster.jpg" alt="Umang Chauhan in front of the Eiffel Tower" fill priority sizes="100vw" className="object-cover object-[60%_50%] lg:object-center" />
         <BackgroundVideo className="absolute inset-0 h-full w-full object-cover object-[60%_50%] lg:object-center" />
         {/* Deepens the sky behind the name so the cream type stays readable */}
@@ -258,7 +282,7 @@ function Hero() {
         <div className="relative mx-auto h-full max-w-[1600px]">
           <h1 className="sr-only">{t.heading}</h1>
           <p aria-hidden="true" className={`absolute left-5 top-20 z-20 cursor-default select-none [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:left-8 lg:top-24 ${firstSize} ${nameFont}`}><RaisedLetters text={t.firstName} /></p>
-          <p aria-hidden="true" className={`absolute bottom-5 right-5 z-20 cursor-default select-none [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 ${lastSize} ${nameFont}`}><RaisedLetters text={t.lastName} /></p>
+          <p aria-hidden="true" className={`absolute bottom-5 right-5 z-20 cursor-default select-none [text-shadow:0_4px_40px_rgba(0,0,0,0.35)] lg:bottom-8 lg:right-8 ${lastSize} ${nameFont}`}><RaisedLetters text={t.lastName} /><Acrobat className="bottom-full left-[0.08em] -mb-[0.04em] h-[68px] w-[41px] lg:h-[96px] lg:w-[58px]" /></p>
 
           {/* The one clear action: a frosted-glass pill, so it reads as a button without out-shouting the name and the photo. */}
           <a href={links.calendly} target="_blank" rel="noreferrer" style={{ transform: "rotate(-2deg)" }}
